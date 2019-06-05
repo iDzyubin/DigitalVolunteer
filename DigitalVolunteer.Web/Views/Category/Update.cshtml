@@ -1,0 +1,17 @@
+@model Category
+@{
+    Layout = "_CrudLayout";
+}
+<div class="card ">
+    <h5 class="card-header text-center">Обновление информации о категории</h5>
+    <div class="card-body">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control"/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-outline-dark">Обновить</button>
+        </form>
+    </div>
+</div>
