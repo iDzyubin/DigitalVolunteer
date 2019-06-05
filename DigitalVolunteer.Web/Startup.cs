@@ -7,6 +7,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -39,6 +40,9 @@ namespace DigitalVolunteer.Web
 
             var connectionString = Configuration.GetConnectionString( "DefaultConnection" );
             services.AddDbContext<ApplicationDbContext>( builder => builder.UseNpgsql( connectionString ) );
+            
+            services.AddDbContext<ApplicationUserDbContext>( builder => builder.UseNpgsql( connectionString ) );
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationUserDbContext>();
 
             services.AddMvc()
                     .AddFluentValidation( fv => fv.RegisterValidatorsFromAssemblyContaining<CategoryValidator>() )
@@ -62,6 +66,7 @@ namespace DigitalVolunteer.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseMvc( routes =>
             {
