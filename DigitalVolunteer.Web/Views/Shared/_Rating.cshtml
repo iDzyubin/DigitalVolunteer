@@ -1,0 +1,10 @@
+@model double
+
+@for( int i = 0; i < Math.Floor( Model ); ++i )
+{
+    <span class="text-warning"><i class="fas fa-star"></i></span>
+}
+@if( Model - Math.Floor( Model ) >= 0.5 )
+{
+    <span class="text-warning"><i class="fas fa-star-half-alt"></i></span>
+}

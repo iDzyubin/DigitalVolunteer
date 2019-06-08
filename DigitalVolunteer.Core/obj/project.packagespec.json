@@ -1,19 +1,18 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "D:\\Projects\\DigitalVolunteer\\DigitalVolunteer.Core\\DigitalVolunteer.Core.csproj",
+    "projectUniqueName": "/Users/ila/Desktop/GitHub/DigitalVolunteer/DigitalVolunteer.Core/DigitalVolunteer.Core.csproj",
     "projectName": "DigitalVolunteer.Core",
-    "projectPath": "D:\\Projects\\DigitalVolunteer\\DigitalVolunteer.Core\\DigitalVolunteer.Core.csproj",
-    "outputPath": "D:\\Projects\\DigitalVolunteer\\DigitalVolunteer.Core\\obj\\",
+    "projectPath": "/Users/ila/Desktop/GitHub/DigitalVolunteer/DigitalVolunteer.Core/DigitalVolunteer.Core.csproj",
+    "outputPath": "/Users/ila/Desktop/GitHub/DigitalVolunteer/DigitalVolunteer.Core/obj/",
     "projectStyle": "PackageReference",
     "fallbackFolders": [
-      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
     ],
     "originalTargetFrameworks": [
       "netcoreapp2.2"
     ],
     "sources": {
-      "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
       "https://api.nuget.org/v3/index.json": {}
     },
     "frameworks": {

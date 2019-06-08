@@ -1,6 +1,7 @@
 ﻿using DigitalVolunteer.Core.Contexts;
 using DigitalVolunteer.Core.DomainModels;
 using DigitalVolunteer.Core.Repositories;
+using DigitalVolunteer.Core.Services;
 using DigitalVolunteer.Core.Validators;
 using DigitalVolunteer.Web.Services;
 using FluentValidation.AspNetCore;
@@ -33,9 +34,12 @@ namespace DigitalVolunteer.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             } );
 
+            services.AddTransient<IAccountRepository, MoqAccountRepository>();
+            services.AddTransient<IExecutorRepository, MoqExecutorRepository>();
             services.AddTransient<IRepository<Category>, CategoryRepository>();
 
             services.AddTransient<GreetingService>();
+            services.AddTransient<ExecutorService>();
 
             var connectionString = Configuration.GetConnectionString( "DefaultConnection" );
             services.AddDbContext<ApplicationDbContext>( builder => builder.UseNpgsql( connectionString ) );

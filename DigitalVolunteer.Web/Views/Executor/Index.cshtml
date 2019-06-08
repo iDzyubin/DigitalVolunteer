@@ -1,0 +1,15 @@
+@inject ExecutorService ExecutorService
+
+@if( !ExecutorService.GetExecutorList().Any() )
+{
+    <h1 class="display-4 text-center">На данный момент список исполнителей пуст</h1>
+}
+else
+{
+    <h1 class="display-4 text-center">Список исполнителей</h1>
+    <br/>
+    foreach( var executor in ExecutorService.GetExecutorList() )
+    {
+        <partial name="_ExecutorCard" model="@executor" />
+    }
+}
