@@ -1,14 +1,14 @@
-@inject ITaskRepository TaskRepository
+@inject TaskWebService TaskWebService
 
-@if( TaskRepository.GetAll().Count == 0 )
+@if( !TaskWebService.GetTaskList().Any() )
 {
     <h1 class="display-4 text-center">На данный момент список заданий пуст</h1>
 }
 else
 {
-    <h1 class="display-4 text-center">Список исполнителей</h1>
+    <h1 class="display-4 text-center">Список заданий</h1>
     <br/>
-    foreach(var task in TaskRepository.GetAll() )
+    foreach(var task in TaskWebService.GetTaskList() )
     {
         <partial name="_TaskCard" model="@task" />
     }

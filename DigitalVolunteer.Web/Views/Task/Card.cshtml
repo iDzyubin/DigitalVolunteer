@@ -1,2 +1,51 @@
 @model DigitalVolunteer.Core.DomainModels.Task
 
+<div class="col-md-8 offset-2">
+    <div class="card">
+        <div class="card-header">
+            <h4>@Model.Title</h4>
+        </div>
+        <div class="card-body">
+            <form asp-controller="Task" asp-action="AcceptTask" method="post">
+                @if( Model.StartDate.HasValue )
+                {
+                    <div class="col-md-12 row">
+                        <div class="col-md-4"><b>Начать</b></div>
+                        <div class="col-md-8">@Model.StartDate.Value.ConvertToString()</div>
+                    </div>
+                    <br/>
+                }
+                @if( Model.EndDate.HasValue )
+                {
+                    <div class="col-md-12 row">
+                        <div class="col-md-4"><b>Завершить</b></div>
+                        <div class="col-md-8">@Model.EndDate.Value.ConvertToString()</div>
+                    </div>
+                    <br/>
+                }
+                <div class="col-md-12 row">
+                    <div class="col-md-4"><b>Место указания услуги</b></div>
+                    <div class="col-md-8">@Model.TaskFormat.GetDisplayName()</div>
+                </div>
+                <br/>
+                <div class="col-md-12 row">
+                    <div class="col-md-4"><b>Описание задания</b></div>
+                    <div class="col-md-8">@Model.Description</div>
+                </div>
+                <br/>
+                <div class="col-md-12 row">
+                    <input asp-route-id="@Model.Id" type="hidden"/>
+                    <div class="col-md-6 offset-3">
+                        <button type="submit" class="btn btn-outline-info col-md-12">Предложить свои услуги</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            Заказчик:
+            <a asp-controller="" asp-action="" asp-route-id="@Model.Owner.Id">
+                <u>@Model.Owner.GetShortName()</u>
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,2 +1,21 @@
-@model DigitalVolunteer.Core.DomainModels.Task
+@model TaskModel
 
+<div class="col-md-8 offset-2">
+    <div class="card">
+        <div class="card-header">
+            <a asp-controller="Task" asp-action="Card" asp-route-id="@Model.Id">
+                @Model.Title
+            </a>
+        </div>
+        <div class="card-body">
+            <div>@Model.TaskFormat</div>
+            <div>@Model.Shedule</div>
+        </div>
+        <div class="card-footer">
+            <a asp-controller="" asp-action="" asp-route-id="@Model.Owner.Id">
+                <u>@Model.Owner.Name</u>
+            </a>
+        </div>
+    </div>
+    <br/>
+</div>

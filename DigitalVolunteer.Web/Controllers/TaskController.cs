@@ -1,6 +1,7 @@
 using System;
 using DigitalVolunteer.Core.DomainModels;
 using DigitalVolunteer.Core.Repositories;
+using DigitalVolunteer.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DigitalVolunteer.Web.Controllers
@@ -8,12 +9,15 @@ namespace DigitalVolunteer.Web.Controllers
     public class TaskController : Controller
     {
         private readonly ITaskRepository _taskRepository;
+        private readonly TaskService     _taskService;
 
-        
-        public TaskController( ITaskRepository taskRepository )
-            => _taskRepository = taskRepository;
+        public TaskController( ITaskRepository taskRepository, TaskService taskService )
+        {
+            _taskRepository = taskRepository;
+            _taskService    = taskService;
+        }
 
-        
+
         /// <summary>
         /// Страница со списком задач.
         /// </summary>
@@ -36,7 +40,7 @@ namespace DigitalVolunteer.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Create() => View();
+        public IActionResult Create() => View( new Task() );
 
 
         /// <summary>
@@ -56,7 +60,7 @@ namespace DigitalVolunteer.Web.Controllers
             return RedirectToMainPage();
         }
 
-        
+
         /// <summary>
         /// Страница для обновления информации о задаче.
         /// </summary>
@@ -65,7 +69,7 @@ namespace DigitalVolunteer.Web.Controllers
         [HttpGet]
         public IActionResult Update( Guid id ) => View( GetTask( id ) );
 
-        
+
         /// <summary>
         /// Обновить информацию о задаче.
         /// </summary>
@@ -83,7 +87,7 @@ namespace DigitalVolunteer.Web.Controllers
             return RedirectToMainPage();
         }
 
-        
+
         /// <summary>
         /// Удалить задачу.
         /// </summary>
@@ -96,7 +100,13 @@ namespace DigitalVolunteer.Web.Controllers
             return RedirectToMainPage();
         }
 
-        
+        [HttpPost]
+        public IActionResult AcceptTask( Guid id )
+        {
+            _taskService.AcceptTask( id );
+            return RedirectToMainPage();
+        }
+
         /// <summary>
         /// Вернуть задачу по id.
         /// </summary>
@@ -105,7 +115,7 @@ namespace DigitalVolunteer.Web.Controllers
         [NonAction]
         private Task GetTask( Guid id ) => _taskRepository.Get( id );
 
-        
+
         /// <summary>
         /// Отправить на главную.
         /// </summary>
