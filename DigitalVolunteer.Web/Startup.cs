@@ -1,14 +1,14 @@
-﻿using DigitalVolunteer.Core.Contexts;
-using DigitalVolunteer.Core.DomainModels;
+﻿using System;
+using DigitalVolunteer.Core.DataAccess;
+using DigitalVolunteer.Core.DataModels;
+using DigitalVolunteer.Core.Interfaces;
 using DigitalVolunteer.Core.Repositories;
-using DigitalVolunteer.Core.Validators;
-using DigitalVolunteer.Web.Services;
-using FluentValidation.AspNetCore;
+using DigitalVolunteer.Core.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,29 +23,38 @@ namespace DigitalVolunteer.Web
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices( IServiceCollection services )
         {
             services.Configure<CookiePolicyOptions>( options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded    = context => true;
+                options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             } );
 
-            services.AddTransient<IRepository<Category>, CategoryRepository>();
+            var expireTimeSpan = TimeSpan.FromDays( 30 );
+            services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme )
+                .AddCookie( options =>
+                {
+                    //options.Cookie.Name = "dvAuth";
+                    //options.Cookie.Expiration = expireTimeSpan;
+                    options.LoginPath = "/Account/Login";
+                    options.LogoutPath = "/Account/Logout";
+                    //options.AccessDeniedPath = "/Account/Forbidden";
+                    //options.ExpireTimeSpan = expireTimeSpan;
+                } );
 
-            services.AddTransient<GreetingService>();
+            var dbConnStr = Configuration.GetConnectionString( "DefaultConnection" );
+            LinqToDB.Data.DataConnection.DefaultSettings = new Linq2DbSettings( dbConnStr );
+            services.AddSingleton<MainDb>();
 
-            var connectionString = Configuration.GetConnectionString( "DefaultConnection" );
-            services.AddDbContext<ApplicationDbContext>( builder => builder.UseNpgsql( connectionString ) );
+            services.AddSingleton<PasswordHashService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<UserService>();
 
-            services.AddMvc()
-                    .AddFluentValidation( fv => fv.RegisterValidatorsFromAssemblyContaining<CategoryValidator>() )
-                    .SetCompatibilityVersion( CompatibilityVersion.Version_2_2 );
+            services.AddMvc().SetCompatibilityVersion( CompatibilityVersion.Version_2_2 );
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure( IApplicationBuilder app, IHostingEnvironment env )
         {
             if( env.IsDevelopment() )
@@ -55,13 +64,14 @@ namespace DigitalVolunteer.Web
             else
             {
                 app.UseExceptionHandler( "/Home/Error" );
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseAuthentication();
 
             app.UseMvc( routes =>
             {

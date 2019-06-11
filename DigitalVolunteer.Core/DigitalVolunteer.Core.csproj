@@ -1,17 +1,40 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <Folder Include="Services" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="linq2db.PostgreSQL" Version="2.7.2" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="FluentValidation" Version="8.4.0" />
-      <PackageReference Include="FluentValidation.AspNetCore" Version="8.4.0" />
-      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.0.0-preview5" />
-    </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataAccess\Scripts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+      <HintPath>..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.logging.abstractions\2.2.0\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DataModels\Database.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Database.generated.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DataModels\Database.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Database.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
 
 </Project>

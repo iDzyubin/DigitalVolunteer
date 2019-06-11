@@ -1,0 +1,26 @@
+﻿<#@ template language="C#" debug="True" hostSpecific="True"                                 #>
+<#@ output extension=".generated.cs"                                                        #>
+<#@ include file="$(ProjectDir)LinqToDB.Templates\LinqToDB.PostgreSQL.Tools.ttinclude"      #>
+<#@ include file="$(ProjectDir)LinqToDB.Templates\PluralizationService.ttinclude"           #>
+<#
+	NamespaceName = "DigitalVolunteer.Core.DataModels";
+	DataContextName = "MainDb";
+	GetSchemaOptions.IncludedSchemas = new[] { "dv" };
+
+	LoadPostgreSQLMetadata( "localhost", "5432", "digital_volunteer", "postgres", "6552" );
+	
+	var enums = new Dictionary<string, string>
+	{
+		{"users.status", "UserStatus"},
+	};
+
+	foreach( var e in enums )
+	{
+		var table = "dv." + e.Key.Split( '.' )[0];
+		var column = e.Key.Split( '.' )[1];
+
+		Tables[table].Columns[column].Type = e.Value;
+	}
+
+	GenerateModel();
+#>

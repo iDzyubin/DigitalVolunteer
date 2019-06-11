@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DigitalVolunteer.Core.Repositories
+namespace DigitalVolunteer.Core.Interfaces
 {
     public interface IRepository<T>
     {
@@ -12,6 +12,8 @@ namespace DigitalVolunteer.Core.Repositories
         void Update( T item );
 
         T Get( Guid id );
+
+        List<T> Get( Func<T, bool> filter );
 
         List<T> GetAll();
     }
