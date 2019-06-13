@@ -9,10 +9,6 @@
 <hr />
 <div class="row">
     <div class="col-md-12">
-        @if( Model?.ErrorMessage != null )
-        {
-            <div class="alert alert-danger">@Model.ErrorMessage</div>
-        }
         <form asp-action="Registration">
             <div class="form-group">
                 <label asp-for="Email" class="control-label">Введите e-mail: </label>
