@@ -4,19 +4,16 @@ using System.Linq;
 using DigitalVolunteer.Core.DataModels;
 using DigitalVolunteer.Core.Interfaces;
 using LinqToDB;
-using Microsoft.Extensions.Logging;
 
 namespace DigitalVolunteer.Core.Repositories
 {
     public class UserRepository : IUserRepository
     {
         private readonly MainDb _db;
-        private readonly ILogger _logger;
 
-        public UserRepository( MainDb db, ILogger<UserRepository> logger )
+        public UserRepository( MainDb db )
         {
             _db = db;
-            _logger = logger;
         }
 
         public void Add( User item ) => _db.Insert( item );

@@ -6,5 +6,6 @@ CREATE TABLE dv.users
     email character varying NOT NULL UNIQUE,
     password character varying NOT NULL,
     status integer NOT NULL DEFAULT 0,
+    is_admin boolean NOT NULL DEFAULT FALSE,
     registration_date timestamp without time zone
 );

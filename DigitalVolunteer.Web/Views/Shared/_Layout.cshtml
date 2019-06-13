@@ -13,7 +13,7 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
               crossorigin="anonymous"
-              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE="/>
+              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" />
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -34,6 +34,28 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        @if( ViewBag.IsAuthorized )
+                        {
+                            <li class="nav-item dropdown ml-auto">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @ViewBag.UserLogin
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" href="#">Профиль</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выйти</a>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item ml-auto">
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Registration">Зарегистрироваться</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Войти</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -41,6 +63,10 @@
     </header>
     <div class="container">
         <partial name="_CookieConsentPartial" />
+        @if( ViewBag.ErrorMessage != null )
+        {
+            <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+        }
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -72,6 +98,6 @@
     </environment>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    @RenderSection("Scripts", required: false)
+    @RenderSection( "Scripts", required: false )
 </body>
 </html>

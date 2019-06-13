@@ -16,7 +16,5 @@ namespace DigitalVolunteer.Web.Models
         [Compare( "Password", ErrorMessage = "Пароль введен неверно" )]
         [DataType( DataType.Password )]
         public string ConfirmPassword { get; set; }
-
-        public string ErrorMessage { get; set; }
     }
 }

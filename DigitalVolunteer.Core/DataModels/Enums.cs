@@ -1,6 +1,4 @@
-﻿using LinqToDB.Mapping;
-
-namespace DigitalVolunteer.Core.DataModels
+﻿namespace DigitalVolunteer.Core.DataModels
 {
     public enum UserStatus
     {

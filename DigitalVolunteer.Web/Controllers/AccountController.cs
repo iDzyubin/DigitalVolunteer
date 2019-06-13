@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DigitalVolunteer.Core.Models;
 using DigitalVolunteer.Core.Services;
 using DigitalVolunteer.Web.Models;
+using DigitalVolunteer.Web.Security;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -24,8 +25,14 @@ namespace DigitalVolunteer.Web.Controllers
 
         private async Task Authenticate( string email )
         {
-            var claims = new List<Claim> { new Claim( ClaimsIdentity.DefaultNameClaimType, email ) };
-            var identity = new ClaimsIdentity( claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType );
+            var user = _userService.GetUserInfo( email );
+            var claims = new List<Claim>
+            {
+                new Claim( ClaimTypes.Name, user.Email ),
+                new Claim( DvClaimTypes.UserId, user.Id.ToString() ),
+                new Claim( DvClaimTypes.IsAdmin, user.IsAdmin.ToString() )
+            };
+            var identity = new ClaimsIdentity( claims, "email" );
             await HttpContext.SignInAsync( CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal( identity ) );
         }
 
@@ -47,9 +54,9 @@ namespace DigitalVolunteer.Web.Controllers
                     await Authenticate( model.Email.ToLower() );
                     return RedirectToAction( "Index", "Home" );
                 }
-                catch( Exception ex )
+                catch( Exception )
                 {
-                    model.ErrorMessage = ex.Message;
+                    ViewBag.ErrorMessage = "Произошла ошибка. Свяжитесь с администратором";
                 }
             }
             return View( model );

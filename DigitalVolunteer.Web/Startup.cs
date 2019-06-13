@@ -4,6 +4,7 @@ using DigitalVolunteer.Core.DataModels;
 using DigitalVolunteer.Core.Interfaces;
 using DigitalVolunteer.Core.Repositories;
 using DigitalVolunteer.Core.Services;
+using DigitalVolunteer.Web.Filters;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,7 +28,6 @@ namespace DigitalVolunteer.Web
         {
             services.Configure<CookiePolicyOptions>( options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             } );
@@ -36,12 +36,8 @@ namespace DigitalVolunteer.Web
             services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme )
                 .AddCookie( options =>
                 {
-                    //options.Cookie.Name = "dvAuth";
-                    //options.Cookie.Expiration = expireTimeSpan;
                     options.LoginPath = "/Account/Login";
                     options.LogoutPath = "/Account/Logout";
-                    //options.AccessDeniedPath = "/Account/Forbidden";
-                    //options.ExpireTimeSpan = expireTimeSpan;
                 } );
 
             var dbConnStr = Configuration.GetConnectionString( "DefaultConnection" );
@@ -52,7 +48,10 @@ namespace DigitalVolunteer.Web
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<UserService>();
 
-            services.AddMvc().SetCompatibilityVersion( CompatibilityVersion.Version_2_2 );
+            services.AddMvc( o =>
+            {
+                o.Filters.Add<UserClaimsFilter>();
+            } ).SetCompatibilityVersion( CompatibilityVersion.Version_2_2 );
         }
 
         public void Configure( IApplicationBuilder app, IHostingEnvironment env )

@@ -4,8 +4,6 @@ using System.Text;
 using DigitalVolunteer.Core.DataModels;
 using DigitalVolunteer.Core.Interfaces;
 using DigitalVolunteer.Core.Models;
-using DigitalVolunteer.Core.Repositories;
-using Microsoft.Extensions.Logging;
 
 namespace DigitalVolunteer.Core.Services
 {
@@ -13,13 +11,11 @@ namespace DigitalVolunteer.Core.Services
     {
         private readonly IUserRepository _users;
         private readonly PasswordHashService _hashService;
-        private readonly ILogger _logger;
 
-        public UserService( IUserRepository userRepository, PasswordHashService hashService, ILogger<UserService> logger )
+        public UserService( IUserRepository userRepository, PasswordHashService hashService )
         {
             _users = userRepository;
             _hashService = hashService;
-            _logger = logger;
         }
 
         public void Register( UserRegistrationModel model )
@@ -43,8 +39,7 @@ namespace DigitalVolunteer.Core.Services
             }
             catch( Exception ex )
             {
-                _logger.LogError( ex, "Registration failed" );
-                throw new Exception( "Произошла непредвиденная ошибка" );
+                throw new Exception( "Произошла непредвиденная ошибка", ex );
             }
         }
 
@@ -63,6 +58,17 @@ namespace DigitalVolunteer.Core.Services
                 : _hashService.ValidateHash( password, user.Password )
                     ? ValidationResult.Success
                     : ValidationResult.PasswordNotMatch;
+        }
+
+        public UserInfoModel GetUserInfo( string email )
+        {
+            var user = _users.GetByEmail( email );
+            return user == null ? null : new UserInfoModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                IsAdmin = user.IsAdmin
+            };
         }
     }
 }
