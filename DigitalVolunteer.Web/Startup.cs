@@ -4,7 +4,9 @@ using DigitalVolunteer.Core.DataModels;
 using DigitalVolunteer.Core.Interfaces;
 using DigitalVolunteer.Core.Repositories;
 using DigitalVolunteer.Core.Services;
+using DigitalVolunteer.Core.Validators;
 using DigitalVolunteer.Web.Filters;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -48,15 +50,18 @@ namespace DigitalVolunteer.Web
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<UserService>();
 
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+
             services.AddMvc( o =>
             {
                 o.Filters.Add<UserClaimsFilter>();
-            } ).SetCompatibilityVersion( CompatibilityVersion.Version_2_2 );
+            } ).AddFluentValidation( fv => fv.RegisterValidatorsFromAssemblyContaining<CategoryValidator>() )
+                .SetCompatibilityVersion( CompatibilityVersion.Version_2_2 );
         }
 
         public void Configure( IApplicationBuilder app, IHostingEnvironment env )
         {
-            if( env.IsDevelopment() )
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

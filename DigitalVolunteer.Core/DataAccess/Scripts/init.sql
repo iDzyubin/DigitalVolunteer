@@ -9,3 +9,9 @@ CREATE TABLE dv.users
     is_admin boolean NOT NULL DEFAULT FALSE,
     registration_date timestamp without time zone
 );
+
+CREATE TABLE dv.categories
+(
+    id uuid NOT NULL PRIMARY KEY,
+    name character varying UNIQUE NOT NULL
+)
