@@ -51,6 +51,7 @@ namespace DigitalVolunteer.Web
             services.AddSingleton<PasswordHashService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<UserService>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
 
             services.AddMvc().SetCompatibilityVersion( CompatibilityVersion.Version_2_2 );
         }

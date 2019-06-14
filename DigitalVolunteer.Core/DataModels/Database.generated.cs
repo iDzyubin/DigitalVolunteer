@@ -18,11 +18,12 @@ namespace DigitalVolunteer.Core.DataModels
 	/// <summary>
 	/// Database       : digital_volunteer
 	/// Data Source    : tcp://localhost:5432
-	/// Server Version : 10.3
+	/// Server Version : 11.3
 	/// </summary>
 	public partial class MainDb : LinqToDB.Data.DataConnection
 	{
-		public ITable<User> Users { get { return this.GetTable<User>(); } }
+		public ITable<Category> Categories { get { return this.GetTable<Category>(); } }
+		public ITable<User>     Users      { get { return this.GetTable<User>(); } }
 
 		partial void InitMappingSchema()
 		{
@@ -45,6 +46,13 @@ namespace DigitalVolunteer.Core.DataModels
 		partial void InitMappingSchema();
 	}
 
+	[Table(Schema="dv", Name="categories")]
+	public partial class Category
+	{
+		[Column("id"),   PrimaryKey, NotNull] public Guid   Id   { get; set; } // uuid
+		[Column("name"),             NotNull] public string Name { get; set; } // character varying
+	}
+
 	[Table(Schema="dv", Name="users")]
 	public partial class User
 	{
@@ -57,6 +65,12 @@ namespace DigitalVolunteer.Core.DataModels
 
 	public static partial class TableExtensions
 	{
+		public static Category Find(this ITable<Category> table, Guid Id)
+		{
+			return table.FirstOrDefault(t =>
+				t.Id == Id);
+		}
+
 		public static User Find(this ITable<User> table, Guid Id)
 		{
 			return table.FirstOrDefault(t =>

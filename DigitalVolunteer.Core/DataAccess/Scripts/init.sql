@@ -8,3 +8,9 @@ CREATE TABLE dv.users
     status integer NOT NULL DEFAULT 0,
     registration_date timestamp without time zone
 );
+
+CREATE TABLE dv.categories
+(
+    id uuid NOT NULL PRIMARY KEY,
+    name character varying NOT NULL UNIQUE
+);
