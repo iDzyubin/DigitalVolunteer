@@ -19,15 +19,10 @@ namespace DigitalVolunteer.Web.Controllers
         public IActionResult Index() => View();
 
 
-        [HttpGet( "{id}" )]
-        public IActionResult Details( Guid id )
-            => View( _executorRepository.Get( id ) );
-
-
         [HttpGet]
         public IActionResult OfferTask( Guid taskId, Guid executorId )
         {
-            // Предлагаем исполнителю выполнить одно из наших заданий.
+            // TODO. Предлагаем исполнителю выполнить одно из наших заданий.
             return Ok();
         }
     }

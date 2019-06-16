@@ -4,7 +4,7 @@
     <div class="card">
         <h4 class="card-header">@Model.Title</h4>
         <div class="card-body">
-            <form asp-controller="Task" asp-action="AcceptTask" method="post">
+            <form asp-controller="Task" asp-action="OfferTaskHelp" method="post">
                 <div class="col-md-12 row">
                     <div class="col-md-4"><b>Начать</b></div>
                     <div class="col-md-8">@(Model.StartDate.HasValue ? Model.StartDate.Value.ConvertToString() : "Дата начала отсутствует")</div>
@@ -35,7 +35,7 @@
         </div>
         <div class="card-footer">
             Заказчик:
-            <a asp-controller="" asp-action="" asp-route-id="@Model.Owner.Id">
+            <a asp-controller="Account" asp-action="Profile" asp-route-id="@Model.Owner.Id">
                 <u>@Model.Owner.GetShortName()</u>
             </a>
         </div>
