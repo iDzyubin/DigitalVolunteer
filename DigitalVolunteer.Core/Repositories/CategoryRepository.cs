@@ -17,7 +17,7 @@ namespace DigitalVolunteer.Core.Repositories
 
         public void Add( Category item )
         {
-            item.Id = Guid.NewGuid(); ;
+            item.Id = Guid.NewGuid(); 
             _db.Insert( item );
         }
 

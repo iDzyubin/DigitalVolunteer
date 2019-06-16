@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using DigitalVolunteer.Core.Interfaces;
 using DigitalVolunteer.Core.Models;
 using DigitalVolunteer.Core.Services;
 using DigitalVolunteer.Web.Models;
 using DigitalVolunteer.Web.Security;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DigitalVolunteer.Web.Controllers
@@ -17,10 +16,12 @@ namespace DigitalVolunteer.Web.Controllers
     public class AccountController : Controller
     {
         private readonly UserService _userService;
+        private readonly IUserRepository _userRepository;
 
-        public AccountController( UserService userService )
+        public AccountController( UserService userService, IUserRepository userRepository )
         {
             _userService = userService;
+            _userRepository = userRepository;
         }
 
         private async Task Authenticate( string email )
@@ -50,7 +51,13 @@ namespace DigitalVolunteer.Web.Controllers
             {
                 try
                 {
-                    _userService.Register( new UserRegistrationModel { Email = model.Email.ToLower(), Password = model.Password } );
+                    _userService.Register( new UserRegistrationModel
+                    {
+                        Email = model.Email.ToLower(),
+                        Password = model.Password,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName
+                    } );
                     await Authenticate( model.Email.ToLower() );
                     return RedirectToAction( "Index", "Home" );
                 }
@@ -97,5 +104,9 @@ namespace DigitalVolunteer.Web.Controllers
             await HttpContext.SignOutAsync( CookieAuthenticationDefaults.AuthenticationScheme );
             return RedirectToAction( "Index", "Home" );
         }
+
+        [HttpGet]
+        [Route("[controller]/Profile/{id}")]
+        public IActionResult UserCard( Guid id ) => View( _userRepository.Get( id ) );
     }
 }

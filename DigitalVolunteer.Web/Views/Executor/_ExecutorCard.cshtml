@@ -1,0 +1,26 @@
+﻿@* *@
+@* <div class="col-md-8 offset-2"> *@
+@*     <div class="card"> *@
+@*         <div class="card-header text-left"> *@
+@*             <div class="row"> *@
+@*                 <div class="col-md-6"> *@
+@*                     <a asp-controller="Executor" asp-action="Details" asp-route-id="@Model.Id"> *@
+@*                         <u>@Model.GetShortName()</u> *@
+@*                     </a> *@
+@*                 </div> *@
+@*                 <div class="col-md-3"> *@
+@*                     @Model.Rating.LikeCount <span class="text-success"><i class="far fa-thumbs-up"></i></span> *@
+@*                     @Model.Rating.DislikeCount <span class="text-danger"><i class="far fa-thumbs-down"></i></span> *@
+@*                 </div> *@
+@*                 <div class="col-md-3"> *@
+@*                     @Model.Rating.AverageBall <partial name="_Rating" model="@Model.Rating.AverageBall"/> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*         <div class="card-body"> *@
+@*             <div>@Model.Description</div><br/> *@
+@*             <button class="btn btn-outline-info">Предложить задание</button> *@
+@*         </div> *@
+@*     </div> *@
+@*     <br/> *@
+@* </div> *@

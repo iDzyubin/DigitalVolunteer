@@ -16,5 +16,13 @@ namespace DigitalVolunteer.Web.Models
         [Compare( "Password", ErrorMessage = "Пароль введен неверно" )]
         [DataType( DataType.Password )]
         public string ConfirmPassword { get; set; }
+
+        [Required( ErrorMessage = "Не указано имя")]
+        [MaxLength(50, ErrorMessage = "Длина имени не может превышать {1} символов" )]
+        public string FirstName { get; set; }
+
+        [Required( ErrorMessage = "Не указана фамилия" )]
+        [MaxLength( 50, ErrorMessage = "Длина фамилии не может превышать {1} символов" )]
+        public string LastName { get; set; }
     }
 }

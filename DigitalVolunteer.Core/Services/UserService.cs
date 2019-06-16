@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using DigitalVolunteer.Core.DataModels;
 using DigitalVolunteer.Core.Interfaces;
 using DigitalVolunteer.Core.Models;
@@ -31,7 +29,9 @@ namespace DigitalVolunteer.Core.Services
                 Email = model.Email,
                 Password = _hashService.GetHash( model.Password ),
                 Status = UserStatus.Unconfirmed,
-                RegistrationDate = DateTime.Now
+                RegistrationDate = DateTime.Now,
+                FirstName = model.FirstName,
+                LastName = model.LastName
             };
             try
             {

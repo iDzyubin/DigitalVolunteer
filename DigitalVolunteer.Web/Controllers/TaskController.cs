@@ -1,89 +1,84 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using DigitalVolunteer.Core.DataModels;
+using DigitalVolunteer.Core.Interfaces;
+using DigitalVolunteer.Web.Security;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DigitalVolunteer.Web.Controllers
 {
     public class TaskController : Controller
     {
-        // GET: Task
-        public ActionResult Index()
+        private readonly ITaskRepository _taskRepository;
+
+
+        public TaskController( ITaskRepository taskRepository )
         {
-            return View();
+            _taskRepository = taskRepository;
         }
 
-        // GET: Task/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
-        // GET: Task/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+        [HttpGet]
+        public IActionResult Index() => View();
 
-        // POST: Task/Create
+
+        [HttpGet( "{id}" )]
+        public IActionResult Details( Guid id ) => View( Get( id ) );
+
+
+        // TODO. Only for authorized.
+        [HttpGet]
+        public IActionResult Create() => View();
+
+
+        // TODO. Only for authorized.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Add( Task item )
         {
-            try
+            if( !ModelState.IsValid )
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                return View( item );
             }
-            catch
-            {
-                return View();
-            }
+            
+            _taskRepository.Add( item, User.GetId().Value );
+            return RedirectToMainPage();
         }
 
-        // GET: Task/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
 
-        // POST: Task/Edit/5
+        // TODO. Only for authorized.
+        [HttpGet]
+        public IActionResult Update( Guid id ) => View( Get( id ) );
+
+
+        // TODO. Only for authorized.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public IActionResult Update( Task item )
         {
-            try
+            if( !ModelState.IsValid )
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                return View( item );
             }
-            catch
-            {
-                return View();
-            }
+            _taskRepository.Update( item );
+            return RedirectToMainPage();
         }
 
-        // GET: Task/Delete/5
-        public ActionResult Delete(int id)
+
+        // TODO. Only for authorized.
+        [HttpGet]
+        public IActionResult Remove( Guid id )
         {
-            return View();
+            _taskRepository.Remove( id );
+            return RedirectToMainPage();
         }
 
-        // POST: Task/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        [NonAction]
+        private IActionResult RedirectToMainPage()
+            => RedirectToAction( "Index", "Task" );
+
+
+        [NonAction]
+        private Task Get( Guid id ) => _taskRepository.Get( id );
     }
 }

@@ -13,7 +13,6 @@ namespace DigitalVolunteer.Web.Filters
             var viewBag = controller.ViewBag;
 
             viewBag.UserId = user.GetId();
-            viewBag.UserLogin = user.GetLogin();
             viewBag.IsAuthorized = viewBag.UserId != null;
             viewBag.IsAdmin = user.IsAdmin();
 
