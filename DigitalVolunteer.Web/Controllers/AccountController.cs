@@ -107,9 +107,9 @@ namespace DigitalVolunteer.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Profile()
+        public IActionResult Profile( Guid? id )
         {
-            var id = User.GetId();
+            id = id ?? User.GetId();
             if( id == null )
                 return RedirectToAction( "Login" );
             else
@@ -119,8 +119,5 @@ namespace DigitalVolunteer.Web.Controllers
                 return View( userInfo );
             }
         }
-
-        [HttpGet( "[controller]/[action]/{id}" )]
-        public IActionResult Profile( Guid id ) => View( _userService.GetUser( id ) );
     }
 }
