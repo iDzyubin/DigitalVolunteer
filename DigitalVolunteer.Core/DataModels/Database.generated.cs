@@ -19,7 +19,7 @@ namespace DigitalVolunteer.Core.DataModels
 	/// <summary>
 	/// Database       : digital_volunteer
 	/// Data Source    : tcp://localhost:5432
-	/// Server Version : 10.8
+	/// Server Version : 11.3
 	/// </summary>
 	public partial class MainDb : LinqToDB.Data.DataConnection
 	{
