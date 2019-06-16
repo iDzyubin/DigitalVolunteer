@@ -1,15 +1,15 @@
 ﻿@model DigitalVolunteer.Web.Models.RegistrationViewModel
 
 @{
-    ViewData["Title"] = "Регистрация";
+    ViewData["Title"] = "Добавить пользователя";
 }
 
-<h1>Регистрация</h1>
+<h1>Добавить пользователя</h1>
 
 <hr />
 <div class="row">
     <div class="col-md-6 offset-md-3">
-        <form asp-action="Registration">
+        <form asp-action="Add">
             <div class="form-group">
                 <label asp-for="Email" class="control-label">Введите e-mail: </label>
                 <input asp-for="Email" class="form-control" />
@@ -39,14 +39,26 @@
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label">Номер телефона для связи:</label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label asp-for="Phone" class="control-label">Номер телефона для связи:</label>
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IsAdmin" />Администратор
+                    </label>
+                </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Зарегистрироваться" class="btn btn-primary" />
+                <input type="submit" value="Добавить" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
+
+<div>
+    <a asp-action="List">Вернуться</a>
+</div>
+

@@ -1,8 +1,8 @@
-﻿using DigitalVolunteer.Core.Interfaces;
-using DigitalVolunteer.Core.DataModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DigitalVolunteer.Core.DataModels;
+using DigitalVolunteer.Core.Interfaces;
 using LinqToDB;
 
 namespace DigitalVolunteer.Core.Repositories

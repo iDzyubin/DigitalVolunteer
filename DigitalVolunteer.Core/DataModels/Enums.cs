@@ -7,8 +7,15 @@
         Confirmed = 2,
         Deleted = 3
     }
+    
+    public enum DigitalTaskStatus
+    {
+        Open = 0,
+        Completed = 1,
+        Canceled = 2
+    }
 
-    public enum TaskFormat
+    public enum DigitalTaskFormat
     {
         Freelance = 0,
         UpWork = 1

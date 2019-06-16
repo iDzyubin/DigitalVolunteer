@@ -1,0 +1,76 @@
+﻿@model DigitalVolunteer.Core.Models.UserInfoModel
+
+@{
+    ViewData["Title"] = "Профиль";
+}
+
+<h1>Профиль</h1>
+
+<hr />
+<div>
+    <dl class="row">
+        <dt class="col-sm-4">
+            E-mail адрес
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor( model => model.Email )
+        </dd>
+        <dt class="col-sm-4">
+            Имя
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor( model => model.FirstName )
+        </dd>
+        <dt class="col-sm-4">
+            Фамилия
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor( model => model.LastName )
+        </dd>
+        <dt class="col-sm-4">
+            Номер телефона
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor( model => model.Phone )
+        </dd>
+        <dt class="col-sm-4">
+            Дополнительная информация
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor( model => model.Description )
+        </dd>
+        <dt class="col-sm-4">
+            Создано заданий
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor( model => model.TasksCreated )
+        </dd>
+        <dt class="col-sm-4">
+            Выполнено заданий
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor( model => model.TasksCompleted )
+        </dd>
+        <dt class="col-sm-4">
+            Предпочитаемая категория
+        </dt>
+        <dd class="col-sm-8">
+            @if( Model.FavoriteCategory != null )
+            {
+                Html.DisplayFor( model => model.FavoriteCategory );
+            }
+        </dd>
+        <dt class="col-sm-4">
+            Последние задания
+        </dt>
+        <dd class="col-sm-8">
+            @if( ViewBag.LastTasks.Count > 0 )
+            {
+                @foreach( DigitalVolunteer.Core.Models.TaskTitle task in ViewBag.LastTasks )
+                {
+                    Html.ActionLink( task.Title, "Details", "Task", new { id = task.Id } );
+                }
+            }
+        </dd>
+    </dl>
+</div>

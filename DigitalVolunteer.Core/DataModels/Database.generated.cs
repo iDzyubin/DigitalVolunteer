@@ -8,6 +8,7 @@
 #pragma warning disable 1591
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using LinqToDB;
@@ -18,11 +19,14 @@ namespace DigitalVolunteer.Core.DataModels
 	/// <summary>
 	/// Database       : digital_volunteer
 	/// Data Source    : tcp://localhost:5432
-	/// Server Version : 10.3
+	/// Server Version : 10.8
 	/// </summary>
 	public partial class MainDb : LinqToDB.Data.DataConnection
 	{
-		public ITable<User> Users { get { return this.GetTable<User>(); } }
+		public ITable<Category>     Categories    { get { return this.GetTable<Category>(); } }
+		public ITable<DigitalTask>  DigitalTasks  { get { return this.GetTable<DigitalTask>(); } }
+		public ITable<TaskExecutor> TaskExecutors { get { return this.GetTable<TaskExecutor>(); } }
+		public ITable<User>         Users         { get { return this.GetTable<User>(); } }
 
 		partial void InitMappingSchema()
 		{
@@ -45,19 +49,136 @@ namespace DigitalVolunteer.Core.DataModels
 		partial void InitMappingSchema();
 	}
 
+	[Table(Schema="dv", Name="categories")]
+	public partial class Category
+	{
+		[Column("id"),   PrimaryKey, NotNull] public Guid   Id   { get; set; } // uuid
+		[Column("name"),             NotNull] public string Name { get; set; } // character varying
+
+		#region Associations
+
+		/// <summary>
+		/// digital_tasks_category_id_fkey_BackReference
+		/// </summary>
+		[Association(ThisKey="Id", OtherKey="CategoryId", CanBeNull=true, Relationship=Relationship.OneToMany, IsBackReference=true)]
+		public IEnumerable<DigitalTask> Digitaltaskscategoryidfkeys { get; set; }
+
+		#endregion
+	}
+
+	[Table(Schema="dv", Name="digital_tasks")]
+	public partial class DigitalTask
+	{
+		[Column("id"),                     PrimaryKey,  NotNull] public Guid              Id                   { get; set; } // uuid
+		[Column("title"),                               NotNull] public string            Title                { get; set; } // character varying
+		[Column("category_id"),                         NotNull] public Guid              CategoryId           { get; set; } // uuid
+		[Column("creator_id"),                          NotNull] public Guid              CreatorId            { get; set; } // uuid
+		[Column("description"),               Nullable         ] public string            Description          { get; set; } // character varying
+		[Column("start_date"),                          NotNull] public DateTime          StartDate            { get; set; } // timestamp (6) without time zone
+		[Column("end_date"),                  Nullable         ] public DateTime?         EndDate              { get; set; } // timestamp (6) without time zone
+		[Column("status"),                              NotNull] public DigitalTaskStatus Status               { get; set; } // integer
+		[Column("task_format"),                         NotNull] public DigitalTaskFormat TaskFormat           { get; set; } // integer
+		[Column("has_push_notifications"),              NotNull] public bool              HasPushNotifications { get; set; } // boolean
+		[Column("is_only_for_executors"),               NotNull] public bool              IsOnlyForExecutors   { get; set; } // boolean
+
+		#region Associations
+
+		/// <summary>
+		/// digital_tasks_category_id_fkey
+		/// </summary>
+		[Association(ThisKey="CategoryId", OtherKey="Id", CanBeNull=false, Relationship=Relationship.ManyToOne, KeyName="digital_tasks_category_id_fkey", BackReferenceName="Digitaltaskscategoryidfkeys")]
+		public Category Category { get; set; }
+
+		/// <summary>
+		/// digital_tasks_creator_id_fkey
+		/// </summary>
+		[Association(ThisKey="CreatorId", OtherKey="Id", CanBeNull=false, Relationship=Relationship.ManyToOne, KeyName="digital_tasks_creator_id_fkey", BackReferenceName="Digitaltaskscreatoridfkeys")]
+		public User Creator { get; set; }
+
+		/// <summary>
+		/// task_executors_task_id_fkey_BackReference
+		/// </summary>
+		[Association(ThisKey="Id", OtherKey="TaskId", CanBeNull=true, Relationship=Relationship.OneToMany, IsBackReference=true)]
+		public IEnumerable<TaskExecutor> Taskexecutorstaskidfkeys { get; set; }
+
+		#endregion
+	}
+
+	[Table(Schema="dv", Name="task_executors")]
+	public partial class TaskExecutor
+	{
+		[Column("task_id"), PrimaryKey(1), NotNull] public Guid TaskId { get; set; } // uuid
+		[Column("user_id"), PrimaryKey(2), NotNull] public Guid UserId { get; set; } // uuid
+
+		#region Associations
+
+		/// <summary>
+		/// task_executors_task_id_fkey
+		/// </summary>
+		[Association(ThisKey="TaskId", OtherKey="Id", CanBeNull=false, Relationship=Relationship.ManyToOne, KeyName="task_executors_task_id_fkey", BackReferenceName="Taskexecutorstaskidfkeys")]
+		public DigitalTask Task { get; set; }
+
+		/// <summary>
+		/// task_executors_user_id_fkey
+		/// </summary>
+		[Association(ThisKey="UserId", OtherKey="Id", CanBeNull=false, Relationship=Relationship.ManyToOne, KeyName="task_executors_user_id_fkey", BackReferenceName="Taskexecutorsuseridfkeys")]
+		public User User { get; set; }
+
+		#endregion
+	}
+
 	[Table(Schema="dv", Name="users")]
 	public partial class User
 	{
 		[Column("id"),                PrimaryKey,  NotNull] public Guid       Id               { get; set; } // uuid
 		[Column("email"),                          NotNull] public string     Email            { get; set; } // character varying
 		[Column("password"),                       NotNull] public string     Password         { get; set; } // character varying
+		[Column("first_name"),           Nullable         ] public string     FirstName        { get; set; } // character varying
+		[Column("last_name"),            Nullable         ] public string     LastName         { get; set; } // character varying
+		[Column("description"),          Nullable         ] public string     Description      { get; set; } // character varying
+		[Column("phone"),                Nullable         ] public string     Phone            { get; set; } // character varying
 		[Column("status"),                         NotNull] public UserStatus Status           { get; set; } // integer
 		[Column("is_admin"),                       NotNull] public bool       IsAdmin          { get; set; } // boolean
 		[Column("registration_date"),    Nullable         ] public DateTime?  RegistrationDate { get; set; } // timestamp (6) without time zone
+
+		#region Associations
+
+		/// <summary>
+		/// digital_tasks_creator_id_fkey_BackReference
+		/// </summary>
+		[Association(ThisKey="Id", OtherKey="CreatorId", CanBeNull=true, Relationship=Relationship.OneToMany, IsBackReference=true)]
+		public IEnumerable<DigitalTask> Digitaltaskscreatoridfkeys { get; set; }
+
+		/// <summary>
+		/// task_executors_user_id_fkey_BackReference
+		/// </summary>
+		[Association(ThisKey="Id", OtherKey="UserId", CanBeNull=true, Relationship=Relationship.OneToMany, IsBackReference=true)]
+		public IEnumerable<TaskExecutor> Taskexecutorsuseridfkeys { get; set; }
+
+		#endregion
 	}
 
 	public static partial class TableExtensions
 	{
+		public static Category Find(this ITable<Category> table, Guid Id)
+		{
+			return table.FirstOrDefault(t =>
+				t.Id == Id);
+		}
+
+		public static DigitalTask Find(this ITable<DigitalTask> table, Guid Id)
+		{
+			return table.FirstOrDefault(t =>
+				t.Id == Id);
+		}
+
+		public static TaskExecutor Find(this ITable<TaskExecutor> table, Guid TaskId, Guid UserId)
+		{
+			return table.FirstOrDefault(t =>
+				t.TaskId == TaskId &&
+				t.UserId == UserId);
+		}
+
 		public static User Find(this ITable<User> table, Guid Id)
 		{
 			return table.FirstOrDefault(t =>

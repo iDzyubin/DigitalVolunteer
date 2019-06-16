@@ -12,6 +12,8 @@
 	var enums = new Dictionary<string, string>
 	{
 		{"users.status", "UserStatus"},
+		{"digital_tasks.status", "DigitalTaskStatus"},
+		{"digital_tasks.task_format", "DigitalTaskFormat"},
 	};
 
 	foreach( var e in enums )

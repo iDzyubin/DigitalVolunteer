@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using DigitalVolunteer.Core.Models;
@@ -17,10 +16,12 @@ namespace DigitalVolunteer.Web.Controllers
     public class AccountController : Controller
     {
         private readonly UserService _userService;
+        private readonly TaskService _taskService;
 
-        public AccountController( UserService userService )
+        public AccountController( UserService userService, TaskService taskService )
         {
             _userService = userService;
+            _taskService = taskService;
         }
 
         private async Task Authenticate( string email )
@@ -50,7 +51,14 @@ namespace DigitalVolunteer.Web.Controllers
             {
                 try
                 {
-                    _userService.Register( new UserRegistrationModel { Email = model.Email.ToLower(), Password = model.Password } );
+                    _userService.Register( new UserRegistrationModel
+                    {
+                        Email = model.Email.ToLower(),
+                        Password = model.Password,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Phone = model.Phone
+                    } );
                     await Authenticate( model.Email.ToLower() );
                     return RedirectToAction( "Index", "Home" );
                 }
@@ -96,6 +104,20 @@ namespace DigitalVolunteer.Web.Controllers
         {
             await HttpContext.SignOutAsync( CookieAuthenticationDefaults.AuthenticationScheme );
             return RedirectToAction( "Index", "Home" );
+        }
+
+        [HttpGet]
+        public IActionResult Profile()
+        {
+            var id = User.GetId();
+            if( id == null )
+                return RedirectToAction( "Login" );
+            else
+            {
+                var userInfo = _userService.GetExtendedUserInfo( id.Value );
+                ViewBag.LastTasks = _taskService.GetUserTaskTitles( id.Value, 3 );
+                return View( userInfo );
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ namespace DigitalVolunteer.Web.Models
     public class RegistrationViewModel
     {
         [Required( ErrorMessage = "Не указан Email" )]
-        [DataType( DataType.EmailAddress )]
+        [EmailAddress( ErrorMessage = "Недействительный e-mail адрес" )]
         public string Email { get; set; }
 
         [Required( ErrorMessage = "Не указан пароль" )]
@@ -16,5 +16,16 @@ namespace DigitalVolunteer.Web.Models
         [Compare( "Password", ErrorMessage = "Пароль введен неверно" )]
         [DataType( DataType.Password )]
         public string ConfirmPassword { get; set; }
+
+        [DataType( DataType.Text )]
+        public string FirstName { get; set; }
+
+        [DataType( DataType.Text )]
+        public string LastName { get; set; }
+
+        [Phone( ErrorMessage = "Недействительный номер телефона" )]
+        public string Phone { get; set; }
+
+        public bool IsAdmin { get; set; }
     }
 }

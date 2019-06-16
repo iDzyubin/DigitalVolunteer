@@ -1,0 +1,63 @@
+﻿@model IEnumerable<DigitalVolunteer.Core.Models.UserInfoModel>
+
+@{
+    ViewData["Title"] = "Список пользователей";
+}
+
+<h1>Список пользователей</h1>
+
+<p>
+    <a asp-action="Add">Добавить пользователя</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Логин
+            </th>
+            <th>
+                Имя
+            </th>
+            <th>
+                Фамилия
+            </th>
+            <th>
+                Телефон
+            </th>
+            <th>
+                Администратор
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach( var item in Model )
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor( modelItem => item.Email )
+                </td>
+                <td>
+                    @Html.DisplayFor( modelItem => item.FirstName )
+                </td>
+                <td>
+                    @Html.DisplayFor( modelItem => item.LastName )
+                </td>
+                <td>
+                    @Html.DisplayFor( modelItem => item.Phone )
+                </td>
+                <td>
+                    @if( item.IsAdmin )
+                    {
+                        <i class="fas fa-check"></i>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="fas fa-check"></a>
+                    <a asp-action="Index" asp-route-id="@item.Id" class="fas fa-address-card"></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="fas fa-trash"></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
