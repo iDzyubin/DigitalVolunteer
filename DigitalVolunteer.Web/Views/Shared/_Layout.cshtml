@@ -55,7 +55,7 @@
                                     @UserRepository.Get( User.GetId().Value ).GetShortName()
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" asp-controller="Account" asp-action="UserCard" asp-route-id="@User.GetId().Value">Профиль</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Profile" asp-route-id="@User.GetId().Value">Профиль</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выйти</a>
                                 </div>

@@ -105,8 +105,7 @@ namespace DigitalVolunteer.Web.Controllers
             return RedirectToAction( "Index", "Home" );
         }
 
-        [HttpGet]
-        [Route("[controller]/Profile/{id}")]
-        public IActionResult UserCard( Guid id ) => View( _userRepository.Get( id ) );
+        [HttpGet( "[controller]/[action]/{id}" )]
+        public IActionResult Profile( Guid id ) => View( _userRepository.Get( id ) );
     }
 }
