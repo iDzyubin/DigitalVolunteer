@@ -27,13 +27,13 @@ namespace DigitalVolunteer.Web.Controllers
 
         // TODO. Only for authorized.
         [HttpGet]
-        public IActionResult Add() => View( new Task() );
+        public IActionResult Add() => View( new DigitalTask() );
 
 
         // TODO. Only for authorized.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Add( Task item )
+        public IActionResult Add( DigitalTask item )
         {
             if( !ModelState.IsValid )
             {
@@ -53,7 +53,7 @@ namespace DigitalVolunteer.Web.Controllers
         // TODO. Only for authorized.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update( Task item )
+        public IActionResult Update( DigitalTask item )
         {
             if( !ModelState.IsValid )
             {
@@ -86,6 +86,6 @@ namespace DigitalVolunteer.Web.Controllers
 
 
         [NonAction]
-        private Task Get( Guid id ) => _taskRepository.Get( id );
+        private DigitalTask Get( Guid id ) => _taskRepository.Get( id );
     }
 }

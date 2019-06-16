@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace DigitalVolunteer.Core.Validators
 {
-    public class TaskValidator : AbstractValidator<Task>
+    public class TaskValidator : AbstractValidator<DigitalTask>
     {
         public TaskValidator( ITaskRepository taskRepository )
         {

@@ -1,4 +1,4 @@
-﻿@model DigitalVolunteer.Core.DataModels.Task
+﻿@model DigitalVolunteer.Core.DataModels.DigitalTask
 
 <div class="col-md-8 offset-2">
     <div class="card">
@@ -34,13 +34,13 @@
                         <label class="text-muted">Место указания услуги</label>
                     </div>
                     <div class="btn-group btn-group-toggle col-md-12" data-toggle="buttons">
-                        <label class="btn btn-outline-primary @(Model.TaskFormat == TaskFormat.Freelance ? "active" : "")">
-                            <input asp-for="TaskFormat" type="radio" value="@TaskFormat.Freelance" id="task-format" />
-                            @TaskFormat.Freelance.GetDisplayName()
+                        <label class="btn btn-outline-primary @(Model.TaskFormat == DigitalTaskFormat.Freelance ? "active" : "")">
+                            <input asp-for="TaskFormat" type="radio" value="@DigitalTaskFormat.Freelance" id="task-format" />
+                            @DigitalTaskFormat.Freelance.GetDisplayName()
                         </label>
-                        <label class="btn btn-outline-primary @(Model.TaskFormat == TaskFormat.UpWork ? "active" : "")">
-                            <input asp-for="TaskFormat" type="radio" value="@TaskFormat.UpWork" id="task-format" />
-                            @TaskFormat.UpWork.GetDisplayName()
+                        <label class="btn btn-outline-primary @(Model.TaskFormat == DigitalTaskFormat.UpWork ? "active" : "")">
+                            <input asp-for="TaskFormat" type="radio" value="@DigitalTaskFormat.UpWork" id="task-format" />
+                            @DigitalTaskFormat.UpWork.GetDisplayName()
                         </label>
                     </div>
                 </div>

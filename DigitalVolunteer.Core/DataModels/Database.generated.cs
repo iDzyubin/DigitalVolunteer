@@ -72,11 +72,12 @@ namespace DigitalVolunteer.Core.DataModels
 		[Column("id"),                     PrimaryKey,  NotNull] public Guid              Id                   { get; set; } // uuid
 		[Column("title"),                               NotNull] public string            Title                { get; set; } // character varying
 		[Column("category_id"),                         NotNull] public Guid              CategoryId           { get; set; } // uuid
-		[Column("creator_id"),                          NotNull] public Guid              CreatorId            { get; set; } // uuid
+		[Column("owner_id"),                            NotNull] public Guid              OwnerId              { get; set; } // uuid
 		[Column("description"),               Nullable         ] public string            Description          { get; set; } // character varying
-		[Column("start_date"),                          NotNull] public DateTime          StartDate            { get; set; } // timestamp (6) without time zone
+		[Column("start_date"),                Nullable         ] public DateTime?         StartDate            { get; set; } // timestamp (6) without time zone
 		[Column("end_date"),                  Nullable         ] public DateTime?         EndDate              { get; set; } // timestamp (6) without time zone
 		[Column("status"),                              NotNull] public DigitalTaskStatus Status               { get; set; } // integer
+		[Column("contact_phone"),                       NotNull] public string            ContactPhone         { get; set; } // character varying
 		[Column("task_format"),                         NotNull] public DigitalTaskFormat TaskFormat           { get; set; } // integer
 		[Column("has_push_notifications"),              NotNull] public bool              HasPushNotifications { get; set; } // boolean
 		[Column("is_only_for_executors"),               NotNull] public bool              IsOnlyForExecutors   { get; set; } // boolean
@@ -90,10 +91,10 @@ namespace DigitalVolunteer.Core.DataModels
 		public Category Category { get; set; }
 
 		/// <summary>
-		/// digital_tasks_creator_id_fkey
+		/// digital_tasks_owner_id_fkey
 		/// </summary>
-		[Association(ThisKey="CreatorId", OtherKey="Id", CanBeNull=false, Relationship=Relationship.ManyToOne, KeyName="digital_tasks_creator_id_fkey", BackReferenceName="Digitaltaskscreatoridfkeys")]
-		public User Creator { get; set; }
+		[Association(ThisKey="OwnerId", OtherKey="Id", CanBeNull=false, Relationship=Relationship.ManyToOne, KeyName="digital_tasks_owner_id_fkey", BackReferenceName="Digitaltasksowneridfkeys")]
+		public User Owner { get; set; }
 
 		/// <summary>
 		/// task_executors_task_id_fkey_BackReference
@@ -131,23 +132,24 @@ namespace DigitalVolunteer.Core.DataModels
 	public partial class User
 	{
 		[Column("id"),                PrimaryKey,  NotNull] public Guid       Id               { get; set; } // uuid
+		[Column("first_name"),                     NotNull] public string     FirstName        { get; set; } // character varying
+		[Column("last_name"),                      NotNull] public string     LastName         { get; set; } // character varying
+		[Column("description"),          Nullable         ] public string     Description      { get; set; } // character varying
 		[Column("email"),                          NotNull] public string     Email            { get; set; } // character varying
 		[Column("password"),                       NotNull] public string     Password         { get; set; } // character varying
-		[Column("first_name"),           Nullable         ] public string     FirstName        { get; set; } // character varying
-		[Column("last_name"),            Nullable         ] public string     LastName         { get; set; } // character varying
-		[Column("description"),          Nullable         ] public string     Description      { get; set; } // character varying
 		[Column("phone"),                Nullable         ] public string     Phone            { get; set; } // character varying
 		[Column("status"),                         NotNull] public UserStatus Status           { get; set; } // integer
 		[Column("is_admin"),                       NotNull] public bool       IsAdmin          { get; set; } // boolean
 		[Column("registration_date"),    Nullable         ] public DateTime?  RegistrationDate { get; set; } // timestamp (6) without time zone
+		[Column("is_executor"),                    NotNull] public bool       IsExecutor       { get; set; } // boolean
 
 		#region Associations
 
 		/// <summary>
-		/// digital_tasks_creator_id_fkey_BackReference
+		/// digital_tasks_owner_id_fkey_BackReference
 		/// </summary>
-		[Association(ThisKey="Id", OtherKey="CreatorId", CanBeNull=true, Relationship=Relationship.OneToMany, IsBackReference=true)]
-		public IEnumerable<DigitalTask> Digitaltaskscreatoridfkeys { get; set; }
+		[Association(ThisKey="Id", OtherKey="OwnerId", CanBeNull=true, Relationship=Relationship.OneToMany, IsBackReference=true)]
+		public IEnumerable<DigitalTask> Digitaltasksowneridfkeys { get; set; }
 
 		/// <summary>
 		/// task_executors_user_id_fkey_BackReference

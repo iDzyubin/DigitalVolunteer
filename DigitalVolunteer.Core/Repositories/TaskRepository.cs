@@ -54,6 +54,6 @@ namespace DigitalVolunteer.Core.Repositories
                 .Select( t => t.Task ).Where( filter ).ToList();
         }
 
-        public void Add( Task item ) => throw new NotImplementedException();
+        public void Add( DigitalTask item ) => throw new NotImplementedException();
     }
 }

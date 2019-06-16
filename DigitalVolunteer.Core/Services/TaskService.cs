@@ -28,7 +28,7 @@ namespace DigitalVolunteer.Core.Services
         }
         public int GetCreatedTasksCount( Guid userId )
         {
-            return _tasks.Get( t => t.CreatorId == userId ).Count;
+            return _tasks.Get( t => t.OwnerId == userId ).Count;
         }
     }
 }

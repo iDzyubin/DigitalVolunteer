@@ -5,7 +5,7 @@ namespace DigitalVolunteer.Core.Extensions
 {
     public static class TaskExtensions
     {
-        public static string GetScheduleInformation( this Task task )
+        public static string GetScheduleInformation( this DigitalTask task )
         {
             var (start, end) = (task.StartDate, task.EndDate);
 
