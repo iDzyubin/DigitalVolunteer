@@ -1,4 +1,6 @@
-﻿namespace DigitalVolunteer.Core.DataModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DigitalVolunteer.Core.DataModels
 {
     public enum UserStatus
     {
@@ -10,7 +12,9 @@
 
     public enum TaskFormat
     {
+        [Display( Name = "Можно выполнить удаленно" )]
         Freelance = 0,
+        [Display( Name = "Нужно присутствие по адресу" )]
         UpWork = 1
     }
 }

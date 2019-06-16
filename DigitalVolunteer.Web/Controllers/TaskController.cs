@@ -27,7 +27,11 @@ namespace DigitalVolunteer.Web.Controllers
 
         // TODO. Only for authorized.
         [HttpGet]
-        public IActionResult Create() => View();
+        public IActionResult Add()
+        {
+            var model = new Task();
+            return View( model );
+        }
 
 
         // TODO. Only for authorized.
@@ -39,7 +43,7 @@ namespace DigitalVolunteer.Web.Controllers
             {
                 return View( item );
             }
-            
+
             _taskRepository.Add( item, User.GetId().Value );
             return RedirectToMainPage();
         }

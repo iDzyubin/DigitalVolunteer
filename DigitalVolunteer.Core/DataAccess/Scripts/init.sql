@@ -24,14 +24,14 @@ CREATE TABLE dv.tasks
     id uuid NOT NULL PRIMARY KEY,
     title character varying NOT NULL,
     description character varying,
-    start_date date NOT NULL,
-    end_date date,
+    start_date timestamp without time zone,
+    end_date timestamp without time zone,
     contact_phone character varying NOT NULL,
     task_format integer NOT NULL,
     has_push_notifications boolean NOT NULL,
     is_only_for_executors boolean NOT NULL,
 	owner_id uuid NOT NULL,
-	executor_id uuid NOT NULL,
+	executor_id uuid,
 	CONSTRAINT tasks__executor_id__users_id FOREIGN KEY (executor_id)
         REFERENCES dv.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
