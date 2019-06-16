@@ -17,4 +17,14 @@ namespace DigitalVolunteer.Core.DataModels
         [Display( Name = "Нужно присутствие по адресу" )]
         UpWork = 1
     }
+
+    public enum TaskSelectorMode
+    {
+        [Display( Name = "Все задания" )]
+        All = 0,
+        [Display( Name = "Я исполнитель" )]
+        Executor = 1,
+        [Display( Name = "Я заказчик" )]
+        Owner = 2
+    }
 }

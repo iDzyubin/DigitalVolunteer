@@ -32,7 +32,10 @@ namespace DigitalVolunteer.Core.Repositories
         public Task Get( Guid id )
         {
             var task = _db.Tasks.Find( id );
-            task.Owner = _db.Users.Find( task.OwnerId );
+            if (task != null)
+            {
+                task.Owner = _db.Users.Find( task.OwnerId );
+            }
             return task;
         }
 
@@ -46,6 +49,21 @@ namespace DigitalVolunteer.Core.Repositories
             var tasks = _db.Tasks.ToList();
             tasks.ForEach( task => task.Owner = _db.Users.Find( task.OwnerId ) );
             return tasks;
+        }
+
+
+        public List<Task> GetMyTasks( Guid userId, TaskSelectorMode selectorMode )
+        {
+            switch( selectorMode )
+            {
+                case TaskSelectorMode.All:
+                    return _db.Tasks.Where( x => x.OwnerId == userId || x.ExecutorId == userId ).ToList();
+                case TaskSelectorMode.Executor:
+                    return _db.Tasks.Where( x => x.ExecutorId == userId ).ToList();
+                case TaskSelectorMode.Owner:
+                    return _db.Tasks.Where( x => x.OwnerId == userId ).ToList();
+            }
+            return new List<Task>();
         }
 
 

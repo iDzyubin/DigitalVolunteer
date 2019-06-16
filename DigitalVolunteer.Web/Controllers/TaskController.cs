@@ -1,6 +1,7 @@
 ﻿using System;
 using DigitalVolunteer.Core.DataModels;
 using DigitalVolunteer.Core.Interfaces;
+using DigitalVolunteer.Web.Models;
 using DigitalVolunteer.Web.Security;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,11 +18,11 @@ namespace DigitalVolunteer.Web.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet( "[controller]/All" )]
         public IActionResult Index() => View();
 
 
-        [HttpGet]
+        [HttpGet( "[controller]/{id}" )]
         public IActionResult Details( Guid id ) => View( Get( id ) );
 
 
@@ -71,6 +72,14 @@ namespace DigitalVolunteer.Web.Controllers
             _taskRepository.Remove( id );
             return RedirectToMainPage();
         }
+
+
+        [HttpGet]
+        public IActionResult MyTasks( TaskSelectorMode selectorMode ) => View( new TaskViewModel
+        {
+            SelectorMode = selectorMode,
+            Tasks = _taskRepository.GetMyTasks( User.GetId().Value, selectorMode )
+        } );
 
 
         public IActionResult OfferTaskHelp( Guid taskId )
