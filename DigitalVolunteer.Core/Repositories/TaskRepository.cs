@@ -29,7 +29,10 @@ namespace DigitalVolunteer.Core.Repositories
         public DigitalTask Get( Guid id )
         {
             var task = _db.DigitalTasks.Find( id );
-            task.Owner = _db.Users.Find( task.OwnerId );
+            if( task != null )
+            {
+                task.Owner = _db.Users.Find( task.OwnerId );
+            }
             return task;
         }
 
@@ -52,6 +55,20 @@ namespace DigitalVolunteer.Core.Repositories
         {
             return _db.TaskExecutors.Where( t => t.UserId == userId )
                 .Select( t => t.Task ).Where( filter ).ToList();
+        }
+
+        public List<DigitalTask> GetMyTasks( Guid userId, TaskSelectorMode selectorMode )
+        {
+            switch( selectorMode )
+            {
+                case TaskSelectorMode.All:
+                    return _db.DigitalTasks.Where( x => x.OwnerId == userId || x.ExecutorId == userId ).ToList();
+                case TaskSelectorMode.Executor:
+                    return _db.DigitalTasks.Where( x => x.ExecutorId == userId ).ToList();
+                case TaskSelectorMode.Owner:
+                    return _db.DigitalTasks.Where( x => x.OwnerId == userId ).ToList();
+            }
+            return new List<DigitalTask>();
         }
 
         public void Add( DigitalTask item ) => throw new NotImplementedException();
