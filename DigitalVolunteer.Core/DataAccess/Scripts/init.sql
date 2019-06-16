@@ -27,6 +27,7 @@ CREATE TABLE dv.digital_tasks
     title character varying NOT NULL,
 	category_id uuid NOT NULL,
 	owner_id uuid NOT NULL,
+	executor_id uuid,
     description character varying,
     start_date timestamp without time zone,
     end_date timestamp without time zone,
@@ -40,6 +41,10 @@ CREATE TABLE dv.digital_tasks
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
     FOREIGN KEY (owner_id)
+        REFERENCES dv.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    FOREIGN KEY (executor_id)
         REFERENCES dv.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION

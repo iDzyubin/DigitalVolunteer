@@ -6,6 +6,6 @@ namespace DigitalVolunteer.Web.Models
     public class TaskViewModel
     {
         public TaskSelectorMode SelectorMode { get; set; }
-        public List<Task> Tasks { get; set; }
+        public List<DigitalTask> Tasks { get; set; }
     }
 }

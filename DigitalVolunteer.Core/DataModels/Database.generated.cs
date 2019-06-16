@@ -73,6 +73,7 @@ namespace DigitalVolunteer.Core.DataModels
 		[Column("title"),                               NotNull] public string            Title                { get; set; } // character varying
 		[Column("category_id"),                         NotNull] public Guid              CategoryId           { get; set; } // uuid
 		[Column("owner_id"),                            NotNull] public Guid              OwnerId              { get; set; } // uuid
+		[Column("executor_id"),               Nullable         ] public Guid?             ExecutorId           { get; set; } // uuid
 		[Column("description"),               Nullable         ] public string            Description          { get; set; } // character varying
 		[Column("start_date"),                Nullable         ] public DateTime?         StartDate            { get; set; } // timestamp (6) without time zone
 		[Column("end_date"),                  Nullable         ] public DateTime?         EndDate              { get; set; } // timestamp (6) without time zone
@@ -89,6 +90,12 @@ namespace DigitalVolunteer.Core.DataModels
 		/// </summary>
 		[Association(ThisKey="CategoryId", OtherKey="Id", CanBeNull=false, Relationship=Relationship.ManyToOne, KeyName="digital_tasks_category_id_fkey", BackReferenceName="Digitaltaskscategoryidfkeys")]
 		public Category Category { get; set; }
+
+		/// <summary>
+		/// digital_tasks_executor_id_fkey
+		/// </summary>
+		[Association(ThisKey="ExecutorId", OtherKey="Id", CanBeNull=true, Relationship=Relationship.ManyToOne, KeyName="digital_tasks_executor_id_fkey", BackReferenceName="Digitaltasksexecutoridfkeys")]
+		public User Executor { get; set; }
 
 		/// <summary>
 		/// digital_tasks_owner_id_fkey
@@ -144,6 +151,12 @@ namespace DigitalVolunteer.Core.DataModels
 		[Column("is_executor"),                    NotNull] public bool       IsExecutor       { get; set; } // boolean
 
 		#region Associations
+
+		/// <summary>
+		/// digital_tasks_executor_id_fkey_BackReference
+		/// </summary>
+		[Association(ThisKey="Id", OtherKey="ExecutorId", CanBeNull=true, Relationship=Relationship.OneToMany, IsBackReference=true)]
+		public IEnumerable<DigitalTask> Digitaltasksexecutoridfkeys { get; set; }
 
 		/// <summary>
 		/// digital_tasks_owner_id_fkey_BackReference
