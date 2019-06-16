@@ -1,6 +1,7 @@
 ﻿using System;
 using DigitalVolunteer.Core.DataModels;
 using DigitalVolunteer.Core.Interfaces;
+using DigitalVolunteer.Core.Services;
 using DigitalVolunteer.Web.Models;
 using DigitalVolunteer.Web.Security;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +11,13 @@ namespace DigitalVolunteer.Web.Controllers
     public class TaskController : Controller
     {
         private readonly ITaskRepository _taskRepository;
+        private readonly TaskService _taskService;
 
 
-        public TaskController( ITaskRepository taskRepository )
+        public TaskController( ITaskRepository taskRepository, TaskService taskService )
         {
             _taskRepository = taskRepository;
+            _taskService = taskService;
         }
 
 
@@ -86,8 +89,23 @@ namespace DigitalVolunteer.Web.Controllers
 
         public IActionResult OfferTaskHelp( Guid taskId )
         {
-            // TODO. Предложить свои услуги по выполнению конкретной задачи.
-            return Ok();
+            if( !User.GetId().HasValue ) return RedirectToAction( "Login", "Account" );
+
+            var userId = User.GetId().Value;
+            _taskService.OfferTask( userId, taskId );
+
+            return RedirectToAction( "Details", "Task", new { id = taskId } );
+        }
+
+
+        public IActionResult CancelTaskHelp( Guid taskId )
+        {
+            if( !User.GetId().HasValue ) return RedirectToAction( "Login", "Account" );
+
+            var userId = User.GetId().Value;
+            _taskService.CancelOffer( userId, taskId );
+
+            return RedirectToAction( "Details", "Task", new { id = taskId } );
         }
 
 

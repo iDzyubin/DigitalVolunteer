@@ -46,16 +46,15 @@ namespace DigitalVolunteer.Web
             LinqToDB.Data.DataConnection.DefaultSettings = new Linq2DbSettings( dbConnStr );
             services.AddSingleton<MainDb>();
 
-            services.AddSingleton<PasswordHashService>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<UserService>();
-            services.AddScoped<GreetingService>();
-
+            
+            services.AddScoped<IUserRepository    ,     UserRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITaskRepository    ,     TaskRepository>();
-            services.AddScoped<IExecutorRepository, ExecutorRepository>();
+            services.AddScoped<ITaskRepository    ,     TaskRepository>();
 
-            services.AddScoped<ITaskRepository, TaskRepository>();
+            services.AddScoped<UserService>();
+            services.AddScoped<GreetingService>();
+            services.AddSingleton<PasswordHashService>();
             services.AddScoped<TaskService>();
 
             services

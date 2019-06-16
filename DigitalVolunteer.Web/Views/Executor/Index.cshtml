@@ -1,6 +1,6 @@
-﻿@inject IExecutorRepository ExecutorRepository
+﻿@inject IUserRepository UserRepository
 
-@if( ExecutorRepository.GetAll().Count == 0 )
+@if( UserRepository.GetAll().Count == 0 )
 {
     <h1 class="display-4 text-center">На данный момент список исполнителей пуст</h1>
 }
@@ -8,7 +8,7 @@ else
 {
     <h1 class="display-4 text-center">Список исполнителей</h1>
     <br />
-    foreach( var executor in ExecutorRepository.GetAll() )
+    foreach( var executor in UserRepository.GetAll() )
     {
         <partial name="_ExecutorCard" model="@executor" />
     }

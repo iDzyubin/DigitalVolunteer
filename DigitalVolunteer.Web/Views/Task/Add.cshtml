@@ -1,4 +1,4 @@
-﻿@model DigitalVolunteer.Core.DataModels.DigitalTask
+﻿@model DigitalTask
 @inject ICategoryRepository CategoryRepository
 @{
     var categories = new SelectList(CategoryRepository.GetAll(), "Id", "Name");
