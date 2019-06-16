@@ -107,20 +107,14 @@ namespace DigitalVolunteer.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Profile()
+        public IActionResult Profile( Guid? id = null )
         {
-            var id = User.GetId();
-            if( id == null )
-                return RedirectToAction( "Login" );
-            else
-            {
-                var userInfo = _userService.GetExtendedUserInfo( id.Value );
-                ViewBag.LastTasks = _taskService.GetUserTaskTitles( id.Value, 3 );
-                return View( userInfo );
-            }
-        }
+            id = id ?? User.GetId();
+            if( id == null ) return RedirectToAction( "Login" );
 
-        [HttpGet( "[controller]/[action]/{id}" )]
-        public IActionResult Profile( Guid id ) => View( _userService.GetUser( id ) );
+            var userInfo = _userService.GetExtendedUserInfo( id.Value );
+            ViewBag.LastTasks = _taskService.GetUserTaskTitles( id.Value, 3 );
+            return View( userInfo );
+        }
     }
 }

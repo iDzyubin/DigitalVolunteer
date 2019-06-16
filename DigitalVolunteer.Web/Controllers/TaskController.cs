@@ -26,16 +26,16 @@ namespace DigitalVolunteer.Web.Controllers
         public IActionResult Details( Guid id ) => View( Get( id ) );
 
 
-        // TODO. Only for authorized.
         [HttpGet]
         public IActionResult Add() => View( new DigitalTask() );
 
 
-        // TODO. Only for authorized.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Add( DigitalTask item )
         {
+            if( !User.GetId().HasValue ) return RedirectToAction( "Login", "Account" );
+
             if( !ModelState.IsValid )
             {
                 return View( item );
@@ -46,12 +46,10 @@ namespace DigitalVolunteer.Web.Controllers
         }
 
 
-        // TODO. Only for authorized.
         [HttpGet]
         public IActionResult Update( Guid id ) => View( Get( id ) );
 
 
-        // TODO. Only for authorized.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Update( DigitalTask item )
@@ -65,7 +63,6 @@ namespace DigitalVolunteer.Web.Controllers
         }
 
 
-        // TODO. Only for authorized.
         [HttpGet]
         public IActionResult Remove( Guid id )
         {
@@ -75,16 +72,21 @@ namespace DigitalVolunteer.Web.Controllers
 
 
         [HttpGet]
-        public IActionResult MyTasks( TaskSelectorMode selectorMode ) => View( new TaskViewModel
+        public IActionResult MyTasks( TaskSelectorMode selectorMode )
         {
-            SelectorMode = selectorMode,
-            Tasks = _taskRepository.GetMyTasks( User.GetId().Value, selectorMode )
-        } );
+            if( !User.GetId().HasValue ) return RedirectToAction( "Login", "Account" );
+
+            return View( new TaskViewModel
+            {
+                SelectorMode = selectorMode,
+                Tasks = _taskRepository.GetMyTasks( User.GetId().Value, selectorMode )
+            } );
+        }
 
 
         public IActionResult OfferTaskHelp( Guid taskId )
         {
-            // Предложить свои услуги по выполнению конкретной задачи.
+            // TODO. Предложить свои услуги по выполнению конкретной задачи.
             return Ok();
         }
 
