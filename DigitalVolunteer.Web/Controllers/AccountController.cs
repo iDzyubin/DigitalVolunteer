@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using DigitalVolunteer.Core.Interfaces;
 using DigitalVolunteer.Core.Models;
 using DigitalVolunteer.Core.Services;
 using DigitalVolunteer.Web.Models;
 using DigitalVolunteer.Web.Security;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DigitalVolunteer.Web.Controllers
@@ -119,5 +119,8 @@ namespace DigitalVolunteer.Web.Controllers
                 return View( userInfo );
             }
         }
+
+        [HttpGet( "[controller]/[action]/{id}" )]
+        public IActionResult Profile( Guid id ) => View( _userService.GetUser( id ) );
     }
 }

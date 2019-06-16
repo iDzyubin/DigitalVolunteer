@@ -40,7 +40,9 @@ namespace DigitalVolunteer.Core.Services
                 Phone = model.Phone,
                 IsAdmin = isAdmin,
                 Status = UserStatus.Unconfirmed,
-                RegistrationDate = DateTime.Now
+                RegistrationDate = DateTime.Now,
+                FirstName = model.FirstName,
+                LastName = model.LastName
             };
             try
             {

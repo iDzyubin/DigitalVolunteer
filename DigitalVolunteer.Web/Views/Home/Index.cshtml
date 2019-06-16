@@ -1,7 +1,9 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@inject GreetingService GreetingService
+@{
+    ViewData["Title"] = "Портал Цифровое Волонтерство";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">@GreetingService.GetGreeting()</h1>
+    <h3><small class="text-muted">Вы находитесь на портале Цифровое Волонтерство.</small></h3>
 </div>

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject IUserRepository UserRepository
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -29,23 +30,32 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        @if( ViewBag.IsAdmin )
+                        @if( ViewBag.IsAuthorized && ViewBag.IsAdmin )
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="List">Пользователи</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Категории</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Категории</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="List">Пользователи</a>
                             </li>
                         }
                         @if( ViewBag.IsAuthorized )
                         {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Task" asp-action="Add">Создать задание</a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Task" asp-action="Index">Все задания</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Executor" asp-action="Index">Исполнители</a>
+                        </li>
+                        @if( ViewBag.IsAuthorized )
+                        {
                             <li class="nav-item dropdown ml-auto">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    @ViewBag.UserLogin
+                                    @UserRepository.Get( User.GetId().Value ).GetShortName()
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="userDropdown">
                                     <a class="dropdown-item" asp-controller="Account" asp-action="Profile">Профиль</a>
@@ -81,7 +91,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2019 - DigitalVolunteer.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; @DateTime.Now.Year - Цифровое волонтерство - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
 

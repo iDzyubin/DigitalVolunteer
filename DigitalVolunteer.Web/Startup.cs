@@ -49,16 +49,18 @@ namespace DigitalVolunteer.Web
             services.AddSingleton<PasswordHashService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<UserService>();
+            services.AddScoped<GreetingService>();
 
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ITaskRepository    ,     TaskRepository>();
+            services.AddScoped<IExecutorRepository, ExecutorRepository>();
 
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<TaskService>();
 
-            services.AddMvc( o =>
-            {
-                o.Filters.Add<UserClaimsFilter>();
-            } ).AddFluentValidation( fv => fv.RegisterValidatorsFromAssemblyContaining<CategoryValidator>() )
+            services
+                .AddMvc( o => o.Filters.Add<UserClaimsFilter>() )
+                .AddFluentValidation( fv => fv.RegisterValidatorsFromAssemblyContaining<CategoryValidator>() )
                 .SetCompatibilityVersion( CompatibilityVersion.Version_2_2 );
         }
 

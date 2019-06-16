@@ -1,0 +1,18 @@
+﻿@inject ITaskRepository TaskRepository
+@{
+    var l = TaskRepository.GetAll();
+    var h =  l.Count;
+}
+@if( TaskRepository.GetAll().Count == 0 )
+{
+    <h1 class="display-4 text-center">На данный момент список заданий пуст</h1>
+}
+else
+{
+    <h1 class="display-4 text-center">Список заданий</h1>
+    <br />
+    foreach( var task in TaskRepository.GetAll() )
+    {
+        <partial name="_TaskCard" model="@task" />
+    }
+}

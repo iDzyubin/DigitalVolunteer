@@ -17,10 +17,12 @@ namespace DigitalVolunteer.Web.Models
         [DataType( DataType.Password )]
         public string ConfirmPassword { get; set; }
 
-        [DataType( DataType.Text )]
+        [Required( ErrorMessage = "Не указано имя" )]
+        [MaxLength( 50, ErrorMessage = "Длина имени не может превышать {1} символов" )]
         public string FirstName { get; set; }
 
-        [DataType( DataType.Text )]
+        [Required( ErrorMessage = "Не указана фамилия" )]
+        [MaxLength( 50, ErrorMessage = "Длина фамилии не может превышать {1} символов" )]
         public string LastName { get; set; }
 
         [Phone( ErrorMessage = "Недействительный номер телефона" )]
