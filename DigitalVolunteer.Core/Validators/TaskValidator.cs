@@ -15,6 +15,10 @@ namespace DigitalVolunteer.Core.Validators
                 .MaximumLength( 50 )
                 .WithMessage( "Длина наименования задачи не должно превышать 50 символов" );
 
+            RuleFor( x => x.CategoryId )
+                .NotEmpty()
+                .WithMessage( "Категория товара не заполнена" );
+
             RuleFor( x => x.Description )
                 .NotEmpty()
                 .WithMessage( "Описание задачи не заполнено" )
