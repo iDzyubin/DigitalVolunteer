@@ -59,16 +59,19 @@ namespace DigitalVolunteer.Core.Repositories
 
         public List<DigitalTask> GetMyTasks( Guid userId, TaskSelectorMode selectorMode )
         {
+            var tasks = _db.DigitalTasks.AsQueryable();
             switch( selectorMode )
             {
                 case TaskSelectorMode.All:
-                    return _db.DigitalTasks.Where( x => x.OwnerId == userId || x.ExecutorId == userId ).ToList();
+                    tasks = tasks.Where( x => x.OwnerId == userId || x.ExecutorId == userId ); break;
                 case TaskSelectorMode.Executor:
-                    return _db.DigitalTasks.Where( x => x.ExecutorId == userId ).ToList();
+                    tasks = tasks.Where( x => x.ExecutorId == userId ); break;
                 case TaskSelectorMode.Owner:
-                    return _db.DigitalTasks.Where( x => x.OwnerId == userId ).ToList();
+                    tasks = tasks.Where( x => x.OwnerId == userId ); break;
             }
-            return new List<DigitalTask>();
+            var joined = tasks.Join( _db.Users, t => t.OwnerId, u => u.Id, ( task, user ) => new { Task = task, Owner = user } ).ToList();
+            joined.ForEach( j => j.Task.Owner = j.Owner );
+            return joined.Select( j => j.Task ).ToList();
         }
 
         public void Add( DigitalTask item ) => throw new NotImplementedException();

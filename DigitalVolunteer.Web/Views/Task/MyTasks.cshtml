@@ -4,15 +4,18 @@
     <div class="card">
         <div class="card-body">
             <div class="btn-group btn-group-toggle col-md-8 offset-2" data-toggle="buttons">
-                <label class="btn btn-outline-primary col-md-4 @(Model.SelectorMode == TaskSelectorMode.All ? "active" : "")">
+                <label class="btn btn-outline-primary col-md-4 @(Model.SelectorMode == TaskSelectorMode.All ? "active" : "")"
+                       onclick="location.replace('@Url.Action( "MyTasks", new { selectorMode = TaskSelectorMode.All } )')">
                     <input asp-for="SelectorMode" type="radio" value="@TaskSelectorMode.All" id="task-format" />
                     @TaskSelectorMode.All.GetDisplayName()
                 </label>
-                <label class="btn btn-outline-primary col-md-4 @(Model.SelectorMode == TaskSelectorMode.Owner ? "active" : "")">
+                <label class="btn btn-outline-primary col-md-4 @(Model.SelectorMode == TaskSelectorMode.Owner ? "active" : "")"
+                       onclick="location.replace('@Url.Action( "MyTasks", new { selectorMode = TaskSelectorMode.Owner } )')">
                     <input asp-for="SelectorMode" type="radio" value="@TaskSelectorMode.Owner" id="task-format" />
                     @TaskSelectorMode.Owner.GetDisplayName()
                 </label>
-                <label class="btn btn-outline-primary col-md-4 @(Model.SelectorMode == TaskSelectorMode.Executor ? "active" : "")">
+                <label class="btn btn-outline-primary col-md-4 @(Model.SelectorMode == TaskSelectorMode.Executor ? "active" : "")"
+                       onclick="location.replace('@Url.Action( "MyTasks", new { selectorMode = TaskSelectorMode.Executor } )')">
                     <input asp-for="SelectorMode" type="radio" value="@TaskSelectorMode.Executor" id="task-format" />
                     @TaskSelectorMode.Executor.GetDisplayName()
                 </label>
@@ -20,11 +23,10 @@
 
             <br />
 
-@*             @foreach( var task in Model.Tasks ) *@
-@*             { *@
-@*                 <partial name="_TaskCard" model="@task" /> *@
-@*             } *@
+            @foreach( var task in Model.Tasks )
+            {
+                <partial name="_TaskCard" model="@task" />
+            }
         </div>
     </div>
 </div>
-
