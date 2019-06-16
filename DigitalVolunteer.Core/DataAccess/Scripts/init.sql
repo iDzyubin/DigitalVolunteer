@@ -10,7 +10,8 @@ CREATE TABLE dv.users
     password character varying NOT NULL,
     status integer NOT NULL DEFAULT 0,
     is_admin boolean NOT NULL DEFAULT FALSE,
-    registration_date timestamp without time zone
+    registration_date timestamp without time zone,
+	is_executor boolean NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE dv.categories
