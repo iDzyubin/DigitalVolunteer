@@ -21,17 +21,13 @@ namespace DigitalVolunteer.Web.Controllers
         public IActionResult Index() => View();
 
 
-        [HttpGet( "{id}" )]
+        [HttpGet]
         public IActionResult Details( Guid id ) => View( Get( id ) );
 
 
         // TODO. Only for authorized.
         [HttpGet]
-        public IActionResult Add()
-        {
-            var model = new Task();
-            return View( model );
-        }
+        public IActionResult Add() => View( new Task() );
 
 
         // TODO. Only for authorized.
@@ -74,6 +70,18 @@ namespace DigitalVolunteer.Web.Controllers
         {
             _taskRepository.Remove( id );
             return RedirectToMainPage();
+        }
+
+
+        /// <summary>
+        /// Предложить свои услуги.
+        /// </summary>
+        /// <param name="id">id задания.</param>
+        /// <returns></returns>
+        public IActionResult AcceptTask( Guid id )
+        {
+            // Some code here.
+            return Ok();
         }
 
 

@@ -17,25 +17,36 @@ namespace DigitalVolunteer.Core.Repositories
 
         public void Add( Task item, Guid ownerId )
         {
-            item.Id = Guid.NewGuid();
-            item.OwnerId = ownerId;
+            (item.Id, item.OwnerId) = (Guid.NewGuid(), ownerId);
             _db.Insert( item );
         }
 
 
-        public void Remove( Guid id )  => _db.Tasks.Delete( x => x.Id == id );
+        public void Remove( Guid id ) => _db.Tasks.Delete( x => x.Id == id );
 
 
         public void Update( Task item ) => _db.Update( item );
 
 
-        public Task Get( Guid id ) => _db.Tasks.Find( id );
+        // TODO. Переделать позднее.
+        public Task Get( Guid id )
+        {
+            var task = _db.Tasks.Find( id );
+            task.Owner = _db.Users.Find( task.OwnerId );
+            return task;
+        }
 
 
         public List<Task> Get( Func<Task, bool> filter ) => _db.Tasks.Where( filter ).ToList();
 
 
-        public List<Task> GetAll() => _db.Tasks.ToList();
+        // TODO. Переделать позднее.
+        public List<Task> GetAll()
+        {
+            var tasks = _db.Tasks.ToList();
+            tasks.ForEach( task => task.Owner = _db.Users.Find( task.OwnerId ) );
+            return tasks;
+        }
 
 
         public void Add( Task item ) => throw new NotImplementedException();
