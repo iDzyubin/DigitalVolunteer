@@ -73,14 +73,9 @@ namespace DigitalVolunteer.Web.Controllers
         }
 
 
-        /// <summary>
-        /// Предложить свои услуги.
-        /// </summary>
-        /// <param name="id">id задания.</param>
-        /// <returns></returns>
-        public IActionResult AcceptTask( Guid id )
+        public IActionResult OfferTaskHelp( Guid taskId )
         {
-            // Some code here.
+            // Предложить свои услуги по выполнению конкретной задачи.
             return Ok();
         }
 

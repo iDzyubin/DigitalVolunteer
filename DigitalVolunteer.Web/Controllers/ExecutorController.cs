@@ -1,5 +1,4 @@
 ﻿using System;
-using DigitalVolunteer.Core.DataModels;
 using DigitalVolunteer.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,12 +6,12 @@ namespace DigitalVolunteer.Web.Controllers
 {
     public class ExecutorController : Controller
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IExecutorRepository _executorRepository;
 
 
-        public ExecutorController(IUserRepository userRepository)
+        public ExecutorController( IExecutorRepository executorRepository )
         {
-            _userRepository = userRepository;
+            _executorRepository = executorRepository;
         }
 
 
@@ -21,18 +20,15 @@ namespace DigitalVolunteer.Web.Controllers
 
 
         [HttpGet( "{id}" )]
-        public IActionResult Details( Guid id ) => View( Get( id ) );
+        public IActionResult Details( Guid id )
+            => View( _executorRepository.Get( id ) );
 
 
         [HttpGet]
-        public IActionResult AcceptTask()
+        public IActionResult OfferTask( Guid taskId, Guid executorId )
         {
-            // Some code here.
+            // Предлагаем исполнителю выполнить одно из наших заданий.
             return Ok();
         }
-
-
-        [NonAction]
-        private User Get( Guid id ) => _userRepository.Get( id );
     }
 }

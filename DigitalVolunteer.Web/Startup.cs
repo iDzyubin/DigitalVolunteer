@@ -52,7 +52,8 @@ namespace DigitalVolunteer.Web
             services.AddScoped<GreetingService>();
 
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<ITaskRepository, TaskRepository>();
+            services.AddScoped<ITaskRepository    ,     TaskRepository>();
+            services.AddScoped<IExecutorRepository, ExecutorRepository>();
 
             services
                 .AddMvc( o => o.Filters.Add<UserClaimsFilter>() )
