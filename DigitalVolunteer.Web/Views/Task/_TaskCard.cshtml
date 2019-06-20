@@ -1,21 +1,23 @@
 ﻿@model DigitalVolunteer.Core.DataModels.DigitalTask
 
-<div class="col-md-8 offset-2">
-    <div class="card">
-        <div class="card-header">
-            <a asp-controller="Task" asp-action="Details" asp-route-id="@Model.Id">
-                @Model.Title
-            </a>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <a asp-controller="Task" asp-action="Details" asp-route-id="@Model.Id">
+                    @Model.Title
+                </a>
+            </div>
+            <div class="card-body">
+                <div>@Model.TaskFormat.GetDisplayName()</div>
+                <div>@Model.GetScheduleInformation()</div>
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Account" asp-action="Profile" asp-route-id="@Model.Owner.Id">
+                    <u>@Model.Owner.GetShortName()</u>
+                </a>
+            </div>
         </div>
-        <div class="card-body">
-            <div>@Model.TaskFormat.GetDisplayName()</div>
-            <div>@Model.GetScheduleInformation()</div>
-        </div>
-        <div class="card-footer">
-            <a asp-controller="Account" asp-action="Profile" asp-route-id="@Model.Owner.Id">
-                <u>@Model.Owner.GetShortName()</u>
-            </a>
-        </div>
+        <br/>
     </div>
-    <br/>
 </div>

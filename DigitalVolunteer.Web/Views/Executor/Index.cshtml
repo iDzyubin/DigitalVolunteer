@@ -8,8 +8,12 @@ else
 {
     <h1 class="display-4 text-center">Список исполнителей</h1>
     <br />
-    foreach( var executor in UserRepository.GetAll() )
-    {
-        <partial name="_ExecutorCard" model="@executor" />
-    }
+    <div class="d-flex justify-content-center">
+        <div class="col-md-8 col-sm-12">
+            @foreach( var executor in UserRepository.GetAll() )
+            {
+                <partial name="_ExecutorCard" model="@executor" />
+            }
+        </div>
+    </div>
 }

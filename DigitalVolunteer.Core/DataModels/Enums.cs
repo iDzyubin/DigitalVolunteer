@@ -19,9 +19,9 @@ namespace DigitalVolunteer.Core.DataModels
 
     public enum DigitalTaskFormat
     {
-        [Display( Name = "Можно выполнить удаленно" )]
+        [Display( Name = "Удаленная работа" )]
         Freelance = 0,
-        [Display( Name = "Нужно присутствие по адресу" )]
+        [Display( Name = "Присутствие на месте" )]
         UpWork = 1
     }
 

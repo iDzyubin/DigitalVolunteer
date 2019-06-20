@@ -4,25 +4,28 @@
     ViewData["Title"] = "Авторизация";
 }
 
-<div class="col-md-8 offset-2">
-    <div class="card">
-        <h1 class="card-header text-center">Авторизация</h1>
-        <div class="card-body">
-            <form asp-action="Login">
-                <div class="form-group">
-                    <label asp-for="Email" class="control-label">Введите e-mail: </label>
-                    <input asp-for="Email" type="email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Password" class="control-label">Введите пароль: </label>
-                    <input asp-for="Password" type="password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Войти" class="btn btn-outline-info col-md-6 offset-3 col-sm-6 offset-3" />
-                </div>
-            </form>
+<div class="d-flex justify-content-center">
+    <div class="col-md-8 col-sm-12">
+        <div class="card">
+            <h1 class="card-header text-center">Авторизация</h1>
+            <div class="card-body">
+                <form asp-action="Login">
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label">Введите e-mail: </label>
+                        <input asp-for="Email" type="email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label">Введите пароль: </label>
+                        <input asp-for="Password" type="password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-center">
+                        <br />
+                        <button type="submit" class="btn btn-outline-info col-md-6 col-sm-4">Войти</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

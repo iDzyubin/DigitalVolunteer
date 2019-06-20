@@ -4,56 +4,58 @@
     var isTaskExecutor = User.GetId().HasValue && TaskRepository.Get(Model.Id).ExecutorId == User.GetId().Value;
     var hasExecutor = TaskRepository.Get(Model.Id).ExecutorId != null;
 }
-<div class="col-md-8 offset-2">
-    <div class="card">
-        <h4 class="card-header">@Model.Title</h4>
-        <div class="card-body">
-            <div class="col-md-12 row">
-                <div class="col-md-4"><b>Начать</b></div>
-                <div class="col-md-8">@(Model.StartDate.HasValue ? Model.StartDate.Value.ConvertToString() : "Дата начала отсутствует")</div>
-            </div>
-            <br />
-            <div class="col-md-12 row">
-                <div class="col-md-4"><b>Завершить</b></div>
-                <div class="col-md-8">@(Model.EndDate.HasValue ? Model.EndDate.Value.ConvertToString() : "Дата окончания отсутствует")</div>
-            </div>
-            <br />
-            <div class="col-md-12 row">
-                <div class="col-md-4"><b>Место указания услуги</b></div>
-                <div class="col-md-8">@Model.TaskFormat.GetDisplayName()</div>
-            </div>
-            <br />
-            <div class="col-md-12 row">
-                <div class="col-md-4"><b>Описание задания</b></div>
-                <div class="col-md-8">@(String.IsNullOrEmpty( Model.Description ) ? "Описание отсутствует" : Model.Description)</div>
-            </div>
-            <br />
-            <div class="col-md-12 row">
-                <div class="col-md-6 offset-3">
+<div class="d-flex justify-content-center">
+    <div class="col-md-8 col-sm-12">
+        <div class="card">
+            <h4 class="card-header">@Model.Title</h4>
+            <div class="card-body">
+                <div class="col-md-12 row">
+                    <div class="col-md-4"><b>Начать</b></div>
+                    <div class="col-md-8">@(Model.StartDate.HasValue ? Model.StartDate.Value.ConvertToString() : "Дата начала отсутствует")</div>
+                </div>
+                <br />
+                <div class="col-md-12 row">
+                    <div class="col-md-4"><b>Завершить</b></div>
+                    <div class="col-md-8">@(Model.EndDate.HasValue ? Model.EndDate.Value.ConvertToString() : "Дата окончания отсутствует")</div>
+                </div>
+                <br />
+                <div class="col-md-12 row">
+                    <div class="col-md-4"><b>Место указания услуги</b></div>
+                    <div class="col-md-8">@Model.TaskFormat.GetDisplayName()</div>
+                </div>
+                <br />
+                <div class="col-md-12 row">
+                    <div class="col-md-4"><b>Описание задания</b></div>
+                    <div class="col-md-8">@(String.IsNullOrEmpty( Model.Description ) ? "Описание отсутствует" : Model.Description)</div>
+                </div>
+                <br />
+                <div class="form-group text-center">
                     @if( !hasExecutor )
                     {
-                        <a asp-controller="Task" asp-action="OfferTaskHelp" asp-route-taskid="@Model.Id" class="btn btn-outline-success col-md-12">
+                        <a asp-controller="Task" asp-action="OfferTaskHelp" asp-route-taskid="@Model.Id" 
+                           class="btn btn-outline-success col-md-6 col-sm-4">
                             Предложить свои услуги
                         </a>
                     }
                     @if( isTaskExecutor )
                     {
-                        <a asp-controller="Task" asp-action="CancelTaskHelp" asp-route-taskid="@Model.Id" class="btn btn-outline-danger col-md-12">
+                        <a asp-controller="Task" asp-action="CancelTaskHelp" asp-route-taskid="@Model.Id" 
+                           class="btn btn-outline-danger col-md-6 col-sm-4">
                             Отменить заявку
                         </a>
                     }
                     else
                     {
-                        <button class="btn btn-outline-secondary col-md-12 disabled">Задача в процессе выполнения</button>
+                        <button class="btn btn-outline-secondary col-md-6 col-sm-4 disabled">Задача в процессе выполнения</button>
                     }
                 </div>
             </div>
-        </div>
-        <div class="card-footer">
-            Заказчик:
-            <a asp-controller="Account" asp-action="Profile" asp-route-id="@Model.Owner.Id">
-                <u>@Model.Owner.GetShortName()</u>
-            </a>
+            <div class="card-footer">
+                Заказчик:
+                <a asp-controller="Account" asp-action="Profile" asp-route-id="@Model.Owner.Id">
+                    <u>@Model.Owner.GetShortName()</u>
+                </a>
+            </div>
         </div>
     </div>
 </div>

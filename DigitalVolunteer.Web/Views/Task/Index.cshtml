@@ -8,8 +8,12 @@ else
 {
     <h1 class="display-4 text-center">Список заданий</h1>
     <br />
-    foreach( var task in TaskRepository.GetAll() )
-    {
-        <partial name="_TaskCard" model="@task" />
-    }
+    <div class="d-flex justify-content-center">
+        <div class="col-md-8 col-sm-12">
+            @foreach( var task in TaskRepository.GetAll() )
+            {
+                <partial name="_TaskCard" model="@task" />
+            }
+        </div>
+    </div>
 }

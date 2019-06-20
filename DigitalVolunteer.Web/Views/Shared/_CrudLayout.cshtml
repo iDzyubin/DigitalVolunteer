@@ -5,24 +5,25 @@
 }
 
 <body>
-<div class="col-md-12">
-    <div class="row">
-        <div class="col-md-3">
-            <div class="list-group">
-                <div class="list-group-item list-group-item-action disabled">
-                    Действия
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="list-group">
+                    <div class="list-group-item list-group-item-action disabled">
+                        Действия
+                    </div>
+                    <a asp-action="Index" class="list-group-item list-group-item-action @isListBlockActive">
+                        <i class="fas fa-search"></i> Показать весь список
+                    </a>
+                    <a asp-action="Add" class="list-group-item list-group-item-action @isAddBlockActive">
+                        <i class="fas fa-plus"></i> Добавить
+                    </a>
                 </div>
-                <a asp-action="Index" class="list-group-item list-group-item-action @isListBlockActive">
-                    <i class="fas fa-search"></i> Показать весь список
-                </a>
-                <a asp-action="Add" class="list-group-item list-group-item-action @isAddBlockActive">
-                    <i class="fas fa-plus"></i> Добавить
-                </a>
+                <br />
+            </div>
+            <div class="col-md-9">
+                @RenderBody()
             </div>
         </div>
-        <div class="col-md-9">
-            @RenderBody()
-        </div>
     </div>
-</div>
 </body>

@@ -12,15 +12,16 @@ namespace DigitalVolunteer.Core.Validators
         public CategoryValidator( ICategoryRepository categoryRepository )
         {
             _categoryRepository = categoryRepository;
-             RuleFor( x => x.Name )
-                 .NotEmpty()
-                 .WithMessage( "Название категории не заполнено" )
+            CascadeMode = CascadeMode.StopOnFirstFailure;
+            RuleFor( x => x.Name )
+                .NotEmpty()
+                .WithMessage( "Название категории не заполнено" )
 
-                 .MaximumLength( 50 )
-                 .WithMessage( "Название категории не может быть более 50 символов" )
+                .MaximumLength( 50 )
+                .WithMessage( "Название категории не может быть более 50 символов" )
 
-                 .Must( IsNameUnique )
-                 .WithMessage( "Категория с таким названием уже имеется" );
+                .Must( IsNameUnique )
+                .WithMessage( "Категория с таким названием уже имеется" );
         }
 
         private bool IsNameUnique( Category category, string newValue )
