@@ -2,6 +2,7 @@
 using DigitalVolunteer.Core.DataModels;
 using Microsoft.AspNetCore.Mvc;
 using DigitalVolunteer.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DigitalVolunteer.Web.Controllers
 {
@@ -14,10 +15,12 @@ namespace DigitalVolunteer.Web.Controllers
             => _categoryRepository = categoryRepository;
 
 
+        [Authorize]
         [HttpGet]
         public IActionResult Index() => View();
 
 
+        [Authorize]
         [HttpGet]
         public IActionResult Add() => View();
 
@@ -26,15 +29,13 @@ namespace DigitalVolunteer.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Add( Category item )
         {
-            if (!ModelState.IsValid)
-            {
-                return View( item );
-            }
+            if (!ModelState.IsValid) return View( item );
             _categoryRepository.Add( item );
             return RedirectToMainPage();
         }
 
 
+        [Authorize]
         [HttpGet]
         public IActionResult Update( Guid id ) => View( _categoryRepository.Get( id ) );
 
@@ -43,15 +44,13 @@ namespace DigitalVolunteer.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Update( Category item )
         {
-            if (!ModelState.IsValid)
-            {
-                return View( item );
-            }
+            if (!ModelState.IsValid) return View( item );
             _categoryRepository.Update( item );
             return RedirectToMainPage();
         }
 
 
+        [Authorize]
         [HttpGet]
         public IActionResult Remove( Guid id )
         {

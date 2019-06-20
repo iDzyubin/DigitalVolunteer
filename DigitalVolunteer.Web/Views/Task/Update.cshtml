@@ -1,1 +1,80 @@
-﻿
+﻿@model DigitalTask
+@inject CategoryService CategoryService
+
+<div class="d-flex justify-content-center">
+    <div class="col-md-8 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>Обновление заявки</h4>
+            </div>
+            <div class="card-body">
+                <form asp-controller="Task" asp-action="Update" method="post">
+                    <div class="form-group">
+                        <label class="text-muted">Наименование задачи</label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-muted">Категория задачи</label>
+                        <select asp-for="CategoryId" asp-items="CategoryService.GetCategoriesList()" class="form-control">
+                            <option value="" selected disabled hidden>Выберите категорию задачи</option>
+                        </select>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-muted">Описание задачи</label>
+                        <textarea asp-for="Description" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label class="text-muted">Дата начала</label>
+                            <input asp-for="StartDate" type="date" class="form-control" />
+                            <span asp-validation-for="StartDate" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted">Дата окончания</label>
+                            <input asp-for="EndDate" type="date" class="form-control" />
+                            <span asp-validation-for="EndDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12 col-sm-12">
+                            <label class="text-muted">Место указания услуги</label>
+                        </div>
+                        <div class="btn-group btn-group-toggle col-md-12 col-sm-12" data-toggle="buttons">
+                            <label class="btn btn-outline-primary col-sm-6 col-md-6 @(Model.TaskFormat == DigitalTaskFormat.Freelance ? "active" : "")">
+                                <input asp-for="TaskFormat" type="radio" value="@DigitalTaskFormat.Freelance" id="task-format" />
+                                @DigitalTaskFormat.Freelance.GetDisplayName()
+                            </label>
+                            <label class="btn btn-outline-primary col-sm-6 col-md-6 @(Model.TaskFormat == DigitalTaskFormat.UpWork ? "active" : "")">
+                                <input asp-for="TaskFormat" type="radio" value="@DigitalTaskFormat.UpWork" id="task-format" />
+                                @DigitalTaskFormat.UpWork.GetDisplayName()
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                            <input asp-for="HasPushNotifications" type="checkbox" class="custom-control-input" id="customControlInline1">
+                            <label class="custom-control-label" for="customControlInline1">Получать email уведомления о новых предложениях</label>
+                        </div>
+                        <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                            <input asp-for="IsOnlyForExecutors" type="checkbox" class="custom-control-input" id="customControlInline2">
+                            <label class="custom-control-label" for="customControlInline2">Показывать мое задание только исполнителям</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-muted">Контактный телефон</label>
+                        <input asp-for="ContactPhone" class="form-control" maxlength="11" placeholder="8XXXXXXXXXX" />
+                        <span asp-validation-for="ContactPhone" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-center">
+                        <input asp-for="OwnerId" type="hidden" />
+                        <br />
+                        <button type="submit" class="btn btn-outline-info col-md-6 col-sm-4">Обновить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

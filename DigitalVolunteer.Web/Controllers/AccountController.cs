@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using DigitalVolunteer.Core.Interfaces;
 using DigitalVolunteer.Core.Models;
 using DigitalVolunteer.Core.Services;
 using DigitalVolunteer.Web.Models;

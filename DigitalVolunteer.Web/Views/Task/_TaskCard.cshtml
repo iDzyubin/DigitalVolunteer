@@ -1,16 +1,31 @@
-﻿@model DigitalVolunteer.Core.DataModels.DigitalTask
+﻿@model DigitalTask
+@inject TaskService TaskService
 
 <div class="row">
     <div class="col-md-12 col-sm-12">
         <div class="card">
-            <div class="card-header">
-                <a asp-controller="Task" asp-action="Details" asp-route-id="@Model.Id">
-                    @Model.Title
-                </a>
-            </div>
+            @if( TaskService.IsDigitalTaskOwner( Model.Id, User.GetId().Value ) )
+            {
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Task" asp-action="Details" asp-route-id="@Model.Id">Просмотреть</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Task" asp-action="Update" asp-route-id="@Model.Id">Обновить</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Task" asp-action="Remove" asp-route-id="@Model.Id">Удалить</a>
+                        </li>
+                    </ul>
+                </div>
+            }
             <div class="card-body">
-                <div>@Model.TaskFormat.GetDisplayName()</div>
-                <div>@Model.GetScheduleInformation()</div>
+                <h5 class="card-title">
+                    <a asp-controller="Task" asp-action="Details" asp-route-id="@Model.Id">@Model.Title</a>
+                </h5>
+                <div class="text-muted">@Model.TaskFormat.GetDisplayName()</div>
+                <div class="text-muted">@Model.GetScheduleInformation()</div>
             </div>
             <div class="card-footer">
                 <a asp-controller="Account" asp-action="Profile" asp-route-id="@Model.Owner.Id">
@@ -18,6 +33,6 @@
                 </a>
             </div>
         </div>
-        <br/>
+        <br />
     </div>
 </div>

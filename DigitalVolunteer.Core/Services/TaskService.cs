@@ -66,5 +66,15 @@ namespace DigitalVolunteer.Core.Services
             task.ExecutorId = null;
             _tasks.Update( task );
         }
+
+
+        /// <summary>
+        /// Проверяем, является ли пользователь владельцем задания.
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool IsDigitalTaskOwner( Guid taskId, Guid userId )
+            => _tasks.Get( taskId ).OwnerId == userId;
     }
 }
