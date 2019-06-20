@@ -52,6 +52,7 @@ namespace DigitalVolunteer.Web
             services.AddScoped<ITaskRepository    ,     TaskRepository>();
             services.AddScoped<ITaskRepository    ,     TaskRepository>();
 
+            services.AddScoped<CategoryService>();
             services.AddScoped<UserService>();
             services.AddScoped<GreetingService>();
             services.AddSingleton<PasswordHashService>();
