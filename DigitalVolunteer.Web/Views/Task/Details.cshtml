@@ -50,14 +50,6 @@
                         @if( isTaskOwner && hasExecutor )
                         {
                             <button class="btn btn-outline-secondary col-md-6 col-sm-4 disabled">Задача в процессе выполнения</button>
-
-                        }
-                        @if( !isTaskOwner && !hasExecutor )
-                        {
-                            <a asp-controller="Task" asp-action="OfferTaskHelp" asp-route-taskid="@Model.Id"
-                               class="btn btn-outline-success col-md-6 col-sm-4">
-                                Предложить свои услуги
-                            </a>
                         }
                         @if( isTaskExecutor )
                         {
@@ -66,6 +58,14 @@
                                 Отменить заявку
                             </a>
                         }
+                        else if( !hasExecutor )
+                        {
+                            <a asp-controller="Task" asp-action="OfferTaskHelp" asp-route-taskid="@Model.Id"
+                               class="btn btn-outline-success col-md-6 col-sm-4">
+                                Предложить свои услуги
+                            </a>
+                        }
+
                     }
                 </div>
             </div>
