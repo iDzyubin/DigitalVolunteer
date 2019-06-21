@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DigitalVolunteer.Core.DataModels;
 
 namespace DigitalVolunteer.Web.Models
@@ -7,5 +8,6 @@ namespace DigitalVolunteer.Web.Models
     {
         public TaskSelectorMode SelectorMode { get; set; }
         public List<DigitalTask> Tasks { get; set; }
+        public Guid CategoryId { get; set; }
     }
 }

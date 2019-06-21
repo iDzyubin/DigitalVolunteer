@@ -23,7 +23,13 @@ namespace DigitalVolunteer.Web.Controllers
 
 
         [HttpGet( "[controller]/All" )]
-        public IActionResult Index() => View();
+        public IActionResult Index( Guid? categoryId = null )
+        {
+            var tasks = categoryId.HasValue
+                ? _taskRepository.GetAll(categoryId.Value)
+                : _taskRepository.GetAll();
+            return View( new TaskViewModel { CategoryId = categoryId ?? Guid.Empty, Tasks = tasks } );
+        }
 
 
         [HttpGet( "[controller]/{id}" )]
@@ -71,10 +77,11 @@ namespace DigitalVolunteer.Web.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult MyTasks( TaskSelectorMode selectorMode ) => View( new TaskViewModel
+        public IActionResult MyTasks( TaskSelectorMode selectorMode, Guid? categoryId = null ) => View( new TaskViewModel
         {
             SelectorMode = selectorMode,
-            Tasks = _taskRepository.GetMyTasks( User.GetId().Value, selectorMode )
+            Tasks = _taskRepository.GetMyTasks( User.GetId().Value, selectorMode, categoryId ),
+            CategoryId = categoryId ?? Guid.Empty
         } );
 
 

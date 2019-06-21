@@ -57,9 +57,11 @@ namespace DigitalVolunteer.Core.Repositories
                 .Select( t => t.Task ).Where( filter ).ToList();
         }
 
-        public List<DigitalTask> GetMyTasks( Guid userId, TaskSelectorMode selectorMode )
+        public List<DigitalTask> GetMyTasks( Guid userId, TaskSelectorMode selectorMode, Guid? categoryId )
         {
             var tasks = _db.DigitalTasks.AsQueryable();
+            if( categoryId.HasValue ) tasks = tasks.Where( x => x.CategoryId == categoryId );
+
             switch( selectorMode )
             {
                 case TaskSelectorMode.All:
@@ -74,6 +76,15 @@ namespace DigitalVolunteer.Core.Repositories
             return joined.Select( j => j.Task ).ToList();
         }
 
+
         public void Add( DigitalTask item ) => throw new NotImplementedException();
+
+
+        public List<DigitalTask> GetAll( Guid categoryId )
+        {
+            var tasks = _db.DigitalTasks.Where( x => x.CategoryId == categoryId ).ToList();
+            tasks.ForEach( task => task.Owner = _db.Users.Find( task.OwnerId ) );
+            return tasks;
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace DigitalVolunteer.Core.Interfaces
         List<DigitalTask> GetUserTasks( Guid userId );
         List<DigitalTask> GetUserTasks( Guid userId, Func<DigitalTask, bool> filter );
         void Add( DigitalTask item, Guid ownerId );
-        List<DigitalTask> GetMyTasks( Guid userId, TaskSelectorMode selectorMode );
+        List<DigitalTask> GetMyTasks( Guid userId, TaskSelectorMode selectorMode, Guid? categoryId );
+        List<DigitalTask> GetAll( Guid categoryId );
     }
 }

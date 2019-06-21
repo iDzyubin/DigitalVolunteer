@@ -1,6 +1,24 @@
-﻿@inject ITaskRepository TaskRepository
+﻿@inject CategoryService CategoryService
+@model TaskViewModel
 
-@if( TaskRepository.GetAll().Count == 0 )
+<div class="d-flex justify-content-center">
+    <div class="form-group col-md-8 col-sm-4">
+        <form asp-controller="Task" asp-action="Index" method="get">
+            <label class="text-muted">Категория задачи</label>
+            <select asp-for="CategoryId" asp-items="CategoryService.GetCategoriesList()" class="form-control">
+                <option value="" selected disabled hidden>Выберите категорию задачи</option>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+            <div class="form-group text-center">
+                <br />
+                <button type="submit" class="btn btn-outline-info col-md-4 col-sm-4">Поиск</button>
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+
+@if( Model.Tasks.Count == 0 )
 {
     <h1 class="display-4 text-center">На данный момент список заданий пуст</h1>
 }
@@ -10,7 +28,7 @@ else
     <br />
     <div class="d-flex justify-content-center">
         <div class="col-md-8 col-sm-12">
-            @foreach( var task in TaskRepository.GetAll() )
+            @foreach( var task in Model.Tasks )
             {
                 <partial name="_TaskCard" model="@task" />
             }
