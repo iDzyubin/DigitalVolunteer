@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-md-12 col-sm-12">
         <div class="card">
-            @if( TaskService.IsDigitalTaskOwner( Model.Id, User.GetId().Value ) )
+            @if( User.GetId().HasValue && TaskService.IsDigitalTaskOwner( Model.Id, User.GetId().Value ) )
             {
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs">

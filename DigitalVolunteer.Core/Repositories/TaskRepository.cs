@@ -32,6 +32,9 @@ namespace DigitalVolunteer.Core.Repositories
             if( task != null )
             {
                 task.Owner = _db.Users.Find( task.OwnerId );
+                task.Executor = task.ExecutorId.HasValue
+                    ? _db.Users.Find( task.ExecutorId.Value )
+                    : null;
             }
             return task;
         }

@@ -1,8 +1,11 @@
 ﻿@model DigitalTask
 @inject ITaskRepository TaskRepository
+@inject TaskService TaskService
 @{
-    var isTaskExecutor = User.GetId().HasValue && TaskRepository.Get(Model.Id).ExecutorId == User.GetId().Value;
-    var hasExecutor = TaskRepository.Get(Model.Id).ExecutorId != null;
+    var userId = User.GetId();
+    var isTaskOwner    = TaskService.IsDigitalTaskOwner(Model.Id, userId);
+    var isTaskExecutor = TaskService.IsDigitalTaskExecutor(Model.Id, userId);
+    var hasExecutor    = TaskService.HasIsDigitalTaskExecutor(Model.Id);
 }
 <div class="d-flex justify-content-center">
     <div class="col-md-8 col-sm-12">
@@ -29,24 +32,40 @@
                     <div class="col-md-8">@(String.IsNullOrEmpty( Model.Description ) ? "Описание отсутствует" : Model.Description)</div>
                 </div>
                 <br />
+                @if( TaskService.IsDigitalTaskOwner( Model.Id, User.GetId().Value ) && hasExecutor )
+                {
+                    <div class="col-md-12 row">
+                        <div class="col-md-4"><b>Исполнитель</b></div>
+                        <div class="col-md-8">
+                            <a asp-controller="Account" asp-action="Profile" asp-route-id="@Model.Executor.Id">
+                                <u>@Model.Executor.GetShortName()</u>
+                            </a>
+                        </div>
+                    </div>
+                    <br />
+                }
                 <div class="form-group text-center">
-                    @if( !hasExecutor )
+                    @if( userId.HasValue )
                     {
-                        <a asp-controller="Task" asp-action="OfferTaskHelp" asp-route-taskid="@Model.Id" 
-                           class="btn btn-outline-success col-md-6 col-sm-4">
-                            Предложить свои услуги
-                        </a>
-                    }
-                    @if( isTaskExecutor )
-                    {
-                        <a asp-controller="Task" asp-action="CancelTaskHelp" asp-route-taskid="@Model.Id" 
-                           class="btn btn-outline-danger col-md-6 col-sm-4">
-                            Отменить заявку
-                        </a>
-                    }
-                    else
-                    {
-                        <button class="btn btn-outline-secondary col-md-6 col-sm-4 disabled">Задача в процессе выполнения</button>
+                        @if( isTaskOwner && hasExecutor )
+                        {
+                            <button class="btn btn-outline-secondary col-md-6 col-sm-4 disabled">Задача в процессе выполнения</button>
+
+                        }
+                        @if( !isTaskOwner && !hasExecutor )
+                        {
+                            <a asp-controller="Task" asp-action="OfferTaskHelp" asp-route-taskid="@Model.Id"
+                               class="btn btn-outline-success col-md-6 col-sm-4">
+                                Предложить свои услуги
+                            </a>
+                        }
+                        @if( isTaskExecutor )
+                        {
+                            <a asp-controller="Task" asp-action="CancelTaskHelp" asp-route-taskid="@Model.Id"
+                               class="btn btn-outline-danger col-md-6 col-sm-4">
+                                Отменить заявку
+                            </a>
+                        }
                     }
                 </div>
             </div>
