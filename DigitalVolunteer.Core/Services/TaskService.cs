@@ -10,13 +10,13 @@ namespace DigitalVolunteer.Core.Services
     public class TaskService
     {
         private readonly ITaskRepository _tasks;
+        private readonly MainDb _db;
 
-
-        public TaskService( ITaskRepository tasks )
+        public TaskService( ITaskRepository tasks, MainDb db )
         {
             _tasks = tasks;
+            _db = db;
         }
-
 
         public List<TaskTitle> GetUserTaskTitles( Guid userId, int count )
         {
@@ -96,5 +96,48 @@ namespace DigitalVolunteer.Core.Services
         public bool HasIsDigitalTaskExecutor( Guid taskId )
             => _tasks.Get( taskId ).ExecutorId.HasValue;
 
+
+        /// <summary>
+        /// Предложить услуги по выполнению задачи.
+        /// </summary>
+        /// <param name="taskId"> Id задачи </param>
+        /// <param name="userId"> Id потенциального исполнителя </param>
+        public void OfferHelp( Guid taskId, Guid userId )
+        {
+            // TODO. Some code here.
+        }
+
+
+        /// <summary>
+        /// Принять предложение по выполнению задачи.
+        /// </summary>
+        /// <param name="taskId"> Id задачи </param>
+        /// <param name="userId"> Id владельца задачи </param>
+        public void ConfirmOffer( Guid taskId, Guid userId )
+        {
+            // TODO. Some code here.
+        }
+
+
+        /// <summary>
+        /// Подтвердить выполнение задачи.
+        /// </summary>
+        /// <param name="taskId">  </param>
+        /// <param name="userId">  </param>
+        public void ConfirmComplete( Guid taskId, Guid userId )
+        {
+            // TODO. Some code here.
+        }
+
+
+        /// <summary>
+        /// Завершение задачи.
+        /// </summary>
+        /// <param name="taskId"> Id задачи </param>
+        /// <param name="userId"> Id владельца задачи </param>
+        public void CancelTask( Guid taskId, Guid userId )
+        {
+            // TODO. Some code here.
+        }
     }
 }

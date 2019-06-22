@@ -9,7 +9,7 @@ namespace DigitalVolunteer.Core.DataModels
         Confirmed = 2,
         Deleted = 3
     }
-    
+
     public enum DigitalTaskStatus
     {
         Open = 0,
@@ -46,7 +46,7 @@ namespace DigitalVolunteer.Core.DataModels
         /// Задача создана.
         /// Когда пользователь создал задачу и исполнителя ещё нет.
         /// </summary>
-        [Display(Name = "Задание создано")]
+        [Display( Name = "Задание создано" )]
         Created = 0,
         /// <summary>
         /// Задача не подтверждена.
@@ -67,6 +67,12 @@ namespace DigitalVolunteer.Core.DataModels
         /// заказчик подтвердил выполнение.
         /// </summary>
         [Display( Name = "Задание выполнено" )]
-        Completed = 3
+        Completed = 3,
+        /// <summary>
+        /// Задание завершено.
+        /// Заказчик подтвердил, что задача выполнена успешно.
+        /// </summary>
+        [Display( Name = "Задание завершено" )]
+        Closed = 4
     }
 }

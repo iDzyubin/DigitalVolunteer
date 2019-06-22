@@ -13,7 +13,7 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ConnectionStrings:DefaultConnection": "Server=postgres.cgkwtwxbbklg.us-east-2.rds.amazonaws.com;Port=5432;Database=postgres;User Id=postgres;Password=postgrs;enlist=true"
+        "ConnectionStrings:DefaultConnection": "Server=postgres.cgkwtwxbbklg.us-east-2.rds.amazonaws.com;Port=5432;Database=postgres;User Id=postgres;Password=postgres;enlist=true"
       }
     },
     "DigitalVolunteer.Web": {
