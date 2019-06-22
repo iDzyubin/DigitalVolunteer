@@ -32,7 +32,7 @@
                     <div class="col-md-8">@(String.IsNullOrEmpty( Model.Description ) ? "Описание отсутствует" : Model.Description)</div>
                 </div>
                 <br />
-                @if(  isTaskOwner && hasExecutor )
+                @if( isTaskOwner && hasExecutor )
                 {
                     <div class="col-md-12 row">
                         <div class="col-md-4"><b>Исполнитель</b></div>
@@ -58,7 +58,7 @@
                                 Отменить заявку
                             </a>
                         }
-                        else if( !hasExecutor )
+                        else if( !hasExecutor && !isTaskOwner )
                         {
                             <a asp-controller="Task" asp-action="OfferTaskHelp" asp-route-taskid="@Model.Id"
                                class="btn btn-outline-success col-md-6 col-sm-4">
