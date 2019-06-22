@@ -19,28 +19,40 @@ namespace DigitalVolunteer.Core.Services
             _db = db;
         }
 
+
+        /// <summary>
+        /// Вернуть заголовки задач.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
         public List<TaskTitle> GetUserTaskTitles( Guid userId, int count )
-        {
-            return _tasks.GetUserTasks( userId )
+            => _tasks.GetUserTasks( userId )
                 .OrderByDescending( t => t.StartDate )
                 .Take( count )
                 .Select( t => new TaskTitle { Id = t.Id, Title = t.Title } )
                 .ToList();
-        }
 
 
+        /// <summary>
+        /// Вернуть выполненные задачи пользователя.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public List<DigitalTask> GetCompletedTasks( Guid userId )
-        {
-            return _tasks.GetUserTasks( userId, t => t.Status == DigitalTaskStatus.Completed );
-        }
+            => _tasks.GetUserTasks( userId, t => t.Status == DigitalTaskStatus.Completed );
 
 
+        /// <summary>
+        /// Вернуть число созданных задач.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public int GetCreatedTasksCount( Guid userId )
-        {
-            return _tasks.Get( t => t.OwnerId == userId ).Count;
-        }
+            => _tasks.Get( t => t.OwnerId == userId ).Count;
 
 
+        // TODO. DEPRECATED.
         /// <summary>
         /// Добавить исполнителя на задание.
         /// </summary>
@@ -53,7 +65,7 @@ namespace DigitalVolunteer.Core.Services
             _tasks.Update( task );
         }
 
-
+        // TODO. DEPRECATED.
         /// <summary>
         /// Убрать исполнителя с задания.
         /// </summary>
@@ -99,6 +111,15 @@ namespace DigitalVolunteer.Core.Services
 
 
         /// <summary>
+        /// Вернуть текущее состояние задачи.
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <returns></returns>
+        public DigitalTaskState GetDigitalTaskState( Guid taskId )
+            => _db.DigitalTasks.Find( taskId ).TaskState;
+
+
+        /// <summary>
         /// Предложить услуги по выполнению задачи.
         /// </summary>
         /// <param name="taskId"> Id задачи </param>
@@ -106,7 +127,11 @@ namespace DigitalVolunteer.Core.Services
         public void OfferHelp( Guid taskId, Guid userId )
         {
             if( IsDigitalTaskOwner( taskId, userId ) ) return;
-            ChangeTaskState( taskId, DigitalTaskState.Unconfirmed );
+
+            _db.DigitalTasks
+                .Where( t => t.Id == taskId )
+                .Set( t => t.TaskState, x => DigitalTaskState.Unconfirmed )
+                .Set( t => t.ExecutorId, x => taskId );
         }
 
 
@@ -157,7 +182,10 @@ namespace DigitalVolunteer.Core.Services
             var isOwner    = IsDigitalTaskOwner( taskId, userId );
             if( !isOwner && !isExecutor ) return;
 
-            ChangeTaskState( taskId, DigitalTaskState.Created );
+            _db.DigitalTasks
+                .Where( t => t.Id == taskId )
+                .Set( t => t.TaskState, x => DigitalTaskState.Created )
+                .Set( t => t.ExecutorId, x => null );
         }
 
 
