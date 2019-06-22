@@ -70,3 +70,8 @@ INSERT INTO dv.users(id, first_name, last_name, description, email, password, ph
 INSERT INTO dv.categories(id, name) VALUES
 	('c8a70bae-2c53-48b1-8ab0-422c547b59aa', 'Разработка веб-сайта'),
 	('de3c61c2-dadc-4175-a5b4-02a6bd3c3ac3', 'Тестирование веб-сайта');
+
+
+-- Добавление состояния задачи.
+ALTER TABLE dv.digital_tasks
+ADD COLUMN task_state integer NOT NULL DEFAULT 0

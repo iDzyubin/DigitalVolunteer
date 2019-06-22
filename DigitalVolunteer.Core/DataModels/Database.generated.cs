@@ -82,6 +82,7 @@ namespace DigitalVolunteer.Core.DataModels
 		[Column("task_format"),                         NotNull] public DigitalTaskFormat TaskFormat           { get; set; } // integer
 		[Column("has_push_notifications"),              NotNull] public bool              HasPushNotifications { get; set; } // boolean
 		[Column("is_only_for_executors"),               NotNull] public bool              IsOnlyForExecutors   { get; set; } // boolean
+		[Column("task_state"),                          NotNull] public DigitalTaskState  TaskState            { get; set; } // integer
 
 		#region Associations
 
