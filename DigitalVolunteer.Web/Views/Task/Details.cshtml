@@ -3,9 +3,10 @@
 @inject TaskService TaskService
 @{
     var userId = User.GetId();
-    var isTaskOwner    = TaskService.IsDigitalTaskOwner(Model.Id, userId);
-    var isTaskExecutor = TaskService.IsDigitalTaskExecutor(Model.Id, userId);
-    var hasExecutor    = TaskService.HasIsDigitalTaskExecutor(Model.Id);
+    var isTaskOwner = TaskService.IsDigitalTaskOwner( Model.Id, userId );
+    var isTaskExecutor = TaskService.IsDigitalTaskExecutor( Model.Id, userId );
+    var hasExecutor = TaskService.HasIsDigitalTaskExecutor( Model.Id );
+    var isUserLogined = User.Identities.Where(o => o.Claims.Count() > 0).FirstOrDefault() != null;
 }
 <div class="d-flex justify-content-center">
     <div class="col-md-8 col-sm-12">
@@ -45,8 +46,7 @@
                     <br />
                 }
                 <div class="form-group text-center">
-                    @if( userId.HasValue )
-                    {
+
                         @if( isTaskOwner && hasExecutor )
                         {
                             <button class="btn btn-outline-secondary col-md-6 col-sm-4 disabled">Задача в процессе выполнения</button>
@@ -58,15 +58,23 @@
                                 Отменить заявку
                             </a>
                         }
-                        else if( !hasExecutor && !isTaskOwner )
+                        else if( !hasExecutor )
                         {
-                            <a asp-controller="Task" asp-action="OfferTaskHelp" asp-route-taskid="@Model.Id"
-                               class="btn btn-outline-success col-md-6 col-sm-4">
-                                Предложить свои услуги
-                            </a>
+                            if( !isTaskOwner && isUserLogined )
+                            {
+                                <a asp-controller="Task" asp-action="OfferTaskHelp" asp-route-taskid="@Model.Id"
+                                   class="btn btn-outline-success col-md-6 col-sm-4">
+                                    Предложить свои услуги
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Account" asp-action="Login" asp-route-taskid="@Model.Id"
+                                   class="btn btn-outline-success col-md-6 col-sm-4">
+                                    Предложить свои услуги
+                                </a>
+                            }
                         }
-
-                    }
                 </div>
             </div>
             <div class="card-footer">
