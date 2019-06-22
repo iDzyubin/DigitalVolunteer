@@ -5,7 +5,6 @@
     var isTaskOwner = TaskService.IsDigitalTaskOwner( Model.Id, userId );
     var isTaskExecutor = TaskService.IsDigitalTaskExecutor( Model.Id, userId );
     var hasExecutor = TaskService.HasIsDigitalTaskExecutor( Model.Id );
-    var isUserLogined = User.Identities.FirstOrDefault(o => o.Claims.Any()) != null; // TODO.
 }
 <div class="d-flex justify-content-center">
     <div class="col-md-8 col-sm-12">

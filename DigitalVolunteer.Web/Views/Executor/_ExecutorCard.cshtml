@@ -1,27 +1,73 @@
 ﻿@model User
-
+@inject TaskService TaskService
+@{
+    var tasks = new SelectList(TaskService.GetAllUserTaskTitles(User.GetId()), "Id", "Title");
+}
 <div class="col-md-12 col-sm-12">
-     <div class="card">
-         <div class="card-header text-left">
-             <div class="row">
-                 <div class="col-md-6">
-                     <a asp-controller="Account" asp-action="Profile" asp-route-id="@Model.Id">
-                         <u>@Model.GetShortName()</u>
-                     </a>
-                 </div>
-                 <div class="col-md-3">
-                     @* @Model.Rating.LikeCount <span class="text-success"><i class="far fa-thumbs-up"></i></span> *@
-                     @* @Model.Rating.DislikeCount <span class="text-danger"><i class="far fa-thumbs-down"></i></span> *@
-                 </div>
-                 <div class="col-md-3">
-                     @* @Model.Rating.AverageBall <partial name="_Rating" model="@Model.Rating.AverageBall"/> *@
-                 </div>
-             </div>
-         </div>
-         <div class="card-body">
-             <div>@Model.GetShortDescription()</div><br/>
-             <button class="btn btn-outline-info">Предложить задание</button>
-         </div>
-     </div>
-     <br/>
+    <div class="card">
+        <div class="card-header text-left">
+            <div class="row">
+                <div class="col-md-6">
+                    <a asp-controller="Account" asp-action="Profile" asp-route-id="@Model.Id">
+                        <u>@Model.GetShortName()</u>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div>@Model.GetShortDescription()</div><br />
+            @if( User.GetId().HasValue )
+            {
+                <button class="btn btn-outline-info" data-toggle="modal" data-target="#task-modal">Предложить задание</button>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="Login" class="btn btn-outline-info">Предложить задание</a>
+            }
+        </div>
+    </div>
+    <br />
 </div>
+
+<div class="modal fade" id="task-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Предложить задание</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form asp-controller="Executor" asp-action="OfferTask" method="post">
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <select id="task-id-@Model.Id" name="taskid" class="form-control" asp-items="tasks">
+                        <option value="" selected disabled hidden>Выберите задачу</option>
+                    </select>
+                    <input id="executor-id-@Model.Id" value="@Model.Id" type="hidden" />
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button id="btn-send-@Model.Id" type="submit" class="btn btn-outline-success" data-dismiss="modal">Отправить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--
+    Ожидаемое поведение: Хватает нужный id
+    Реальность: Хватает первый попавшийся
+-->
+<script type="text/javascript">
+    $(function () {
+        $('#btn-send-@Model.Id').on("click", function () {
+            $.post("@Url.Action( "OfferTask" )",
+            {
+                taskId: $('#task-id-@Model.Id').val(),
+                executorId: $('#executor-id-@Model.Id').val()
+            });
+        });
+    });
+</script>
