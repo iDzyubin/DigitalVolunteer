@@ -4,6 +4,7 @@ using System.Linq;
 using DigitalVolunteer.Core.DataModels;
 using DigitalVolunteer.Core.Interfaces;
 using DigitalVolunteer.Core.Models;
+using LinqToDB;
 
 namespace DigitalVolunteer.Core.Services
 {
@@ -104,7 +105,8 @@ namespace DigitalVolunteer.Core.Services
         /// <param name="userId"> Id потенциального исполнителя </param>
         public void OfferHelp( Guid taskId, Guid userId )
         {
-            // TODO. Some code here.
+            if( IsDigitalTaskOwner( taskId, userId ) ) return;
+            ChangeTaskState( taskId, DigitalTaskState.Unconfirmed );
         }
 
 
@@ -115,18 +117,20 @@ namespace DigitalVolunteer.Core.Services
         /// <param name="userId"> Id владельца задачи </param>
         public void ConfirmOffer( Guid taskId, Guid userId )
         {
-            // TODO. Some code here.
+            if( !IsDigitalTaskOwner( taskId, userId ) ) return;
+            ChangeTaskState( taskId, DigitalTaskState.Confirmed );
         }
 
 
         /// <summary>
         /// Подтвердить выполнение задачи.
         /// </summary>
-        /// <param name="taskId">  </param>
-        /// <param name="userId">  </param>
+        /// <param name="taskId"> Id задачи </param>
+        /// <param name="userId"> Id исполнителя задачи </param>
         public void ConfirmComplete( Guid taskId, Guid userId )
         {
-            // TODO. Some code here.
+            if( !IsDigitalTaskExecutor( taskId, userId ) ) return;
+            ChangeTaskState( taskId, DigitalTaskState.Completed );
         }
 
 
@@ -135,9 +139,35 @@ namespace DigitalVolunteer.Core.Services
         /// </summary>
         /// <param name="taskId"> Id задачи </param>
         /// <param name="userId"> Id владельца задачи </param>
+        public void CloseTask( Guid taskId, Guid userId )
+        {
+            if( !IsDigitalTaskOwner( taskId, userId ) ) return;
+            ChangeTaskState( taskId, DigitalTaskState.Closed );
+        }
+
+
+        /// <summary>
+        /// Отмена задачи.
+        /// </summary>
+        /// <param name="taskId"> Id задачи</param>
+        /// <param name="userId"> Id исполнителя или заказчика </param>
         public void CancelTask( Guid taskId, Guid userId )
         {
-            // TODO. Some code here.
+            var isExecutor = IsDigitalTaskExecutor( taskId, userId );
+            var isOwner    = IsDigitalTaskOwner( taskId, userId );
+            if( !isOwner && !isExecutor ) return;
+
+            ChangeTaskState( taskId, DigitalTaskState.Created );
         }
+
+
+        /// <summary>
+        /// На какое состояние изменить.
+        /// </summary>
+        /// <param name="newTaskState"></param>
+        private void ChangeTaskState( Guid taskId, DigitalTaskState newTaskState )
+            => _db.DigitalTasks
+                .Where( t => t.Id == taskId )
+                .Set( x => x.TaskState, x => newTaskState );
     }
 }
