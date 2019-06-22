@@ -22,6 +22,10 @@ namespace DigitalVolunteer.Web.Controllers
         }
 
 
+        /// <summary>
+        /// Просмотреть все задачи.
+        /// Возможна сортировка по категориям.
+        /// </summary>
         [HttpGet( "[controller]/All" )]
         public IActionResult Index( Guid? categoryId = null )
         {
@@ -32,6 +36,9 @@ namespace DigitalVolunteer.Web.Controllers
         }
 
 
+        /// <summary>
+        /// Информация по задаче.
+        /// </summary>
         [HttpGet( "[controller]/{id}" )]
         public IActionResult Details( Guid id ) => View( Get( id ) );
 
@@ -41,6 +48,9 @@ namespace DigitalVolunteer.Web.Controllers
         public IActionResult Add() => View( new DigitalTask() );
 
 
+        /// <summary>
+        /// Добавление новой задачи.
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Add( DigitalTask item )
@@ -56,6 +66,9 @@ namespace DigitalVolunteer.Web.Controllers
         public IActionResult Update( Guid id ) => View( Get( id ) );
 
 
+        /// <summary>
+        /// Обновление информации по задаче.
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Update( DigitalTask item )
@@ -66,6 +79,11 @@ namespace DigitalVolunteer.Web.Controllers
         }
 
 
+        /// <summary>
+        /// Удаление задачи.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpGet]
         public IActionResult Remove( Guid id )
@@ -75,6 +93,9 @@ namespace DigitalVolunteer.Web.Controllers
         }
 
 
+        /// <summary>
+        /// Список задач пользователя.
+        /// </summary>
         [Authorize]
         [HttpGet]
         public IActionResult MyTasks( TaskSelectorMode selectorMode, Guid? categoryId = null ) => View( new TaskViewModel
@@ -85,27 +106,68 @@ namespace DigitalVolunteer.Web.Controllers
         } );
 
 
+        /// <summary>
+        /// Предложить услуги по выполнению задачи.
+        /// </summary>
         [Authorize]
         [HttpGet]
-        public IActionResult OfferTaskHelp( Guid taskId )
+        public IActionResult OfferHelp( Guid taskId )
         {
-            _taskService.OfferTask( User.GetId().Value, taskId );
+            _taskService.OfferHelp( taskId, User.GetId().Value );
             return RedirectToDetails( taskId );
         }
 
 
+        /// <summary>
+        /// Принять предложение по выполнению задачи.
+        /// </summary>
         [Authorize]
         [HttpGet]
-        public IActionResult CancelTaskHelp( Guid taskId )
+        public IActionResult ConfirmOffer( Guid taskId )
         {
-            _taskService.CancelOffer( User.GetId().Value, taskId );
+            _taskService.ConfirmOffer( taskId, User.GetId().Value );
+            return RedirectToDetails( taskId );
+        }
+
+
+        /// <summary>
+        /// Подтвердить выполнение задачи.
+        /// </summary>
+        [Authorize]
+        [HttpGet]
+        public IActionResult ConfirmComplete( Guid taskId )
+        {
+            _taskService.ConfirmComplete( taskId, User.GetId().Value );
+            return RedirectToDetails( taskId );
+        }
+
+
+        /// <summary>
+        /// Завершить задание.
+        /// </summary>
+        [Authorize]
+        [HttpGet]
+        public IActionResult CloseTask( Guid taskId )
+        {
+            _taskService.CloseTask( taskId, User.GetId().Value );
+            return RedirectToDetails( taskId );
+        }
+
+
+        /// <summary>
+        /// Отменить задание.
+        /// </summary>
+        [Authorize]
+        [HttpGet]
+        public IActionResult CancelTask( Guid taskId )
+        {
+            _taskService.CancelTask( taskId, User.GetId().Value );
             return RedirectToDetails( taskId );
         }
 
 
         [NonAction]
-        private IActionResult RedirectToMainPage()
-            => RedirectToAction( "Index", "Task" );
+        private IActionResult RedirectToMainPage() => RedirectToAction( "Index", "Task" );
 
 
         [NonAction]

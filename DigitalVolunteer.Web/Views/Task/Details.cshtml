@@ -1,12 +1,11 @@
 ﻿@model DigitalTask
-@inject ITaskRepository TaskRepository
 @inject TaskService TaskService
 @{
     var userId = User.GetId();
     var isTaskOwner = TaskService.IsDigitalTaskOwner( Model.Id, userId );
     var isTaskExecutor = TaskService.IsDigitalTaskExecutor( Model.Id, userId );
     var hasExecutor = TaskService.HasIsDigitalTaskExecutor( Model.Id );
-    var isUserLogined = User.Identities.Where(o => o.Claims.Count() > 0).FirstOrDefault() != null;
+    var isUserLogined = User.Identities.FirstOrDefault(o => o.Claims.Any()) != null; // TODO.
 }
 <div class="d-flex justify-content-center">
     <div class="col-md-8 col-sm-12">
@@ -46,35 +45,115 @@
                     <br />
                 }
                 <div class="form-group text-center">
-
-                        @if( isTaskOwner && hasExecutor )
-                        {
-                            <button class="btn btn-outline-secondary col-md-6 col-sm-4 disabled">Задача в процессе выполнения</button>
-                        }
-                        @if( isTaskExecutor )
-                        {
-                            <a asp-controller="Task" asp-action="CancelTaskHelp" asp-route-taskid="@Model.Id"
-                               class="btn btn-outline-danger col-md-6 col-sm-4">
-                                Отменить заявку
-                            </a>
-                        }
-                        else if( !hasExecutor )
-                        {
-                            if( !isTaskOwner && isUserLogined )
+                    @switch( TaskService.GetDigitalTaskState( Model.Id ) )
+                    {
+                        case DigitalTaskState.Created:
+                            if( !isTaskOwner )
                             {
-                                <a asp-controller="Task" asp-action="OfferTaskHelp" asp-route-taskid="@Model.Id"
+                                <a asp-controller="Task" asp-action="OfferHelp" asp-route-taskid="@Model.Id"
                                    class="btn btn-outline-success col-md-6 col-sm-4">
                                     Предложить свои услуги
                                 </a>
                             }
-                            else
+                            break;
+                        case DigitalTaskState.Unconfirmed:
+                            if( isTaskOwner )
                             {
-                                <a asp-controller="Account" asp-action="Login" asp-route-taskid="@Model.Id"
-                                   class="btn btn-outline-success col-md-6 col-sm-4">
-                                    Предложить свои услуги
-                                </a>
+                                <div class="col-md-12 row">
+                                    <div class="col-md-6 col-sm-2">
+                                        <a asp-controller="Task" asp-action="ConfirmOffer" asp-route-taskid="@Model.Id"
+                                           class="btn btn-outline-success col-md-12 col-sm-12">
+                                            Принять заявку
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6 col-sm-2">
+                                        <a asp-controller="Task" asp-action="CancelTask" asp-route-taskid="@Model.Id"
+                                           class="btn btn-outline-danger col-md-12 col-sm-12">
+                                            Отклонить заявку
+                                        </a>
+                                    </div>
+                                </div>
                             }
-                        }
+                            if( isTaskExecutor )
+                            {
+                                <div class="text-center">
+                                    <a asp-controller="Task" asp-action="CancelTask" asp-route-taskid="@Model.Id"
+                                       class="btn btn-outline-danger col-md-6 col-sm-4">
+                                        Отменить заявку
+                                    </a>
+                                </div>
+                            }
+                            break;
+                        case DigitalTaskState.Confirmed:
+                            if( isTaskOwner )
+                            {
+                                <div class="col-md-12 row">
+                                    <div class="col-md-6 col-sm-2">
+                                        <button class="btn btn-outline-info col-md-12 col-sm-12 disabled">В процессе выполнения</button>
+                                    </div>
+                                    <div class="col-md-6 col-sm-2">
+                                        <a asp-controller="Task" asp-action="CancelTask" asp-route-taskid="@Model.Id"
+                                           class="btn btn-outline-danger col-md-12 col-sm-12">
+                                            Отклонить заявку
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                            if( isTaskExecutor )
+                            {
+                                <div class="col-md-12 row">
+                                    <div class="col-md-6 col-sm-2">
+                                        <a asp-controller="Task" asp-action="ConfirmComplete" asp-route-taskid="@Model.Id"
+                                           class="btn btn-outline-success col-md-12 col-sm-12">
+                                            Подтвердить выполнение
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6 col-sm-2">
+                                        <a asp-controller="Task" asp-action="CancelTask" asp-route-taskid="@Model.Id"
+                                           class="btn btn-outline-danger col-md-12 col-sm-12">
+                                            Отменить заявку
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                            break;
+                        case DigitalTaskState.Completed:
+                            if( isTaskOwner )
+                            {
+                                <div class="col-md-12 row">
+                                    <div class="col-md-6 col-sm-2">
+                                        <a asp-controller="Task" asp-action="CloseTask" asp-route-taskid="@Model.Id"
+                                           class="btn btn-outline-success col-md-12 col-sm-12">
+                                            Подтвердить выполнение
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6 col-sm-2">
+                                        <a asp-controller="Task" asp-action="CancelTask" asp-route-taskid="@Model.Id"
+                                           class="btn btn-outline-danger col-md-12 col-sm-12">
+                                            Отклонить заявку
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                            if( isTaskExecutor )
+                            {
+                                <div class="col-md-12 row">
+                                    <div class="col-md-6 col-sm-2">
+                                        <button class="btn btn-outline-warning col-md-12 col-sm-12 disabled">Задание проверяется</button>
+                                    </div>
+                                    <div class="col-md-6 col-sm-2">
+                                        <a asp-controller="Task" asp-action="CancelTask" asp-route-taskid="@Model.Id"
+                                           class="btn btn-outline-danger col-md-12 col-sm-12">
+                                            Отменить заявку
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                            break;
+                        case DigitalTaskState.Closed:
+                            <button class="btn btn-outline-secondary col-md-6 col-sm-4 disabled">Задание завершено</button>
+                            break;
+                    }
                 </div>
             </div>
             <div class="card-footer">

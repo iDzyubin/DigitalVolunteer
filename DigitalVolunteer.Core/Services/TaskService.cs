@@ -52,35 +52,6 @@ namespace DigitalVolunteer.Core.Services
             => _tasks.Get( t => t.OwnerId == userId ).Count;
 
 
-        // TODO. DEPRECATED.
-        /// <summary>
-        /// Добавить исполнителя на задание.
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="taskId"></param>
-        public void OfferTask( Guid userId, Guid taskId )
-        {
-            var task = _tasks.Get(taskId);
-            task.ExecutorId = userId;
-            _tasks.Update( task );
-        }
-
-        // TODO. DEPRECATED.
-        /// <summary>
-        /// Убрать исполнителя с задания.
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="taskId"></param>
-        public void CancelOffer( Guid userId, Guid taskId )
-        {
-            var task = _tasks.Get(taskId);
-            if( userId != task.ExecutorId ) return;
-
-            task.ExecutorId = null;
-            _tasks.Update( task );
-        }
-
-
         /// <summary>
         /// Проверяем, является ли пользователь владельцем задания.
         /// </summary>
@@ -130,8 +101,9 @@ namespace DigitalVolunteer.Core.Services
 
             _db.DigitalTasks
                 .Where( t => t.Id == taskId )
-                .Set( t => t.TaskState, x => DigitalTaskState.Unconfirmed )
-                .Set( t => t.ExecutorId, x => taskId );
+                .Set( t => t.TaskState, DigitalTaskState.Unconfirmed )
+                .Set( t => t.ExecutorId, userId )
+                .Update();
         }
 
 
@@ -185,17 +157,20 @@ namespace DigitalVolunteer.Core.Services
             _db.DigitalTasks
                 .Where( t => t.Id == taskId )
                 .Set( t => t.TaskState, x => DigitalTaskState.Created )
-                .Set( t => t.ExecutorId, x => null );
+                .Set( t => t.ExecutorId, x => null )
+                .Update();
         }
 
 
         /// <summary>
         /// На какое состояние изменить.
         /// </summary>
+        /// <param name="taskId"></param>
         /// <param name="newTaskState"></param>
         private void ChangeTaskState( Guid taskId, DigitalTaskState newTaskState )
             => _db.DigitalTasks
                 .Where( t => t.Id == taskId )
-                .Set( x => x.TaskState, x => newTaskState );
+                .Set( x => x.TaskState, x => newTaskState )
+                .Update();
     }
 }
