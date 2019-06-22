@@ -7,7 +7,7 @@
 	DataContextName = "MainDb";
 	GetSchemaOptions.IncludedSchemas = new[] { "dv" };
 
-	LoadPostgreSQLMetadata( "localhost", "5432", "digital_volunteer", "postgres", "6552" );
+	LoadPostgreSQLMetadata( "postgres.cgkwtwxbbklg.us-east-2.rds.amazonaws.com", "5432", "postgres", "postgres", "postgres" );
 	
 	var enums = new Dictionary<string, string>
 	{

@@ -17,9 +17,9 @@ using LinqToDB.Mapping;
 namespace DigitalVolunteer.Core.DataModels
 {
 	/// <summary>
-	/// Database       : digital_volunteer
-	/// Data Source    : tcp://localhost:5432
-	/// Server Version : 11.3
+	/// Database       : postgres
+	/// Data Source    : tcp://postgres.cgkwtwxbbklg.us-east-2.rds.amazonaws.com:5432
+	/// Server Version : 10.6
 	/// </summary>
 	public partial class MainDb : LinqToDB.Data.DataConnection
 	{
@@ -148,7 +148,6 @@ namespace DigitalVolunteer.Core.DataModels
 		[Column("status"),                         NotNull] public UserStatus Status           { get; set; } // integer
 		[Column("is_admin"),                       NotNull] public bool       IsAdmin          { get; set; } // boolean
 		[Column("registration_date"),    Nullable         ] public DateTime?  RegistrationDate { get; set; } // timestamp (6) without time zone
-		[Column("is_executor"),                    NotNull] public bool       IsExecutor       { get; set; } // boolean
 
 		#region Associations
 

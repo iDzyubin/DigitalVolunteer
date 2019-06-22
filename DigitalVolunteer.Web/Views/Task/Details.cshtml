@@ -32,7 +32,7 @@
                     <div class="col-md-8">@(String.IsNullOrEmpty( Model.Description ) ? "Описание отсутствует" : Model.Description)</div>
                 </div>
                 <br />
-                @if( TaskService.IsDigitalTaskOwner( Model.Id, User.GetId().Value ) && hasExecutor )
+                @if(  isTaskOwner && hasExecutor )
                 {
                     <div class="col-md-12 row">
                         <div class="col-md-4"><b>Исполнитель</b></div>
