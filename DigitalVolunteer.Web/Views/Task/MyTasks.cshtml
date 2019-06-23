@@ -9,8 +9,25 @@
                 <option value="" selected disabled hidden>Выберите категорию задачи</option>
             </select>
             <span asp-validation-for="CategoryId" class="text-danger"></span>
+            <br />
+            <div class="d-flex justify-content-center">
+                <div class="btn-group btn-group-toggle" style="width: 100%;" data-toggle="buttons">
+                    <label class="btn btn-outline-primary col-md-4 col-sm-4 @(Model.SelectorMode == TaskSelectorMode.All ? "active" : "")">
+                        <input asp-for="SelectorMode" type="radio" onchange="this.form.submit()" value="@TaskSelectorMode.All" />
+                        @TaskSelectorMode.All.GetDisplayName()
+                    </label>
+                    <label class="btn btn-outline-primary col-md-4 col-sm-4 @(Model.SelectorMode == TaskSelectorMode.Owner ? "active" : "")">
+                        <input asp-for="SelectorMode" type="radio" onchange="this.form.submit()" value="@TaskSelectorMode.Owner" />
+                        @TaskSelectorMode.Owner.GetDisplayName()
+                    </label>
+                    <label class="btn btn-outline-primary col-md-4 col-sm-4 @(Model.SelectorMode == TaskSelectorMode.Executor ? "active" : "")">
+                        <input asp-for="SelectorMode" type="radio" onchange="this.form.submit()" value="@TaskSelectorMode.Executor" />
+                        @TaskSelectorMode.Executor.GetDisplayName()
+                    </label>
+                </div>
+            </div>
+            <br />
             <div class="form-group text-center">
-                <br />
                 <button type="submit" class="btn btn-outline-info col-md-4 col-sm-4">Поиск</button>
             </div>
         </form>
@@ -18,25 +35,6 @@
 </div>
 <br />
 
-<div class="d-flex justify-content-center">
-    <div class="btn-group btn-group-toggle col-md-8 col-sm-12" data-toggle="buttons">
-        <label class="btn btn-outline-primary col-md-4 col-sm-4 @(Model.SelectorMode == TaskSelectorMode.All ? "active" : "")"
-               onclick="location.replace('@Url.Action( "MyTasks", new { selectorMode = TaskSelectorMode.All } )')">
-            <input asp-for="SelectorMode" type="radio" value="@TaskSelectorMode.All" id="task-format" />
-            @TaskSelectorMode.All.GetDisplayName()
-        </label>
-        <label class="btn btn-outline-primary col-md-4 col-sm-4 @(Model.SelectorMode == TaskSelectorMode.Owner ? "active" : "")"
-               onclick="location.replace('@Url.Action( "MyTasks", new { selectorMode = TaskSelectorMode.Owner } )')">
-            <input asp-for="SelectorMode" type="radio" value="@TaskSelectorMode.Owner" id="task-format" />
-            @TaskSelectorMode.Owner.GetDisplayName()
-        </label>
-        <label class="btn btn-outline-primary col-md-4 col-sm-4 @(Model.SelectorMode == TaskSelectorMode.Executor ? "active" : "")"
-               onclick="location.replace('@Url.Action( "MyTasks", new { selectorMode = TaskSelectorMode.Executor } )')">
-            <input asp-for="SelectorMode" type="radio" value="@TaskSelectorMode.Executor" id="task-format" />
-            @TaskSelectorMode.Executor.GetDisplayName()
-        </label>
-    </div>
-</div>
 <br />
 @if( Model.Tasks.Count == 0 )
 {

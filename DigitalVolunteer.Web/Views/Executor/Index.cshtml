@@ -1,6 +1,8 @@
 ﻿@inject IUserRepository UserRepository
-
-@if( UserRepository.GetAll().Count == 0 )
+@{ 
+    var executors = UserRepository.Get( u => u.Id != ViewBag.UserId );
+}
+@if( executors.Count == 0 )
 {
     <h1 class="display-4 text-center">На данный момент список исполнителей пуст</h1>
 }
@@ -10,7 +12,7 @@ else
     <br />
     <div class="d-flex justify-content-center">
         <div class="col-md-8 col-sm-12">
-            @foreach( var executor in UserRepository.GetAll() )
+            @foreach( var executor in executors )
             {
                 <partial name="_ExecutorCard" model="@executor" />
             }
