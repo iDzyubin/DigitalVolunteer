@@ -42,6 +42,7 @@ namespace DigitalVolunteer.Core.Services
         public List<TaskTitle> GetAllUserTaskTitles( Guid? userId )
             => userId.HasValue
                 ? _tasks.GetMyTasks( userId.Value, TaskSelectorMode.Owner, null )
+                    .Where( x => x.TaskState != DigitalTaskState.Closed )
                     .OrderByDescending( t => t.StartDate )
                     .Select( t => new TaskTitle { Id = t.Id, Title = t.Title } )
                     .ToList()
