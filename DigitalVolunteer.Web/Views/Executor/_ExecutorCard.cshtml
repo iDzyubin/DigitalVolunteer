@@ -32,42 +32,21 @@
 <div class="modal fade" id="task-modal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-
-            <!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title">Предложить задание</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <form asp-controller="Executor" asp-action="OfferTask" method="post">
-                <!-- Modal body -->
+            <form asp-action="OfferTask" method="post">
                 <div class="modal-body">
-                    <select id="task-id-@Model.Id" name="taskid" class="form-control" asp-items="tasks">
+                    <select name="taskid" class="form-control" asp-items="tasks">
                         <option value="" selected disabled hidden>Выберите задачу</option>
                     </select>
-                    <input id="executor-id-@Model.Id" value="@Model.Id" type="hidden" />
+                    <input name="executorid"  value="@Model.Id" type="hidden" />
                 </div>
-
-                <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button id="btn-send-@Model.Id" type="submit" class="btn btn-outline-success" data-dismiss="modal">Отправить</button>
+                    <button type="submit" class="btn btn-outline-success" data-dismiss="modal">Отправить</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-<!--
-    Ожидаемое поведение: Хватает нужный id
-    Реальность: Хватает первый попавшийся
--->
-<script type="text/javascript">
-    $(function () {
-        $('#btn-send-@Model.Id').on("click", function () {
-            $.post("@Url.Action( "OfferTask" )",
-            {
-                taskId: $('#task-id-@Model.Id').val(),
-                executorId: $('#executor-id-@Model.Id').val()
-            });
-        });
-    });
-</script>
