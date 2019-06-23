@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$USER_HOME$/.nuget/packages/linq2db.postgresql/2.7.2/contentFiles/any/any/LinqToDB.Templates" t="Include">
+      <e p="CopyMe.PostgreSQL.tt.txt" t="Include" />
+      <e p="DataAnnotations.ttinclude" t="Include" />
+      <e p="DataModel.ttinclude" t="Include" />
+      <e p="EditableObject.ttinclude" t="Include" />
+      <e p="Humanizer.ttinclude" t="Include" />
+      <e p="LinqToDB.PostgreSQL.Tools.ttinclude" t="Include" />
+      <e p="LinqToDB.PostgreSQL.ttinclude" t="Include" />
+      <e p="LinqToDB.Tools.ttinclude" t="Include" />
+      <e p="LinqToDB.ttinclude" t="Include" />
+      <e p="MultipleFiles.ttinclude" t="Include" />
+      <e p="NotifyDataErrorInfo.ttinclude" t="Include" />
+      <e p="NotifyPropertyChanged.ttinclude" t="Include" />
+      <e p="ObsoleteAttributes.ttinclude" t="Include" />
+      <e p="PluralizationService.ttinclude" t="Include" />
+      <e p="T4Model.ttinclude" t="Include" />
+      <e p="Validation.ttinclude" t="Include" />
+    </e>
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p="DigitalVolunteer.Core" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="DataAccess" t="Include">
+          <e p="Linq2DbSettings.cs" t="Include" />
+          <e p="Scripts" t="Include" />
+        </e>
+        <e p="DataModels" t="Include">
+          <e p="Database.generated.cs" t="Include" />
+          <e p="Database.tt" t="Include" />
+          <e p="Enums.cs" t="Include" />
+        </e>
+        <e p="DigitalVolunteer.Core.csproj" t="IncludeRecursive" />
+        <e p="extensions" t="Include">
+          <e p="DateTimeExtensions.cs" t="Include" />
+          <e p="EnumExtensions.cs" t="Include" />
+          <e p="TaskExtensions.cs" t="Include" />
+          <e p="UserExtensions.cs" t="Include" />
+        </e>
+        <e p="Interfaces" t="Include">
+          <e p="ICategoryRepository.cs" t="Include" />
+          <e p="IRepository.cs" t="Include" />
+          <e p="ITaskRepository.cs" t="Include" />
+          <e p="IUserRepository.cs" t="Include" />
+        </e>
+        <e p="LinqToDB.Templates" t="Include">
+          <e p="CopyMe.PostgreSQL.tt.txt" t="Include" />
+          <e p="DataAnnotations.ttinclude" t="Include" />
+          <e p="DataModel.ttinclude" t="Include" />
+          <e p="EditableObject.ttinclude" t="Include" />
+          <e p="Humanizer.ttinclude" t="Include" />
+          <e p="LinqToDB.PostgreSQL.Tools.ttinclude" t="Include" />
+          <e p="LinqToDB.PostgreSQL.ttinclude" t="Include" />
+          <e p="LinqToDB.Tools.ttinclude" t="Include" />
+          <e p="LinqToDB.ttinclude" t="Include" />
+          <e p="MultipleFiles.ttinclude" t="Include" />
+          <e p="NotifyDataErrorInfo.ttinclude" t="Include" />
+          <e p="NotifyPropertyChanged.ttinclude" t="Include" />
+          <e p="ObsoleteAttributes.ttinclude" t="Include" />
+          <e p="PluralizationService.ttinclude" t="Include" />
+          <e p="T4Model.ttinclude" t="Include" />
+          <e p="Validation.ttinclude" t="Include" />
+        </e>
+        <e p="Models" t="Include">
+          <e p="TaskName.cs" t="Include" />
+          <e p="UserInfoModel.cs" t="Include" />
+          <e p="UserRegistrationModel.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.2" t="Include">
+              <e p="DigitalVolunteer.Core.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Repositories" t="Include">
+          <e p="CategoryRepository.cs" t="Include" />
+          <e p="TaskRepository.cs" t="Include" />
+          <e p="UserRepository.cs" t="Include" />
+        </e>
+        <e p="Services" t="Include">
+          <e p="CategoryService.cs" t="Include" />
+          <e p="GreetingService.cs" t="Include" />
+          <e p="NotificationService.cs" t="Include" />
+          <e p="PasswordHashService.cs" t="Include" />
+          <e p="TaskService.cs" t="Include" />
+          <e p="UserService.cs" t="Include" />
+        </e>
+        <e p="Validators" t="Include">
+          <e p="CategoryValidator.cs" t="Include" />
+          <e p="TaskValidator.cs" t="Include" />
+        </e>
+      </e>
+      <e p="DigitalVolunteer.DBUpdate" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="DigitalVolunteer.DBUpdate.csproj" t="IncludeRecursive" />
+        <e p="Migrations" t="Include">
+          <e p="01_INIT.cs" t="Include" />
+        </e>
+        <e p="MigratorRunner.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.2" t="Include">
+              <e p="DigitalVolunteer.DBUpdate.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="DigitalVolunteer.sln" t="IncludeFlat" />
+      <e p="DigitalVolunteer.Web" t="IncludeRecursive">
+        <e p="appsettings.Development.json" t="Include" />
+        <e p="appsettings.json" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Controllers" t="Include">
+          <e p="AccountController.cs" t="Include" />
+          <e p="CategoryController.cs" t="Include" />
+          <e p="ExecutorController.cs" t="Include" />
+          <e p="HomeController.cs" t="Include" />
+          <e p="TaskController.cs" t="Include" />
+          <e p="UserController.cs" t="Include" />
+        </e>
+        <e p="DigitalVolunteer.Web.csproj" t="IncludeRecursive" />
+        <e p="Filters" t="Include">
+          <e p="UserClaimsFilter.cs" t="Include" />
+        </e>
+        <e p="Models" t="Include">
+          <e p="EditUserViewModel.cs" t="Include" />
+          <e p="ErrorViewModel.cs" t="Include" />
+          <e p="LoginViewModel.cs" t="Include" />
+          <e p="ProfileViewModel.cs" t="Include" />
+          <e p="RegistrationViewModel.cs" t="Include" />
+          <e p="TaskViewModel.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.2" t="Include">
+              <e p="DigitalVolunteer.Web.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="launchSettings.json" t="Include" />
+        </e>
+        <e p="Security" t="Include">
+          <e p="ClaimsExtensions.cs" t="Include" />
+          <e p="DvClaimTypes.cs" t="Include" />
+        </e>
+        <e p="Startup.cs" t="Include" />
+        <e p="Views" t="Include">
+          <e p="_ViewImports.cshtml" t="Include" />
+          <e p="_ViewStart.cshtml" t="Include" />
+          <e p="Account" t="Include">
+            <e p="Login.cshtml" t="Include" />
+            <e p="Registration.cshtml" t="Include" />
+          </e>
+          <e p="Category" t="Include">
+            <e p="Add.cshtml" t="Include" />
+            <e p="Index.cshtml" t="Include" />
+            <e p="Update.cshtml" t="Include" />
+          </e>
+          <e p="Executor" t="Include">
+            <e p="_ExecutorCard.cshtml" t="Include" />
+            <e p="Index.cshtml" t="Include" />
+          </e>
+          <e p="Home" t="Include">
+            <e p="Index.cshtml" t="Include" />
+            <e p="Privacy.cshtml" t="Include" />
+          </e>
+          <e p="Shared" t="Include">
+            <e p="_CookieConsentPartial.cshtml" t="Include" />
+            <e p="_CrudLayout.cshtml" t="Include" />
+            <e p="_Layout.cshtml" t="Include" />
+            <e p="_ValidationScriptsPartial.cshtml" t="Include" />
+            <e p="Error.cshtml" t="Include" />
+            <e p="Profile.cshtml" t="Include" />
+          </e>
+          <e p="Task" t="Include">
+            <e p="_TaskCard.cshtml" t="Include" />
+            <e p="Add.cshtml" t="Include" />
+            <e p="Details.cshtml" t="Include" />
+            <e p="Index.cshtml" t="Include" />
+            <e p="MyTasks.cshtml" t="Include" />
+            <e p="Update.cshtml" t="Include" />
+          </e>
+          <e p="User" t="Include">
+            <e p="Add.cshtml" t="Include" />
+            <e p="Edit.cshtml" t="Include" />
+            <e p="List.cshtml" t="Include" />
+          </e>
+        </e>
+        <e p="wwwroot" t="Include">
+          <e p="css" t="Include">
+            <e p="site.css" t="Include" />
+          </e>
+          <e p="favicon.ico" t="Include" />
+          <e p="js" t="Include">
+            <e p="site.js" t="Include" />
+          </e>
+          <e p="lib" t="Include">
+            <e p="bootstrap" t="Include">
+              <e p="dist" t="Include">
+                <e p="css" t="Include">
+                  <e p="bootstrap-grid.css" t="Include" />
+                  <e p="bootstrap-grid.css.map" t="Include" />
+                  <e p="bootstrap-grid.min.css" t="Include" />
+                  <e p="bootstrap-grid.min.css.map" t="Include" />
+                  <e p="bootstrap-reboot.css" t="Include" />
+                  <e p="bootstrap-reboot.css.map" t="Include" />
+                  <e p="bootstrap-reboot.min.css" t="Include" />
+                  <e p="bootstrap-reboot.min.css.map" t="Include" />
+                  <e p="bootstrap.css" t="Include" />
+                  <e p="bootstrap.css.map" t="Include" />
+                  <e p="bootstrap.min.css" t="Include" />
+                  <e p="bootstrap.min.css.map" t="Include" />
+                </e>
+                <e p="js" t="Include">
+                  <e p="bootstrap.bundle.js" t="Include" />
+                  <e p="bootstrap.bundle.js.map" t="Include" />
+                  <e p="bootstrap.bundle.min.js" t="Include" />
+                  <e p="bootstrap.bundle.min.js.map" t="Include" />
+                  <e p="bootstrap.js" t="Include" />
+                  <e p="bootstrap.js.map" t="Include" />
+                  <e p="bootstrap.min.js" t="Include" />
+                  <e p="bootstrap.min.js.map" t="Include" />
+                </e>
+              </e>
+              <e p="LICENSE" t="Include" />
+            </e>
+            <e p="jquery" t="Include">
+              <e p="dist" t="Include">
+                <e p="jquery.js" t="Include" />
+                <e p="jquery.min.js" t="Include" />
+                <e p="jquery.min.map" t="Include" />
+              </e>
+              <e p="LICENSE.txt" t="Include" />
+            </e>
+            <e p="jquery-validation" t="Include">
+              <e p="dist" t="Include">
+                <e p="additional-methods.js" t="Include" />
+                <e p="additional-methods.min.js" t="Include" />
+                <e p="jquery.validate.js" t="Include" />
+                <e p="jquery.validate.min.js" t="Include" />
+              </e>
+              <e p="LICENSE.md" t="Include" />
+            </e>
+            <e p="jquery-validation-unobtrusive" t="Include">
+              <e p="jquery.validate.unobtrusive.js" t="Include" />
+              <e p="jquery.validate.unobtrusive.min.js" t="Include" />
+              <e p="LICENSE.txt" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+    <e p="$USER_HOME$/Library/Caches/Rider2019.1/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/Rider2019.1/resharper-host/local/Transient/ReSharperHost/v191/SolutionCaches/_DigitalVolunteer.172389009.00" t="ExcludeRecursive" />
+    <e p="$APPLICATION_CONFIG_DIR$/consoles/db" t="IncludeRecursive" />
+    <e p="$APPLICATION_CONFIG_DIR$/extensions" t="IncludeRecursive" />
+    <e p="$APPLICATION_CONFIG_DIR$/scratches" t="IncludeRecursive" />
+  </component>
+</project>
