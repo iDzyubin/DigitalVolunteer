@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DigitalVolunteer.Core\DigitalVolunteer.Core.csproj" />
+    <ProjectReference Include="..\DigitalVolunteer.DBUpdate\DigitalVolunteer.DBUpdate.csproj" />
   </ItemGroup>
 
 </Project>

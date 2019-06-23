@@ -82,7 +82,7 @@ namespace DigitalVolunteer.Core.Repositories
 
         public void Add( DigitalTask item ) => throw new NotImplementedException();
 
-
+        //TODO
         public List<DigitalTask> GetAll( Guid categoryId )
         {
             var tasks = _db.DigitalTasks.Where( x => x.CategoryId == categoryId ).ToList();

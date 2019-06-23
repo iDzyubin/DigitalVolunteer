@@ -88,12 +88,6 @@
         </nav>
     </header>
     <div class="container">
-        <partial name="_CookieConsentPartial" />
-        @if( ViewBag.AlertMessage != null )
-        {
-            var type = ViewBag.AlertType ?? "alert-danger";
-            <div class="alert @type">@ViewBag.AlertMessage</div>
-        }
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
