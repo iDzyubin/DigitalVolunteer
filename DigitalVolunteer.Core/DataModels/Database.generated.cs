@@ -149,6 +149,7 @@ namespace DigitalVolunteer.Core.DataModels
 		[Column("status"),                         NotNull] public UserStatus Status           { get; set; } // integer
 		[Column("is_admin"),                       NotNull] public bool       IsAdmin          { get; set; } // boolean
 		[Column("registration_date"),    Nullable         ] public DateTime?  RegistrationDate { get; set; } // timestamp (6) without time zone
+		[Column("confirm_code"),         Nullable         ] public string     ConfirmCode      { get; set; } // character varying
 
 		#region Associations
 

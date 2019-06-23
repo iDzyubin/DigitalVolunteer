@@ -13,14 +13,16 @@ namespace DigitalVolunteer.Core.Services
         private readonly ICategoryRepository _categories;
         private readonly TaskService _taskService;
         private readonly PasswordHashService _hashService;
+        private readonly NotificationService _notificationService;
 
         public UserService( IUserRepository userRepository, ICategoryRepository categoryRepository,
-            TaskService taskService, PasswordHashService hashService )
+            TaskService taskService, PasswordHashService hashService, NotificationService notificationService )
         {
             _users = userRepository;
             _categories = categoryRepository;
             _taskService = taskService;
             _hashService = hashService;
+            _notificationService = notificationService;
         }
 
         public void Register( UserRegistrationModel model, bool isAdmin = false )
@@ -40,11 +42,14 @@ namespace DigitalVolunteer.Core.Services
                 Phone = model.Phone,
                 IsAdmin = isAdmin,
                 Status = UserStatus.Unconfirmed,
-                RegistrationDate = DateTime.Now
+                RegistrationDate = DateTime.Now,
+                ConfirmCode = Guid.NewGuid().ToString( "N" )
             };
             try
             {
                 _users.Add( user );
+                var url = $"/Account/Confirm?code={ user.ConfirmCode }";
+                _notificationService.SendAccountConfirmation( user.Email, url );
             }
             catch( Exception ex )
             {
@@ -76,17 +81,20 @@ namespace DigitalVolunteer.Core.Services
         {
             Success,
             UserNotExist,
+            UserNotConfirmed,
             PasswordNotMatch
         }
 
         public ValidationResult Validate( string email, string password )
         {
             var user = _users.GetByEmail( email );
-            return user == null
+            return (user == null || user.Status == UserStatus.Deleted)
                 ? ValidationResult.UserNotExist
-                : _hashService.ValidateHash( password, user.Password )
-                    ? ValidationResult.Success
-                    : ValidationResult.PasswordNotMatch;
+                : user.Status == UserStatus.Unconfirmed
+                    ? ValidationResult.UserNotConfirmed
+                    : _hashService.ValidateHash( password, user.Password )
+                        ? ValidationResult.Success
+                        : ValidationResult.PasswordNotMatch;
         }
 
         public User GetUser( Guid id )
@@ -140,6 +148,23 @@ namespace DigitalVolunteer.Core.Services
                 TasksCompleted = completedTasks.Count,
                 FavoriteCategory = favoriteCategory
             };
+        }
+
+        public void ConfirmAccount( string code )
+        {
+            var user = _users.Get( u => u.ConfirmCode == code ).FirstOrDefault() ?? throw new Exception( "Ссылка недействительна" );
+            switch( user.Status )
+            {
+                case UserStatus.Deleted:
+                    throw new Exception( "Аккаунт был удален" );
+                case UserStatus.Confirmed:
+                    throw new Exception( "Аккаунт был подтвержден ранее" );
+                case UserStatus.Unconfirmed:
+                case UserStatus.Unknown:
+                    user.Status = UserStatus.Confirmed;
+                    _users.Update( user );
+                    break;
+            }
         }
     }
 }

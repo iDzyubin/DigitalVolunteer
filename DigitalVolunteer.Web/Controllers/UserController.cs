@@ -67,7 +67,7 @@ namespace DigitalVolunteer.Web.Controllers
                 }
                 catch( Exception )
                 {
-                    ViewBag.ErrorMessage = "Произошла ошибка. Свяжитесь с администратором";
+                    ViewBag.AlertMessage = "Произошла ошибка. Свяжитесь с администратором";
                 }
             }
             return View( model );
@@ -109,7 +109,7 @@ namespace DigitalVolunteer.Web.Controllers
                 }
                 catch( Exception )
                 {
-                    ViewBag.ErrorMessage = "Произошла ошибка. Свяжитесь с администратором";
+                    ViewBag.AlertMessage = "Произошла ошибка. Свяжитесь с администратором";
                 }
             }
             return View( model );

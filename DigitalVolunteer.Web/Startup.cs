@@ -46,7 +46,10 @@ namespace DigitalVolunteer.Web
             LinqToDB.Data.DataConnection.DefaultSettings = new Linq2DbSettings( dbConnStr );
             services.AddSingleton<MainDb>();
 
-            
+            var smtpSettings = Configuration.GetSection( "SmtpClientSetting" ).Get<SmtpSettings>();
+            services.AddSingleton( smtpSettings );
+            services.AddScoped<NotificationService>();
+
             services.AddScoped<IUserRepository    ,     UserRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITaskRepository    ,     TaskRepository>();

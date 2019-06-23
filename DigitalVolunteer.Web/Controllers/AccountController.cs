@@ -44,7 +44,7 @@ namespace DigitalVolunteer.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Registration( RegistrationViewModel model )
+        public IActionResult Registration( RegistrationViewModel model )
         {
             if( ModelState.IsValid )
             {
@@ -58,12 +58,12 @@ namespace DigitalVolunteer.Web.Controllers
                         LastName = model.LastName,
                         Phone = model.Phone
                     } );
-                    await Authenticate( model.Email.ToLower() );
-                    return RedirectToAction( "Index", "Home" );
+                    ViewBag.AlertType = "alert-info";
+                    ViewBag.AlertMessage = "На указанный e-mail было отправленно письмо. Для завершения регистрации перейдите по ссылке в нем";
                 }
                 catch( Exception )
                 {
-                    ViewBag.ErrorMessage = "Произошла ошибка. Свяжитесь с администратором";
+                    ViewBag.AlertMessage = "Произошла ошибка. Свяжитесь с администратором";
                 }
             }
             return View( model );
@@ -93,6 +93,9 @@ namespace DigitalVolunteer.Web.Controllers
                     case UserService.ValidationResult.PasswordNotMatch:
                         ModelState.AddModelError( "Password", "Пароль введен неверно" );
                         break;
+                    case UserService.ValidationResult.UserNotConfirmed:
+                        ModelState.AddModelError( "Email", "Аккаунт не подтвержден" );
+                        break;
                 }
             }
             return View( model );
@@ -114,6 +117,22 @@ namespace DigitalVolunteer.Web.Controllers
             var userInfo = _userService.GetExtendedUserInfo( id.Value );
             ViewBag.LastTasks = _taskService.GetUserTaskTitles( id.Value, 3 );
             return View( userInfo );
+        }
+
+        [HttpGet]
+        public IActionResult Confirm( string code )
+        {
+            try
+            {
+                _userService.ConfirmAccount( code );
+                ViewBag.AlertMessage = "Регистрация завершена. Теперь Вы можете войти под своим аккаунтом";
+                ViewBag.AlertType = "alert-success";
+            }
+            catch( Exception e )
+            {
+                ViewBag.AlertMessage = e.Message;
+            }
+            return View( nameof( Login ) );
         }
     }
 }
