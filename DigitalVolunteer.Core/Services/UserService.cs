@@ -15,8 +15,14 @@ namespace DigitalVolunteer.Core.Services
         private readonly PasswordHashService _hashService;
         private readonly NotificationService _notificationService;
 
-        public UserService( IUserRepository userRepository, ICategoryRepository categoryRepository,
-            TaskService taskService, PasswordHashService hashService, NotificationService notificationService )
+        public UserService
+        (
+            IUserRepository userRepository,
+            ICategoryRepository categoryRepository,
+            TaskService taskService,
+            PasswordHashService hashService,
+            NotificationService notificationService
+        )
         {
             _users = userRepository;
             _categories = categoryRepository;
@@ -25,6 +31,7 @@ namespace DigitalVolunteer.Core.Services
             _notificationService = notificationService;
         }
 
+
         public void Register( UserRegistrationModel model, bool isAdmin = false )
         {
             var isEmailTaken = _users.Get( u => u.Email == model.Email ) == null;
@@ -32,6 +39,7 @@ namespace DigitalVolunteer.Core.Services
             {
                 throw new Exception( "Аккаунт с таким e-mail уже зарегистрирован" );
             }
+
             var user = new User
             {
                 Id = Guid.NewGuid(),
@@ -48,7 +56,7 @@ namespace DigitalVolunteer.Core.Services
             try
             {
                 _users.Add( user );
-                var url = $"/Account/Confirm?code={ user.ConfirmCode }";
+                var url = $"/Account/Confirm?code={user.ConfirmCode}";
                 _notificationService.SendAccountConfirmation( user.Email, url );
             }
             catch( Exception ex )
@@ -57,25 +65,22 @@ namespace DigitalVolunteer.Core.Services
             }
         }
 
-        public void Delete( Guid id )
-        {
-            _users.Remove( id );
-        }
+
+        public void Delete( Guid id ) => _users.Remove( id );
+
 
         public object GetUsers()
-        {
-            return _users.GetAll()
-                .Select( u => new UserInfoModel
-                {
-                    Id = u.Id,
-                    Email = u.Email,
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                    Description = u.Description,
-                    Phone = u.Phone,
-                    IsAdmin = u.IsAdmin
-                } ).ToList();
-        }
+            => _users.GetAll().Select( u => new UserInfoModel
+            {
+                Id = u.Id,
+                Email = u.Email,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                Description = u.Description,
+                Phone = u.Phone,
+                IsAdmin = u.IsAdmin
+            } ).ToList();
+
 
         public enum ValidationResult
         {
@@ -85,10 +90,11 @@ namespace DigitalVolunteer.Core.Services
             PasswordNotMatch
         }
 
+
         public ValidationResult Validate( string email, string password )
         {
             var user = _users.GetByEmail( email );
-            return (user == null || user.Status == UserStatus.Deleted)
+            return ( user == null || user.Status == UserStatus.Deleted )
                 ? ValidationResult.UserNotExist
                 : user.Status == UserStatus.Unconfirmed
                     ? ValidationResult.UserNotConfirmed
@@ -97,40 +103,40 @@ namespace DigitalVolunteer.Core.Services
                         : ValidationResult.PasswordNotMatch;
         }
 
-        public User GetUser( Guid id )
-        {
-            return _users.Get( id );
-        }
+
+        public User GetUser( Guid id ) => _users.Get( id );
+
 
         public UserInfoModel GetUserInfo( string email )
         {
             var user = _users.GetByEmail( email );
-            return user == null ? null : new UserInfoModel
-            {
-                Id = user.Id,
-                Email = user.Email,
-                IsAdmin = user.IsAdmin
-            };
+            return user == null
+                ? null
+                : new UserInfoModel
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    IsAdmin = user.IsAdmin
+                };
         }
 
-        public void EditUser( User user )
-        {
-            _users.Update( user );
-        }
+
+        public void EditUser( User user ) => _users.Update( user );
+
 
         public UserInfoModel GetExtendedUserInfo( Guid id )
         {
             var user = _users.Get( id );
             if( user == null )
-                throw new KeyNotFoundException( $"Пользователя с ID { id } нет в базе" );
+                throw new KeyNotFoundException( $"Пользователя с ID {id} нет в базе" );
 
             var createdCount = _taskService.GetCreatedTasksCount( id );
             var completedTasks = _taskService.GetCompletedTasks( id );
             var favoriteCategoryId = completedTasks
-                .GroupBy( t => t.CategoryId )
-                .Select( g => new { Id = g.Key, Count = g.Count() } )
-                .OrderByDescending( g => g.Count )
-                .FirstOrDefault()?.Id;
+                                    .GroupBy( t => t.CategoryId )
+                                    .Select( g => new { Id = g.Key, Count = g.Count() } )
+                                    .OrderByDescending( g => g.Count )
+                                    .FirstOrDefault()?.Id;
             var favoriteCategory = favoriteCategoryId == null
                 ? "Нет"
                 : _categories.Get( favoriteCategoryId.Value ).Name;
@@ -150,9 +156,11 @@ namespace DigitalVolunteer.Core.Services
             };
         }
 
+
         public void ConfirmAccount( string code )
         {
-            var user = _users.Get( u => u.ConfirmCode == code ).FirstOrDefault() ?? throw new Exception( "Ссылка недействительна" );
+            var user = _users.Get( u => u.ConfirmCode == code ).FirstOrDefault() ??
+                       throw new Exception( "Ссылка недействительна" );
             switch( user.Status )
             {
                 case UserStatus.Deleted:
@@ -166,5 +174,9 @@ namespace DigitalVolunteer.Core.Services
                     break;
             }
         }
+
+
+        public bool IsUserRegistered( string email )
+            => _users.GetByEmail( email.ToLower() ) != null;
     }
 }

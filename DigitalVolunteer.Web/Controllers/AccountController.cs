@@ -33,40 +33,48 @@ namespace DigitalVolunteer.Web.Controllers
                 new Claim( DvClaimTypes.IsAdmin, user.IsAdmin.ToString() )
             };
             var identity = new ClaimsIdentity( claims, "email" );
-            await HttpContext.SignInAsync( CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal( identity ) );
+            await HttpContext.SignInAsync( CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal( identity ) );
         }
 
         [HttpGet]
-        public IActionResult Registration()
-        {
-            return View();
-        }
+        public IActionResult Registration() => View();
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Registration( RegistrationViewModel model )
         {
-            if( ModelState.IsValid )
+            if( !ModelState.IsValid ) return View( model );
+
+            if( _userService.IsUserRegistered( model.Email ) )
             {
-                try
-                {
-                    _userService.Register( new UserRegistrationModel
-                    {
-                        Email = model.Email.ToLower(),
-                        Password = model.Password,
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        Phone = model.Phone
-                    } );
-                    ViewBag.AlertType = "alert-info";
-                    ViewBag.AlertMessage = "На указанный e-mail было отправленно письмо. Для завершения регистрации перейдите по ссылке в нем";
-                }
-                catch( Exception )
-                {
-                    ViewBag.AlertMessage = "Произошла ошибка. Свяжитесь с администратором";
-                }
+                ModelState.AddModelError( "email", "Аккаунт с таким e-mail адресом уже существует" );
+                return View( model );
             }
-            return View( model );
+
+            try
+            {
+                _userService.Register( new UserRegistrationModel
+                {
+                    Email = model.Email.ToLower(),
+                    Password = model.Password,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Phone = model.Phone
+                } );
+
+                ViewBag.AlertType = "alert-info";
+                ViewBag.AlertMessage =
+                    "На указанный e-mail было отправленно письмо. Для завершения регистрации перейдите по ссылке в нем";
+            }
+            catch( Exception e )
+            {
+                ViewBag.AlertType = "alert-danger";
+                ViewBag.AlertMessage = "Произошла ошибка. Свяжитесь с администратором";
+            }
+
+            return View( "RegistrationResult" );
         }
 
         [HttpGet]
@@ -98,6 +106,7 @@ namespace DigitalVolunteer.Web.Controllers
                         break;
                 }
             }
+
             return View( model );
         }
 
@@ -132,6 +141,7 @@ namespace DigitalVolunteer.Web.Controllers
             {
                 ViewBag.AlertMessage = e.Message;
             }
+
             return View( nameof( Login ) );
         }
     }

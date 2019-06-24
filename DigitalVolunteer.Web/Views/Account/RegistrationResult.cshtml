@@ -1,0 +1,20 @@
+<div class="alert @ViewBag.AlertType" role="alert">
+    @ViewBag.AlertMessage
+</div>
+
+<div class="d-flex justify-content-center">
+    <div class="col-md-8 col-sm-12 row">
+        <div class="col-md-6 col-sm-4">
+            <a asp-controller="Home" asp-action="Index"
+               class="btn btn-outline-info col-md-12 col-sm-12">
+                Вернуться на главную
+            </a>
+        </div>
+        <div class="col-md-6 col-sm-4">
+            <a asp-controller="Account" asp-action="Login"
+               class="btn btn-outline-info col-md-12 col-sm-12">
+                Авторизация
+            </a>
+        </div>
+    </div>
+</div>
