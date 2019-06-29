@@ -19,11 +19,19 @@ namespace DigitalVolunteer.Web.Controllers
 
 
         [HttpGet( "[controller]/All" )]
+<<<<<<< Updated upstream
         public IActionResult Index() => View();
+=======
+        public IActionResult Index( Guid? categoryId = null )
+        {
+            var tasks = _taskRepository.GetAll( categoryId );
+            return View( new TaskViewModel { CategoryId = categoryId ?? Guid.Empty, Tasks = tasks } );
+        }
+>>>>>>> Stashed changes
 
 
         [HttpGet( "[controller]/{id}" )]
-        public IActionResult Details( Guid id ) => View( Get( id ) );
+        public IActionResult Details( Guid id ) => View( _taskRepository.GetTaskDetails( id ) );
 
 
         [HttpGet]
@@ -47,7 +55,7 @@ namespace DigitalVolunteer.Web.Controllers
 
 
         [HttpGet]
-        public IActionResult Update( Guid id ) => View( Get( id ) );
+        public IActionResult Update( Guid id ) => View( _taskRepository.Get( id ) );
 
 
         [HttpPost]
@@ -71,6 +79,50 @@ namespace DigitalVolunteer.Web.Controllers
         }
 
 
+<<<<<<< Updated upstream
+=======
+        /// <summary>
+        /// Список задач пользователя.
+        /// </summary>
+        [Authorize]
+        [HttpGet]
+        public IActionResult MyTasks( TaskSelectorMode selectorMode, Guid? categoryId = null ) => View( new TaskViewModel
+        {
+            SelectorMode = selectorMode,
+            Tasks = _taskRepository.GetMyTasks( User.GetId().Value, selectorMode, categoryId ),
+            CategoryId = categoryId ?? Guid.Empty
+        } );
+
+
+        /// <summary>
+        /// Предложить заказчику услуги по выполнению задачи.
+        /// </summary>
+        [Authorize]
+        [HttpGet]
+        public IActionResult OfferHelp( Guid taskId )
+        {
+            _taskService.OfferHelp( taskId, User.GetId().Value );
+            return RedirectToDetails( taskId );
+        }
+
+
+        /// <summary>
+        /// Предложить задачу потенциальному исполнителю.
+        /// </summary>
+        [Authorize]
+        [HttpGet]
+        public IActionResult OfferTask( Guid taskId, Guid executorId )
+        {
+            _taskService.OfferTask( taskId, executorId );
+            return RedirectToDetails( taskId );
+        }
+
+
+        /// <summary>
+        /// Принять предложение по выполнению задачи.
+        /// </summary>
+        [Authorize]
+>>>>>>> Stashed changes
         [HttpGet]
         public IActionResult MyTasks( TaskSelectorMode selectorMode )
         {
@@ -92,11 +144,16 @@ namespace DigitalVolunteer.Web.Controllers
 
 
         [NonAction]
+<<<<<<< Updated upstream
         private IActionResult RedirectToMainPage()
             => RedirectToAction( "Index", "Task" );
 
 
         [NonAction]
         private DigitalTask Get( Guid id ) => _taskRepository.Get( id );
+=======
+        private IActionResult RedirectToDetails( Guid id )
+            => RedirectToAction( "Details", "Task", new { id } );
+>>>>>>> Stashed changes
     }
 }

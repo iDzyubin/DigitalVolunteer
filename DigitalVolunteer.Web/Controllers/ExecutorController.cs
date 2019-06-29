@@ -1,11 +1,16 @@
+<<<<<<< Updated upstream
 ﻿using System;
 using DigitalVolunteer.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+=======
+﻿using Microsoft.AspNetCore.Mvc;
+>>>>>>> Stashed changes
 
 namespace DigitalVolunteer.Web.Controllers
 {
     public class ExecutorController : Controller
     {
+<<<<<<< Updated upstream
         private readonly IExecutorRepository _executorRepository;
 
 
@@ -25,5 +30,9 @@ namespace DigitalVolunteer.Web.Controllers
             // TODO. Предлагаем исполнителю выполнить одно из наших заданий.
             return Ok();
         }
+=======
+        [HttpGet]
+        public IActionResult Index() => View();
+>>>>>>> Stashed changes
     }
 }
