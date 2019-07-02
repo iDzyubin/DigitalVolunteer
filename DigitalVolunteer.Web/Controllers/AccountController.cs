@@ -68,7 +68,7 @@ namespace DigitalVolunteer.Web.Controllers
                 ViewBag.AlertMessage =
                     "На указанный e-mail было отправленно письмо. Для завершения регистрации перейдите по ссылке в нем";
             }
-            catch( Exception e )
+            catch( Exception )
             {
                 ViewBag.AlertType = "alert-danger";
                 ViewBag.AlertMessage = "Произошла ошибка. Свяжитесь с администратором";

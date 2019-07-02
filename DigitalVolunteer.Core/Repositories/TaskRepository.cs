@@ -150,8 +150,6 @@ namespace DigitalVolunteer.Core.Repositories
                 .Select( t => t.Task ).Where( filter ).ToList();
         }
 
-        public List<DigitalTask> GetMyTasks( Guid userId, TaskSelectorMode selectorMode, Guid? categoryId )
-
 
         /// <summary>
         /// Вернуть список задач пользователя,

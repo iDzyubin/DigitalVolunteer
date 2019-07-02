@@ -15,9 +15,6 @@ namespace DigitalVolunteer.Core.Services
         private readonly PasswordHashService _hashService;
         private readonly NotificationService _notificationService;
 
-        public UserService( IUserRepository userRepository, ICategoryRepository categoryRepository,
-            TaskService taskService, PasswordHashService hashService )
-
 
         public UserService
         (
@@ -39,10 +36,7 @@ namespace DigitalVolunteer.Core.Services
         public void Register( UserRegistrationModel model, bool isAdmin = false )
         {
             var isEmailTaken = _users.Get( u => u.Email == model.Email ) == null;
-            if( isEmailTaken )
-            {
-                throw new Exception( "Аккаунт с таким e-mail уже зарегистрирован" );
-            }
+            if( isEmailTaken ) throw new Exception( "Аккаунт с таким e-mail уже зарегистрирован" );
 
             var user = new User
             {
@@ -69,9 +63,6 @@ namespace DigitalVolunteer.Core.Services
                 throw new Exception( "Произошла непредвиденная ошибка", ex );
             }
         }
-
-
-        public void Delete( Guid id ) => _users.Remove( id );
 
 
         /// <summary>
@@ -125,13 +116,6 @@ namespace DigitalVolunteer.Core.Services
         }
 
 
-        public ValidationResult Validate( string email, string password )
-        {
-            var user = _users.GetByEmail( email );
-            return ( user == null || user.Status == UserStatus.Deleted )
-        }
-
-        
         /// <summary>
         /// Проверяем введенные данные при попытке залогиниться.
         /// </summary>
@@ -151,9 +135,6 @@ namespace DigitalVolunteer.Core.Services
         }
 
 
-        public User GetUser( Guid id ) => _users.Get( id );
-
-
         /// <summary>
         /// Получить информацию о пользователе.
         /// </summary>
@@ -171,9 +152,6 @@ namespace DigitalVolunteer.Core.Services
                     IsAdmin = user.IsAdmin
                 };
         }
-
-
-        public void EditUser( User user ) => _users.Update( user );
 
 
         /// <summary>

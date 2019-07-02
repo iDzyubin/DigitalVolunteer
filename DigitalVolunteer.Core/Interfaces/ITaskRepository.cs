@@ -14,8 +14,6 @@ namespace DigitalVolunteer.Core.Interfaces
        
         List<DigitalTask> GetMyTasks( Guid userId, TaskSelectorMode selectorMode, Guid? categoryId );
 
-        List<DigitalTask> GetMyTasks( Guid userId, TaskSelectorMode selectorMode );
-
         List<DigitalTask> GetAll( Guid? categoryId );
 
         DigitalTask GetTaskDetails( Guid taskId );

@@ -55,6 +55,34 @@
                                 </a>
                             }
                             break;
+                        case DigitalTaskState.WaitingExecutorConfirmation:
+                            if( isTaskOwner )
+                            {
+                                <div class="text-center">
+                                    <a asp-controller="Task" asp-action="CancelTask" asp-route-taskid="@Model.Id"
+                                       class="btn btn-outline-danger col-md-6 col-sm-4">
+                                        Отменить заявку
+                                    </a>
+                                </div>
+                            }
+                            if( isTaskExecutor )
+                            {
+                                <div class="col-md-12 row">
+                                    <div class="col-md-6 col-sm-2">
+                                        <a asp-controller="Task" asp-action="ConfirmOffer" asp-route-taskid="@Model.Id"
+                                           class="btn btn-outline-success col-md-12 col-sm-12">
+                                            Принять заявку
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6 col-sm-2">
+                                        <a asp-controller="Task" asp-action="CancelTask" asp-route-taskid="@Model.Id"
+                                           class="btn btn-outline-danger col-md-12 col-sm-12">
+                                            Отклонить заявку
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                            break;
                         case DigitalTaskState.WaitingOwnerConfirmation:
                             if( isTaskOwner )
                             {

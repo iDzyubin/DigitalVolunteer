@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using ThinkingHome.Migrator.Framework;
 
 namespace DigitalVolunteer.DBUpdate.Migrations
@@ -8,7 +6,7 @@ namespace DigitalVolunteer.DBUpdate.Migrations
     [Migration(1)]
     public class _01_INIT : Migration
     {
-        #region
+        #region Initialization Script
         private string Script =
            @"CREATE SCHEMA IF NOT EXISTS dv;
             CREATE TABLE dv.users
@@ -93,14 +91,8 @@ namespace DigitalVolunteer.DBUpdate.Migrations
 
         #endregion
 
-        public override void Apply()
-        {
-            Database.ExecuteNonQuery(Script);
-        }
+        public override void Apply() => Database.ExecuteNonQuery( Script );
 
-        public override void Revert()
-        {
-            throw new NotImplementedException();
-        }
+        public override void Revert() => throw new NotImplementedException();
     }
 }
