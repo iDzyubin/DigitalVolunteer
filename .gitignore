@@ -353,3 +353,8 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/visualstudio
+/.idea/.idea.DigitalVolunteer/.idea/.gitignore
+/.idea/.idea.DigitalVolunteer/.idea/indexLayout.xml
+/.idea/.idea.DigitalVolunteer/.idea/modules.xml
+/.idea/.idea.DigitalVolunteer/.idea/vcs.xml
+/.idea/.idea.DigitalVolunteer/riderModule.iml
