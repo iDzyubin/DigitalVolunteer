@@ -15,6 +15,10 @@ namespace DigitalVolunteer.Core.Services
         private readonly PasswordHashService _hashService;
         private readonly NotificationService _notificationService;
 
+        public UserService( IUserRepository userRepository, ICategoryRepository categoryRepository,
+            TaskService taskService, PasswordHashService hashService )
+
+
         public UserService
         (
             IUserRepository userRepository,
@@ -53,6 +57,7 @@ namespace DigitalVolunteer.Core.Services
                 RegistrationDate = DateTime.Now,
                 ConfirmCode = Guid.NewGuid().ToString( "N" )
             };
+
             try
             {
                 _users.Add( user );
@@ -69,6 +74,32 @@ namespace DigitalVolunteer.Core.Services
         public void Delete( Guid id ) => _users.Remove( id );
 
 
+        /// <summary>
+        /// Удалить пользователя.
+        /// </summary>
+        /// <param name="id"></param>
+        public void Delete( Guid id ) => _users.Remove( id );
+
+
+        /// <summary>
+        /// Получить пользователя.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public User GetUser( Guid id ) => _users.Get( id );
+
+
+        /// <summary>
+        /// Отредактировать пользователя.
+        /// </summary>
+        /// <param name="user"></param>
+        public void EditUser( User user ) => _users.Update( user );
+
+
+        /// <summary>
+        /// Получить всех пользователей.
+        /// </summary>
+        /// <returns></returns>
         public object GetUsers()
             => _users.GetAll().Select( u => new UserInfoModel
             {
@@ -82,6 +113,9 @@ namespace DigitalVolunteer.Core.Services
             } ).ToList();
 
 
+        /// <summary>
+        /// Результат валидации.
+        /// </summary>
         public enum ValidationResult
         {
             Success,
@@ -95,6 +129,19 @@ namespace DigitalVolunteer.Core.Services
         {
             var user = _users.GetByEmail( email );
             return ( user == null || user.Status == UserStatus.Deleted )
+        }
+
+        
+        /// <summary>
+        /// Проверяем введенные данные при попытке залогиниться.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public ValidationResult Validate( string email, string password )
+        {
+            var user = _users.GetByEmail( email );
+            return user == null
                 ? ValidationResult.UserNotExist
                 : user.Status == UserStatus.Unconfirmed
                     ? ValidationResult.UserNotConfirmed
@@ -107,6 +154,11 @@ namespace DigitalVolunteer.Core.Services
         public User GetUser( Guid id ) => _users.Get( id );
 
 
+        /// <summary>
+        /// Получить информацию о пользователе.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public UserInfoModel GetUserInfo( string email )
         {
             var user = _users.GetByEmail( email );
@@ -124,14 +176,19 @@ namespace DigitalVolunteer.Core.Services
         public void EditUser( User user ) => _users.Update( user );
 
 
+        /// <summary>
+        /// Получить расширенную информацию.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public UserInfoModel GetExtendedUserInfo( Guid id )
         {
             var user = _users.Get( id );
             if( user == null )
                 throw new KeyNotFoundException( $"Пользователя с ID {id} нет в базе" );
 
-            var createdCount = _taskService.GetCreatedTasksCount( id );
-            var completedTasks = _taskService.GetCompletedTasks( id );
+            var createdCount       = _taskService.GetCreatedTasksCount( id );
+            var completedTasks     = _taskService.GetCompletedTasks( id );
             var favoriteCategoryId = completedTasks
                                     .GroupBy( t => t.CategoryId )
                                     .Select( g => new { Id = g.Key, Count = g.Count() } )

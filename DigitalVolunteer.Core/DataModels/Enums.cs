@@ -55,6 +55,12 @@ namespace DigitalVolunteer.Core.DataModels
         /// </summary>
         [Display( Name = "Ожидает подтверждения" )]
         Unconfirmed = 1,
+        /// Задача не подтверждена заказчиком.
+        /// Когда исполнитель решил взять задачу,
+        /// но заказчик ещё не подтвердил, что согласен.
+        /// </summary>
+        [Display( Name = "Ожидает подтверждения заказчика" )]
+        WaitingOwnerConfirmation = 1,
         /// <summary>
         /// Задача подтверждена.
         /// Заказчик подтвердил исполнителя
@@ -73,6 +79,13 @@ namespace DigitalVolunteer.Core.DataModels
         /// Заказчик подтвердил, что задача выполнена успешно.
         /// </summary>
         [Display( Name = "Задание завершено" )]
-        Closed = 4
+        Closed = 4,
+        /// <summary>
+        /// Задача не подтверждена исполнителем.
+        /// Когда заказчик решил предложить задачу,
+        /// но исполнитель ещё не подтвердил, что согласен.
+        /// </summary>
+        [Display( Name = "Ожидает подтверждения исполнителя" )]
+        WaitingExecutorConfirmation = 5
     }
 }

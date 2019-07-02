@@ -29,9 +29,7 @@ namespace DigitalVolunteer.Web.Controllers
         [HttpGet( "[controller]/All" )]
         public IActionResult Index( Guid? categoryId = null )
         {
-            var tasks = categoryId.HasValue
-                ? _taskRepository.GetAll(categoryId.Value)
-                : _taskRepository.GetAll();
+            var tasks = _taskRepository.GetAll( categoryId );
             return View( new TaskViewModel { CategoryId = categoryId ?? Guid.Empty, Tasks = tasks } );
         }
 
@@ -40,7 +38,7 @@ namespace DigitalVolunteer.Web.Controllers
         /// Информация по задаче.
         /// </summary>
         [HttpGet( "[controller]/{id}" )]
-        public IActionResult Details( Guid id ) => View( Get( id ) );
+        public IActionResult Details( Guid id ) => View( _taskRepository.GetTaskDetails( id ) );
 
 
         [Authorize]
@@ -63,7 +61,7 @@ namespace DigitalVolunteer.Web.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult Update( Guid id ) => View( Get( id ) );
+        public IActionResult Update( Guid id ) => View( _taskRepository.Get( id ) );
 
 
         /// <summary>
@@ -107,13 +105,25 @@ namespace DigitalVolunteer.Web.Controllers
 
 
         /// <summary>
-        /// Предложить услуги по выполнению задачи.
+        /// Предложить заказчику услуги по выполнению задачи.
         /// </summary>
         [Authorize]
         [HttpGet]
         public IActionResult OfferHelp( Guid taskId )
         {
             _taskService.OfferHelp( taskId, User.GetId().Value );
+            return RedirectToDetails( taskId );
+        }
+
+
+        /// <summary>
+        /// Предложить задачу потенциальному исполнителю.
+        /// </summary>
+        [Authorize]
+        [HttpGet]
+        public IActionResult OfferTask( Guid taskId, Guid executorId )
+        {
+            _taskService.OfferTask( taskId, executorId );
             return RedirectToDetails( taskId );
         }
 

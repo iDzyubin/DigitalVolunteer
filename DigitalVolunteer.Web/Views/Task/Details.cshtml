@@ -1,10 +1,10 @@
-﻿@model DigitalTask
+@model DigitalTask
 @inject TaskService TaskService
 @{
     var userId = User.GetId();
     var isTaskOwner = TaskService.IsDigitalTaskOwner( Model.Id, userId );
     var isTaskExecutor = TaskService.IsDigitalTaskExecutor( Model.Id, userId );
-    var hasExecutor = TaskService.HasIsDigitalTaskExecutor( Model.Id );
+    var hasExecutor = TaskService.HasDigitalTaskExecutor( Model.Id );
 }
 <div class="d-flex justify-content-center">
     <div class="col-md-8 col-sm-12">
@@ -55,7 +55,7 @@
                                 </a>
                             }
                             break;
-                        case DigitalTaskState.Unconfirmed:
+                        case DigitalTaskState.WaitingOwnerConfirmation:
                             if( isTaskOwner )
                             {
                                 <div class="col-md-12 row">

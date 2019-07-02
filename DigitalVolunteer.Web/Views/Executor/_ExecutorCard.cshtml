@@ -1,8 +1,6 @@
 ﻿@model User
 @inject TaskService TaskService
-@{
-    var tasks = new SelectList(TaskService.GetAllUserTaskTitles(User.GetId()), "Id", "Title");
-}
+
 <div class="col-md-12 col-sm-12">
     <div class="card">
         <div class="card-header text-left">
@@ -36,12 +34,12 @@
                 <h4 class="modal-title">Предложить задание</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <form asp-action="OfferTask" method="post">
+            <form asp-controller="Task" asp-action="OfferTask" method="get">
                 <div class="modal-body">
-                    <select name="taskid" class="form-control" asp-items="tasks">
+                    <select name="taskid" class="form-control" asp-items="TaskService.GetTaskSelectList(User.GetId())">
                         <option value="" selected disabled hidden>Выберите задачу</option>
                     </select>
-                    <input name="executorid"  value="@Model.Id" type="hidden" />
+                    <input name="executorid" value="@Model.Id" type="hidden" />
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-outline-success">Отправить</button>
