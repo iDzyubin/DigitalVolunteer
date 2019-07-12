@@ -1,6 +1,16 @@
+using DigitalVolunteer.API.Filters;
+using DigitalVolunteer.Core.DataAccess;
+using DigitalVolunteer.Core.DataModels;
+using DigitalVolunteer.Core.Interfaces;
+using DigitalVolunteer.Core.Repositories;
+using DigitalVolunteer.Core.Services;
+using DigitalVolunteer.Core.Validators;
+using DigitalVolunteer.DBUpdate;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +30,48 @@ namespace DigitalVolunteer.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices( IServiceCollection services )
         {
-            services.AddMvc().SetCompatibilityVersion( CompatibilityVersion.Version_2_2 );
+            services.Configure<CookiePolicyOptions>( options =>
+            {
+                options.CheckConsentNeeded    = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            } );
+
+
+            services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme )
+                    .AddCookie( options =>
+                     {
+                         options.LoginPath  = "/Account/Login";
+                         options.LogoutPath = "/Account/Logout";
+                     } );
+
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<ITaskRepository, TaskRepository>();
+
+
+            var smtpSettings = Configuration.GetSection( "SmtpClientSetting" ).Get<SmtpSettings>();
+            services.AddSingleton( smtpSettings );
+            services.AddSingleton<PasswordHashService>();
+            services.AddScoped<NotificationService>();
+            services.AddTransient<UserService>();
+            services.AddTransient<TaskService>();
+
+
+            services.AddScoped<ValidateCategoryExistsAttribute>();
+            services.AddScoped<ValidateUserExistsAttribute>();
+            services.AddScoped<UserRegisteredValidatorAttribute>();
+
+
+            services.AddMvc( options => options.Filters.Add( new ModelValidatorAttribute() ) )
+                    .AddFluentValidation( fv => fv.RegisterValidatorsFromAssemblyContaining<CategoryValidator>() )
+                    .SetCompatibilityVersion( CompatibilityVersion.Version_2_2 );
+
+
+            var connectionString = Configuration.GetConnectionString( "DefaultConnection" );
+            InitDB( connectionString );
+            LinqToDB.Data.DataConnection.DefaultSettings = new Linq2DbSettings( connectionString );
+            services.AddSingleton<MainDb>();
+
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles( configuration => { configuration.RootPath = "ClientApp/build"; } );
@@ -43,12 +94,13 @@ namespace DigitalVolunteer.API
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+            app.UseAuthentication();
 
             app.UseMvc( routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action=Index}/{id?}" );
+                    name: "api",
+                    template: "api/{controller}/{action=Index}/{id?}" );
             } );
 
             app.UseSpa( spa =>
@@ -60,6 +112,13 @@ namespace DigitalVolunteer.API
                     spa.UseReactDevelopmentServer( npmScript: "start" );
                 }
             } );
+        }
+
+
+        private void InitDB( string connectionString )
+        {
+            var migrator = new MigratorRunner( connectionString );
+            migrator.Run();
         }
     }
 }

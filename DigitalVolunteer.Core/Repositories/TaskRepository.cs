@@ -17,7 +17,7 @@ namespace DigitalVolunteer.Core.Repositories
 
         public void Add( DigitalTask item, Guid ownerId )
         {
-            (item.Id, item.OwnerId) = (Guid.NewGuid(), ownerId);
+            ( item.Id, item.OwnerId ) = ( Guid.NewGuid(), ownerId );
             _db.Insert( item );
         }
 
@@ -75,20 +75,20 @@ namespace DigitalVolunteer.Core.Repositories
 
             if( tasks.First( x => x.Id == taskId ).ExecutorId.HasValue )
             {
-                var res1 = (from task in _db.DigitalTasks
-                            where task.Id == taskId
-                            join owner in _db.Users on task.OwnerId equals owner.Id
-                            join executor in _db.Users on task.ExecutorId equals executor.Id
-                            select new {task, owner, executor}).First();
-                (res1.task.Owner, res1.task.Executor) = (res1.owner, res1.executor);
+                var res1 = ( from task in _db.DigitalTasks
+                             where task.Id == taskId
+                             join owner in _db.Users on task.OwnerId equals owner.Id
+                             join executor in _db.Users on task.ExecutorId equals executor.Id
+                             select new { task, owner, executor } ).First();
+                ( res1.task.Owner, res1.task.Executor ) = ( res1.owner, res1.executor );
                 return res1.task;
             }
             else
             {
-                var res2 = (from task in _db.DigitalTasks
-                            where task.Id == taskId
-                            join owner in _db.Users on task.OwnerId equals owner.Id
-                            select new {task, owner}).First();
+                var res2 = ( from task in _db.DigitalTasks
+                             where task.Id == taskId
+                             join owner in _db.Users on task.OwnerId equals owner.Id
+                             select new { task, owner } ).First();
                 res2.task.Owner = res2.owner;
                 return res2.task;
             }
@@ -112,18 +112,26 @@ namespace DigitalVolunteer.Core.Repositories
         public List<DigitalTask> GetAll( Guid? categoryId )
         {
             var tasks = _db.DigitalTasks.AsQueryable();
-            if( categoryId.HasValue ) tasks = tasks.Where( t => t.CategoryId == categoryId );
+            if( categoryId.HasValue )
+                tasks = tasks.Where( t => t.CategoryId == categoryId );
 
             return ( from task in tasks
                      join owner in _db.Users on task.OwnerId equals owner.Id
                      select new DigitalTask
                      {
-                         Id = task.Id,
-                         Title = task.Title,
-                         TaskFormat = task.TaskFormat,
-                         StartDate = task.StartDate,
-                         EndDate = task.EndDate,
-                         Owner = owner
+                         Id                   = task.Id,
+                         Title                = task.Title,
+                         StartDate            = task.StartDate,
+                         EndDate              = task.EndDate,
+                         Owner = new User
+                         {
+                             Id          = owner.Id,
+                             FirstName   = owner.FirstName,
+                             LastName    = owner.LastName,
+                             Description = owner.Description,
+                             Email       = owner.Email,
+                             Phone       = owner.Phone
+                         }
                      } ).ToList();
         }
 
@@ -147,7 +155,7 @@ namespace DigitalVolunteer.Core.Repositories
         public List<DigitalTask> GetUserTasks( Guid userId, Func<DigitalTask, bool> filter )
         {
             return _db.TaskExecutors.Where( t => t.UserId == userId )
-                .Select( t => t.Task ).Where( filter ).ToList();
+                      .Select( t => t.Task ).Where( filter ).ToList();
         }
 
 
@@ -161,19 +169,24 @@ namespace DigitalVolunteer.Core.Repositories
         /// <returns></returns>
         public List<DigitalTask> GetMyTasks( Guid userId, TaskSelectorMode selectorMode, Guid? categoryId )
         {
-            var tasks = _db.DigitalTasks.AsQueryable();
+            var tasks                       = _db.DigitalTasks.AsQueryable();
             if( categoryId.HasValue ) tasks = tasks.Where( x => x.CategoryId == categoryId );
 
             switch( selectorMode )
             {
                 case TaskSelectorMode.All:
-                    tasks = tasks.Where( x => x.OwnerId == userId || x.ExecutorId == userId ); break;
+                    tasks = tasks.Where( x => x.OwnerId == userId || x.ExecutorId == userId );
+                    break;
                 case TaskSelectorMode.Executor:
-                    tasks = tasks.Where( x => x.ExecutorId == userId ); break;
+                    tasks = tasks.Where( x => x.ExecutorId == userId );
+                    break;
                 case TaskSelectorMode.Owner:
-                    tasks = tasks.Where( x => x.OwnerId == userId ); break;
+                    tasks = tasks.Where( x => x.OwnerId == userId );
+                    break;
             }
-            var joined = tasks.Join( _db.Users, t => t.OwnerId, u => u.Id, ( task, user ) => new { Task = task, Owner = user } ).ToList();
+
+            var joined = tasks.Join( _db.Users, t => t.OwnerId, u => u.Id,
+                                     ( task, user ) => new { Task = task, Owner = user } ).ToList();
             joined.ForEach( j => j.Task.Owner = j.Owner );
             return joined.Select( j => j.Task ).ToList();
         }

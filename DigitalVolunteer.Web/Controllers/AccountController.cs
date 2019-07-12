@@ -89,7 +89,7 @@ namespace DigitalVolunteer.Web.Controllers
         {
             if( ModelState.IsValid )
             {
-                var check = _userService.Validate( model.Email.ToLower(), model.Password );
+                var check = _userService.Validate( model.Email, model.Password );
                 switch( check )
                 {
                     case UserService.ValidationResult.Success:

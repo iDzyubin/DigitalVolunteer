@@ -124,7 +124,7 @@ namespace DigitalVolunteer.Core.Services
         /// <returns></returns>
         public ValidationResult Validate( string email, string password )
         {
-            var user = _users.GetByEmail( email );
+            var user = _users.GetByEmail( email.ToLower() );
             return user == null
                 ? ValidationResult.UserNotExist
                 : user.Status == UserStatus.Unconfirmed
@@ -142,7 +142,7 @@ namespace DigitalVolunteer.Core.Services
         /// <returns></returns>
         public UserInfoModel GetUserInfo( string email )
         {
-            var user = _users.GetByEmail( email );
+            var user = _users.GetByEmail( email.ToLower() );
             return user == null
                 ? null
                 : new UserInfoModel

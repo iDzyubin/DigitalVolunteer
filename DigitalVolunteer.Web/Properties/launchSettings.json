@@ -14,7 +14,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         //"ConnectionStrings:DefaultConnection": "Server=postgres.cgkwtwxbbklg.us-east-2.rds.amazonaws.com;Port=5432;Database=postgres;User Id=postgres;Password=postgres;enlist=true"
-        "ConnectionStrings:DefaultConnection": "Server=localhost;Port=5432;Database=postgres;UserId=postgres;Password=postgres;enlist=true"
+        "ConnectionStrings:DefaultConnection": "Server=localhost;Port=5432;Database=digital_volunteer;User Id=postgres;Password=password;enlist=true"
       }
     },
     "DigitalVolunteer.Web": {
@@ -24,7 +24,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         //"ConnectionStrings:DefaultConnection": "Server=postgres.cgkwtwxbbklg.us-east-2.rds.amazonaws.com;Port=5432;Database=postgres;User Id=postgres;Password=postgres;enlist=true"
-        "ConnectionStrings:DefaultConnection": "Server=localhost;Port=5432;Database=digital_volunteer;User Id=postgres;Password=6552;enlist=true"
+        "ConnectionStrings:DefaultConnection": "Server=localhost;Port=5432;Database=digital_volunteer;User Id=postgres;Password=password;enlist=true"
       }
     }
   }

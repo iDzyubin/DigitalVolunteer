@@ -31,23 +31,23 @@ namespace DigitalVolunteer.Web
         {
             services.Configure<CookiePolicyOptions>( options =>
             {
-                options.CheckConsentNeeded = context => true;
+                options.CheckConsentNeeded    = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             } );
 
             var expireTimeSpan = TimeSpan.FromDays( 30 );
             services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme )
-                .AddCookie( options =>
-                {
-                    options.LoginPath = "/Account/Login";
-                    options.LogoutPath = "/Account/Logout";
-                } );
+                    .AddCookie( options =>
+                     {
+                         options.LoginPath  = "/Account/Login";
+                         options.LogoutPath = "/Account/Logout";
+                     } );
 
             var dbConnStr = Configuration.GetConnectionString( "DefaultConnection" );
             InitDB( dbConnStr );
             LinqToDB.Data.DataConnection.DefaultSettings = new Linq2DbSettings( dbConnStr );
             services.AddSingleton<MainDb>();
-            
+
 
             var smtpSettings = Configuration.GetSection( "SmtpClientSetting" ).Get<SmtpSettings>();
             services.AddSingleton( smtpSettings );
@@ -65,9 +65,9 @@ namespace DigitalVolunteer.Web
             services.AddScoped<TaskService>();
 
             services
-                .AddMvc( o => o.Filters.Add<UserClaimsFilter>() )
-                .AddFluentValidation( fv => fv.RegisterValidatorsFromAssemblyContaining<CategoryValidator>() )
-                .SetCompatibilityVersion( CompatibilityVersion.Version_2_2 );
+               .AddMvc( o => o.Filters.Add<UserClaimsFilter>() )
+               .AddFluentValidation( fv => fv.RegisterValidatorsFromAssemblyContaining<CategoryValidator>() )
+               .SetCompatibilityVersion( CompatibilityVersion.Version_2_2 );
         }
 
         public void Configure( IApplicationBuilder app, IHostingEnvironment env )
